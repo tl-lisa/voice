@@ -7,7 +7,7 @@ from pprint import pprint
 def dbQuery(hostAddr, sqlStr):
     ssh_host = hostAddr #'35.201.246.119'            #SSH服务器地址
     ssh_port = 22                  #SSH端口
-    keyfile = '../voice/lisakey'            #SSH密钥
+    keyfile = './lisakey'            #SSH密钥
     ssh_user = 'lisa'              #SSH用户名
     db_host = '127.0.0.1'          #数据库地址
     db_name = 'live_casting'       #数据库名
@@ -49,7 +49,7 @@ def dbSetting(hostAddr, sqlStr):
     #pprint(sqlStr)
     ssh_host = hostAddr #'35.201.246.119'            #SSH服务器地址
     ssh_port = 22                  #SSH端口
-    keyfile = '../voice/lisakey'            #SSH密钥
+    keyfile = './lisakey'            #SSH密钥
     ssh_user = 'lisa'              #SSH用户名
     db_host = '127.0.0.1'          #数据库地址
     db_name = 'live_casting'       #数据库名

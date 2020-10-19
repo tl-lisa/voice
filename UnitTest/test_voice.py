@@ -9,6 +9,7 @@ from pprint import pprint
 from . import voicelib
 from . import dbConnect
 from . import misc
+from . import testingCase
 
 env = 'QA'
 env = 'QA'
@@ -69,61 +70,6 @@ def editInit():
     
 #check中的資料先以第一層為主，之後再看下層資料
 testData = [
-    # ('2位玩家先後進入聲聊房，已在房中的人會收到系統廣播', 
-    # [{'user': 'track0011', 'wait': 0, 'action': [('vc_room:1', 'phx_join', {})], 'sleep': 6},
-    # {'user': 'track0012', 'wait': 2, 'action': [('vc_room:1', 'phx_join', {})], 'sleep': 0}], 
-    # [{'index': 'track0011', 'event': 'voiceroom_in_bcst', 'check': [{'key': 'totalCount', 'value': 2}, {'key': 'hot', 'value': 3*1331}, 
-    # {'key': 'joinUserId', 'value':test_parameter['track0012']['id']}]}])
-    # ('2位玩家先後進入聲聊房，有人離房仍在房中的人會收到系統廣播', 
-    # [{'user': 'track0011', 'wait': 0, 'action': [('vc_room:1', 'phx_join', {})], 'sleep': 5},
-    # {'user': 'track0012', 'wait': 1, 'action': [('vc_room:1', 'phx_join', {}), ('vc_room:1', 'phx_leave', {})], 'sleep': 1}], 
-    # [{'index': 'track0011', 'event': 'voiceroom_left_bcst', 'check': [{'key': 'hot', 'value': 2*1331}]}]),
-    # ('直播主上麥，已在房中的人會收到系統廣播', [{'user': 'track0012', 'wait': 0, 'action': [('vc_room:1', 'phx_join', {})], 'sleep': 5},
-    # {'user': 'broadcaster011', 'wait': 2, 'action': [('vc_room:1', 'phx_join', {}), ('vc_room:1', 'take_seat', {'seatIndex': 1 })], 'sleep': 1}], 
-    # [{'index': 'track0012', 'event': 'seat_taken', 'check': [{'key': 'seats', 'value': {{'seat': 0, 'userId': None}, {'seat': 1, 'userId': test_parameter['broadcaster011']['id']}, 
-    # {'seat': 2, 'userId': None}}}]}]),
-    # ('直播主已上麥，之後進入房中的人會收到相關資訊', [
-    # {'user': 'broadcaster011', 'wait': 0, 'action': [('vc_room:1', 'phx_join', {}), ('vc_room:1', 'take_seat', {'seatIndex': 1 })], 'sleep': 5},
-    # {'user': 'track0012', 'wait': 3, 'action': [('vc_room:1', 'phx_join', {})], 'sleep': 1}], 
-    # [{'index': 'track0012', 'event': 'voiceroom_in', 'check': [{'key': 'seats', 'value':  [{'seat': 0, 'userId': None}, {'seat': 1, 'userId': test_parameter['broadcaster011']['id']},
-    # {'seat': 2, 'userId': None}]}]}]),
-    # ('直播主已上麥後下麥，在房中的人會收到相關資訊', [ 
-    # {'user': 'track0012', 'wait': 0, 'action': [('vc_room:1', 'phx_join', {})], 'sleep': 6},
-    # {'user': 'broadcaster011', 'wait': 3, 'action': [('vc_room:1', 'phx_join', {}), ('vc_room:1', 'take_seat', {'seatIndex': 1 }), ('vc_room:1', 'leave_seat', {})], 'sleep': 0}], 
-    # [{'index': 'track0012', 'event': 'seat_left', 'check': [{'key': 'seats', 'value': [{'seat': 0, 'userId': None}, {'seat': 1, 'userId': None}, {'seat': 2, 'userId': None}]}]}])
-    # ('有人申請上麥，在房中的人會收到相關資訊', [ 
-    # {'user': 'broadcaster011', 'wait': 0, 'action': [('vc_room:1', 'phx_join', {}), ('vc_room:1', 'take_seat', {'seatIndex': 1 })], 'sleep': 6},
-    # {'user': 'track0012', 'wait': 3, 'action': [('vc_room:1', 'phx_join', {}), ('vc_room:1', 'book_seat', {})], 'sleep': 0}], 
-    # [{'index': 'broadcaster011', 'event': 'seat_booked', 'check': [{'key': 'seatQueue', 'value': [test_parameter['track0012']['id']]}]}])
-    # ('有人申請上麥，後進房的直播主會收到相關資訊', [ 
-    # {'user': 'broadcaster011', 'wait': 0, 'action': [('vc_room:1', 'phx_join', {}), ('vc_room:1', 'take_seat', {'seatIndex': 1 })], 'sleep': 10},
-    # {'user': 'track0012', 'wait': 3, 'action': [('vc_room:1', 'phx_join', {}), ('vc_room:1', 'book_seat', {})], 'sleep': 0}, 
-    # {'user': 'broadcaster012', 'wait': 5, 'action': [('vc_room:1', 'phx_join', {})], 'sleep': 0}],
-    # [{'index': 'broadcaster012', 'event': 'seat_booked', 'check': [{'key': 'seatQueue', 'value': [test_parameter['track0012']['id']]}]}]),
-    # ('有人申請上麥，房主可以拒絕上麥申請', [ 
-    # {'user': 'track0012', 'wait': 0, 'action': [('vc_room:1', 'phx_join', {}), ('vc_room:1', 'book_seat', {})], 'sleep': 10}, 
-    # {'user': 'broadcaster010', 'wait': 5, 'action': [('vc_room:1', 'phx_join', {}), ('vc_room:1', 'reject_seat', {'targetUserId': test_parameter['track0012']['id']})], 'sleep': 5},
-    # {'user': 'track0013', 'wait': 7, 'action': [('vc_room:1', 'phx_join', {}), ('vc_room:1', 'book_seat', {})], 'sleep': 0}],
-    # [{'index': 'broadcaster010', 'event': 'seat_rejected', 'check': [{'key': 'seatQueue', 'value': []}]}]),
-    # ('有人申請上麥，即使未上麥管理員也可以拒絕上麥申請', [ 
-    # {'user': 'track0012', 'wait': 0, 'action': [('vc_room:1', 'phx_join', {}), ('vc_room:1', 'book_seat', {})], 'sleep': 10}, 
-    # {'user': 'broadcaster012', 'wait': 5, 'action': [('vc_room:1', 'phx_join', {}), ('vc_room:1', 'reject_seat', {'targetUserId': test_parameter['track0012']['id']})], 'sleep': 5},
-    # {'user': 'track0013', 'wait': 7, 'action': [('vc_room:1', 'phx_join', {}), ('vc_room:1', 'book_seat', {})], 'sleep': 0}],
-    # [{'index': 'broadcaster012', 'event': 'seat_rejected', 'check': [{'key': 'seatQueue', 'value': []}]}]),  
-    # ('有人申請上麥，非房主及管理員不可以拒絕上麥申請', [ 
-    # {'user': 'track0012', 'wait': 0, 'action': [('vc_room:1', 'phx_join', {}), ('vc_room:1', 'book_seat', {})], 'sleep': 10}, 
-    # {'user': 'lv000', 'wait': 5, 'action': [('vc_room:1', 'phx_join', {}), ('vc_room:1', 'reject_seat', {'targetUserId': test_parameter['track0012']['id']})], 'sleep': 5},
-    # {'user': 'track0013', 'wait': 7, 'action': [('vc_room:1', 'phx_join', {}), ('vc_room:1', 'book_seat', {})], 'sleep': 0}],
-    # [{'index': 'lv000', 'event': 'seat_booked', 'check': [{'key': 'seatQueue', 'value': [test_parameter['track0012']['id'], test_parameter['track0013']['id']]}]}])  
-    # ('有人申請上麥然後離房，系統應自動清除seat queue', [ 
-    # {'user': 'track0012', 'wait': 0, 'action': [('vc_room:1', 'phx_join', {}), ('vc_room:1', 'book_seat', {})], 'sleep': 10}, 
-    # {'user': 'track0011', 'wait': 3, 'action': [('vc_room:1', 'phx_join', {}), ('vc_room:1', 'book_seat', {})], 'sleep': 0},
-    # {'user': 'track0013', 'wait': 5, 'action': [('vc_room:1', 'phx_join', {}), ('vc_room:1', 'book_seat', {})], 'sleep': 0}],
-    # [{'index': 'track0013', 'event': 'seat_booked', 'check': [{'key': 'seatQueue', 'value': [test_parameter['track0012']['id'], test_parameter['track0013']['id']]}]}]),
-    # ('觀眾只能取消自己的上麥申請', [ 
-    # {'user': 'track0012', 'wait': 0, 'action': [('vc_room:1', 'phx_join', {}), ('vc_room:1', 'book_seat', {})], 'sleep': 6}, 
-    # {'user': 'track0013', 'wait': 3, 'action': [('vc_room:1', 'phx_join', {}), ('vc_room:1', 'book_seat', {}), ('vc_room:1', 'abort_seat', {})], 'sleep': 0}],
-    # [{'index': 'track0013', 'event': 'seat_aborted', 'check': [{'key': 'seatQueue', 'value': [test_parameter['track0012']['id']]}]}])
     # ('觀眾若未上麥申請就取消上麥，應有錯誤', [
     # {'user': 'track0012', 'wait': 0, 'action': [('vc_room:1', 'phx_join', {}), ('vc_room:1', 'book_seat', {})], 'sleep': 6}, 
     # {'user': 'track0013', 'wait': 3, 'action': [('vc_room:1', 'phx_join', {}), ('vc_room:1', 'abort_seat', {})], 'sleep': 0}],
@@ -288,16 +234,16 @@ testData = [
     # [{'index': 'track0020', 'event': 'message', 'check': [{'key': 'userId', 'value': test_parameter['track0020']['id']}, {'key': 'content', 'value': '@快樂代儲你我他 歡迎大家搜尋找碴'}]},
     # {'index': 'broadcaster010', 'event': 'message', 'check': [{'key': 'userId', 'value': test_parameter['track0020']['id']}, {'key': 'content', 'value': '@快樂代儲你我他 歡迎大家搜尋找碴'}]},
     # {'index': 'broadcaster013', 'event': 'message', 'check': [{'key': 'userId', 'value': test_parameter['track0020']['id']}, {'key': 'content', 'value': '@快樂代儲你我他 歡迎大家搜尋找碴'}]}]),
-    ('送禮訊息在聲聊房中皆會收到', [       
-    {'user': 'broadcaster010', 'wait': 0, 'action': [('vc_room:1', 'phx_join', {})], 'sleep': 7}, 
-    {'user': 'broadcaster013', 'wait': 2, 'action': [('vc_room:1', 'phx_join', {}), ('vc_room:1', 'take_seat', {'seatIndex': 1})], 'sleep': 5}, 
-    {'user': 'track0019', 'wait': 4, 'action': [('vc_room:1', 'phx_join', {}), ('vc_room:1', 'gift', 
-    {'giftId': '04310750-994e-41d3-8b2c-62674df24db2', 'targetUserId': test_parameter['broadcaster013']['id'], 'count': 3})], 'sleep': 1}], 
-    [{'index': 'track0019', 'event': 'gift_bcst', 'check': [{'key': 'fromUserId', 'value': test_parameter['track0019']['id']}, 
-    {'key': 'targetUserId', 'value': test_parameter['broadcaster013']['id']}, {'key': 'giftUrl', 'value': 'https://d3eq1e23ftm9f0.cloudfront.net/gift/animation/5f5101e86ce911ea83b942010a8c0017.jpeg'}]},
-    {'index': 'broadcaster010', 'event': 'gift_bcst', 'check': [{'key': 'giftId', 'value': '04310750-994e-41d3-8b2c-62674df24db2'}, {'key': 'giftName', 'value': '鬼怪'}, {'key': 'multiple', 'value': True}]},
-    {'index': 'broadcaster013', 'event': 'gift_bcst', 'check': [{'key': 'count', 'value': 3}, {'key': 'point', 'value': 1500}, {'key': 'content', 'value': '@舞弊事件大家都不能接受 送了 鬼怪(500) x 3 禮物給 直播主13'}]}])
-  
+    # ('送禮訊息在聲聊房中皆會收到', [       
+    # {'user': 'broadcaster010', 'wait': 0, 'action': [('vc_room:1', 'phx_join', {})], 'sleep': 7}, 
+    # {'user': 'broadcaster013', 'wait': 2, 'action': [('vc_room:1', 'phx_join', {}), ('vc_room:1', 'take_seat', {'seatIndex': 1})], 'sleep': 5}, 
+    # {'user': 'track0019', 'wait': 4, 'action': [('vc_room:1', 'phx_join', {}), ('vc_room:1', 'gift', 
+    # {'giftId': '04310750-994e-41d3-8b2c-62674df24db2', 'targetUserId': test_parameter['broadcaster013']['id'], 'count': 3})], 'sleep': 1}], 
+    # [{'index': 'track0019', 'event': 'gift_bcst', 'check': [{'key': 'fromUserId', 'value': test_parameter['track0019']['id']}, 
+    # {'key': 'targetUserId', 'value': test_parameter['broadcaster013']['id']}, {'key': 'giftUrl', 'value': 'https://d3eq1e23ftm9f0.cloudfront.net/gift/animation/5f5101e86ce911ea83b942010a8c0017.jpeg'}]},
+    # {'index': 'broadcaster010', 'event': 'gift_bcst', 'check': [{'key': 'giftId', 'value': '04310750-994e-41d3-8b2c-62674df24db2'}, {'key': 'giftName', 'value': '鬼怪'}, {'key': 'multiple', 'value': True}]},
+    # {'index': 'broadcaster013', 'event': 'gift_bcst', 'check': [{'key': 'count', 'value': 3}, {'key': 'point', 'value': 1500}, {'key': 'content', 'value': '@舞弊事件大家都不能接受 送了 鬼怪(500) x 3 禮物給 直播主13'}]}]),
+
    
 ]   
  
@@ -313,12 +259,13 @@ class TestVoiceScoket():
                 'join_ref': ref1,
                 'topic': j[0],
                 'event': j[1],
-                'payload': j[2]
+                'payload': j[2],
+                'sleep': j[3]
             }
             eventList.append(body)
         account = data['user']
         info  = 'ws://'+test_parameter['db']+'/socket/websocket?token='+test_parameter[account]['token'] + '&nonce=' + test_parameter[account]['nonce']
-        voice = voicelib.voiceUser(info, eventList, data['sleep'], id)
+        voice = voicelib.voiceUser(info, eventList, data['sleep'], data['wait'], id)
         try:
             self.wsDic[account] = voice.messageList
         except Exception as err:
@@ -328,24 +275,37 @@ class TestVoiceScoket():
 
     def verifyResult(self, data, verifyInfo):
         isGetEvent = False 
+        position = 0
+        event = None
         for i in data:
+            # print('data event=', i['event'],' verify event=',verifyInfo['event'], ' position=', position,' verify position=',verifyInfo['position'])
             if i['event'] == verifyInfo['event']:
-                isGetEvent = True
-                event = i
-                break
+                if verifyInfo['position'] == position:
+                    isGetEvent = True
+                    event = i
+                    break
+                else:
+                    position += 1
         if verifyInfo['check']:
             assert isGetEvent
         else:
             assert not isGetEvent
         if isGetEvent:
             for j in verifyInfo['check']:
+                count = 0
                 tmp = event
                 isGetKey = False
                 while not isGetKey:
                     if tmp:
                         for key, value in tmp.items():
                             if key == j['key']:
-                                assert j['value'] == value
+                                if j['value'] and type(j['value']) == list:
+                                    isGetValue = False
+                                    for vv in j['value']:
+                                        isGetValue = True if vv in value else False
+                                    assert isGetValue
+                                else:
+                                    assert j['value'] == value
                                 isGetKey = True
                                 break
                             else:
@@ -354,17 +314,19 @@ class TestVoiceScoket():
                                     break
                     else:
                         break
+                    if count > 8:
+                        break
+                    else:
+                        count += 1                   
                 assert isGetKey, "Cannot get key("+j['key']+ ")"
                         
-    @pytest.mark.parametrize("scenario, data, verifyInfo", testData)
+    @pytest.mark.parametrize("scenario, data, verifyInfo", testingCase.getTestData(test_parameter))
     def testVoice(self, editInit, scenario, data, verifyInfo):   
         threadList = []
         self.wsDic.clear()
         for i in range(len(data)):
-            time.sleep(data[i]['wait'])
             threadList.append(threading.Thread(target = self.wsJob, args = (data[i], i, )))
             threadList[i].start()
-        time.sleep(5)      
         for i in reversed(threadList):
             i.join()
         pprint(self.wsDic)   

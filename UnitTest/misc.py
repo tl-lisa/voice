@@ -7,7 +7,7 @@ from pprint import pprint
 from . import dbConnect
 
 def clearCache(hostAddr):
-    keyfile = '../voice/lisakey'  
+    keyfile = './lisakey'  
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     ssh.connect(hostAddr, username='lisa', key_filename=keyfile)
