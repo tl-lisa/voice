@@ -3,52 +3,10 @@ import time
 import sys
 import requests
 import paramiko
-from hashids import Hashids
 from pprint import pprint
 from . import dbConnect
 
-def clearCache(hostAddr):
-    keyfile = './lisakey'  
-    ssh = paramiko.SSHClient()
-    ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-    ssh.connect(hostAddr, username='lisa', key_filename=keyfile)
-    cmd = 'redis-cli flushdb;'
-    ssh.exec_command(cmd)
-    ssh.close()
 
-def changeRole(prefix, token, nonce, idList, roleType):
-    #5:一般用戶；4:直播主
-    header = {'Connection': 'Keep-alive', 'X-Auth-Token': '', 'X-Auth-Nonce': ''}
-    header['X-Auth-Token'] = token
-    header['X-Auth-Nonce'] = nonce
-    url = '/api/v2/backend/user/role'
-    body = {'ids': idList, 'role': roleType}
-    res = apiFunction(prefix, header, url, 'patch', body)
-    return(res)
-
-def search_user(prefix, account, header):
-    url = prefix + '/api/v1/backend/identity/search'
-    #print('account = %s' % account)
-    body = {"input": account, "page": 0, "size": 10, "statuses": []}
-    res = requests.post(url, headers=header, json=body)
-    json_result = json.loads(res.text)
-    #pprint(json_result)
-    if json_result['totalCount'] > 1:
-        for i in json_result['data']:
-            if i['loginId'] == account:
-                id = i['id']
-                break
-        return(id)
-    else:
-        return(json_result['data'][0]['id'])
-
-def getTrueLoveId(tureLoveId):
-    hashids = Hashids(
-            salt = 'ChktKbMtT7bG6h87PbQ7',
-            min_length=8,
-            alphabet="ACDEFGHJKLMNPRSTWXY35679",
-    )
-    return hashids.encode(tureLoveId)
 
 def get_test_data(env, test_parameter):    
     if env == 'QA':
@@ -58,7 +16,7 @@ def get_test_data(env, test_parameter):
         test_parameter['prefix'] = 'http://testing-api.truelovelive.com.tw'
         test_parameter['db'] = 'testing-api.truelovelive.com.tw'
     test_parameter['errAccount'] = {'token': 'aa24385', 'nonce': 'noceiw'}
-    sqlStr  = "select login_id, id, token, nonce, truelove_id from identity "
+    sqlStr  = "select login_id, id, token, nonce from identity "
     sqlStr += "where login_id in ('tl-lisa', 'lv000', 'lv001', 'lv002', '"
     for i in range(10, 30):
         account = 'track00' + str(i)
@@ -71,8 +29,7 @@ def get_test_data(env, test_parameter):
         test_parameter[i[0]] = {
             'id': i[1],
             'token': i[2],
-            'nonce': i[3],
-            'trueloveId': getTrueLoveId(i[4])
+            'nonce': i[3]
         }
     #pprint(test_parameter)
     sqlStr  = "INSERT INTO remain_points(remain_points, ratio, identity_id) VALUES ("
@@ -81,8 +38,7 @@ def get_test_data(env, test_parameter):
     sqlStr1  = "UPDATE remain_points SET remain_points = 200000 WHERE identity_id = '"
     sqlStr1 += test_parameter['track0019']['id'] + "'"
     sqlStr2 = "TRUNCATE TABLE user_blocks"
-    sqlStr3 = "TRUNCATE TABLE user_banned"
-    dbConnect.dbSetting(test_parameter['db'], [sqlStr, sqlStr1, sqlStr2, sqlStr3])
+    dbConnect.dbSetting(test_parameter['db'], [sqlStr, sqlStr1, sqlStr2])
     return
 
 def clearVoice(db):
