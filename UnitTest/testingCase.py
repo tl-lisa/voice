@@ -1125,25 +1125,37 @@ def getTestData(test_parameter):
                 },
                 {'user': 'track0012', 'wait': 0, 'action': [
                         ('vc_room:1', 'phx_join', {}, 0),  
-                        ('vc_room:1', 'track', {'liveMasterId': test_parameter['broadcaster010']['id']}, 1),
                         ('vc_room:1', 'track', {'liveMasterId': test_parameter['broadcaster011']['id']}, 1),
-                        ('vc_room:1', 'track', {'liveMasterId': test_parameter['track0011']['id']}, 1)
+                        ('vc_room:1', 'phx_leave', {}, 1),
+                        ('vc_room:1', 'phx_join', {}, 0),  
+                        ('vc_room:1', 'track', {'liveMasterId': test_parameter['broadcaster010']['id']}, 1),
+                        ('vc_room:1', 'track', {'liveMasterId': test_parameter['track0011']['id']}, 1),
+                        ('vc_room:1', 'phx_leave', {}, 1),
+                        ('vc_room:1', 'phx_join', {}, 0),  
                     ], 'sleep': 1
                 },
             ],
             [
-                {'index': 'track0012', 'event': 'phx_reply', 'position': 0, 'check': [
+                {'index': 'track0012', 'event': 'voiceroom_in', 'position': 0, 'check': [
+                        {'key': 'tracked', 'value': True}
+                    ]
+                },
+                {'index': 'track0012', 'event': 'voiceroom_in', 'position': 1, 'check': [
+                        {'key': 'tracked', 'value': False}
+                    ]
+                },
+                {'index': 'track0012', 'event': 'phx_reply', 'position': 1, 'check': [
                         {'key': 'err', 'value': 'TARGET_USER_IS_LIVE_MASTER'}
                     ]
                 },
-                {'index': 'track0012', 'event': 'tracked_bcst', 'position': 0, 'check': [
+                {'index': 'track0012', 'event': 'tracked_bcst', 'position': 1, 'check': [
                         {'key': 'roomId', 'value': 1},
                         {'key': 'liveMasterId', 'value': test_parameter['broadcaster011']['id']},
                         {'key': 'fansId', 'value': test_parameter['track0012']['id']},
                         {'key': 'content', 'value': '@track0012 追蹤了 @broadcaster011！'},
                     ]
                 },
-                {'index': 'track0012', 'event': 'tracked_bcst', 'position': 1, 'check': [
+                {'index': 'track0012', 'event': 'tracked_bcst', 'position': 0, 'check': [
                         {'key': 'roomId', 'value': 1},
                         {'key': 'liveMasterId', 'value': test_parameter['broadcaster010']['id']},
                         {'key': 'fansId', 'value': test_parameter['track0012']['id']},
