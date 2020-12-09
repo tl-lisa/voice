@@ -445,13 +445,13 @@ def getTestData(test_parameter):
         #             'index': 'track0012', 
         #             'event': 'phx_reply', 
         #             'position': 0,
-        #             'check': [{'key': 'err', 'value': 'permission_deny'}]
+        #             'check': [{'key': 'err', 'value': 'PERMISSION_DENY'}]
         #         },
         #         {
         #             'index': 'broadcaster011', 
         #             'event': 'phx_reply', 
         #             'position': 0,
-        #             'check': [{'key': 'err', 'value': 'only_owner_can_change_seat_zero'}]
+        #             'check': [{'key': 'err', 'value': 'ONLY_OWNER_CAN_CHANGE_SEAT_ZERO'}]
         #         },
         #         {
         #             'index': 'broadcaster011', 
@@ -527,7 +527,7 @@ def getTestData(test_parameter):
         #             'index': 'broadcaster010', 
         #             'event': 'phx_reply', 
         #             'position': 0,
-        #             'check': [{'key': 'err', 'value': 'owner_can_not_leave_seat'}]
+        #         'check': [{'key': 'err', 'value': 'OWNER_CAN_NOT_LEAVE_SEAT'}]
         #         }
         #     ]
         # ),
@@ -580,9 +580,7 @@ def getTestData(test_parameter):
         #             ]
         #         },
         #         {
-        #             'index': 'broadcaster010', 'event': 'seat_unmuted_bcst', 'position': 0, 'check': [
-        #                 {'key': 'seatsMute', 'value': []}
-        #             ]
+        #             'index': 'broadcaster010', 'event': 'seat_unmuted_bcst', 'position': 0, 'check': []
         #         },
         #         {
         #             'index': 'broadcaster011', 'event': 'seat_muted_bcst', 'position': 3, 'check': [
@@ -605,7 +603,7 @@ def getTestData(test_parameter):
         #             ]
         #         },
         #         {
-        #             'index': 'track0012', 'event': 'seat_unmuted_bcst', 'position': 3, 'check': [
+        #             'index': 'track0011', 'event': 'voiceroom_in', 'position': 0, 'check': [
         #                 {'key': 'seatsMute', 'value': []}
         #             ]
         #         }
@@ -748,12 +746,12 @@ def getTestData(test_parameter):
         #     ]
         # ),
 
-        # ('觀眾若被禁言，在發送訊息時不會廣播給聲聊廳的人；觀眾被禁言時房主及管理員會收到通知，解除禁言時觀眾會收到通知；相關行為會同時更新禁言清單（註：禁言一定時間後系統會自動解除）', #自動解除禁言測試失敗，需要再複測
+        # ('觀眾若被禁言，在發送訊息時不會廣播給聲聊廳的人；觀眾被禁言時房主及管理員會收到通知，解除禁言時也不會發通知；相關行為會同時更新禁言清單（註：禁言一定時間後系統會自動解除）', #自動解除禁言測試失敗，需要再複測
         #     [
         #         {'user': 'track0011', 'wait': 0, 'action': [
         #                 ('vc_room:1', 'phx_join', {}, 0), 
         #                 ('vc_room:1', 'message', {'content': 'track0011被禁言第一次發送訊息'}, 4),
-        #                 ('vc_room:1', 'message', {'content': 'track0011系統解除禁言後發送訊息'}, 31)
+        #                 ('vc_room:1', 'message', {'content': 'track0011系統解除禁言後發送訊息'}, 33)
         #             ], 'sleep': 0
         #         },
         #         {'user': 'track0012', 'wait': 0, 'action': [
@@ -771,7 +769,9 @@ def getTestData(test_parameter):
         #                 ('vc_room:1', 'mute_audience', {'targetUserId': test_parameter['track0011']['id']}, 1),
         #                 ('vc_room:1', 'mute_audience', {'targetUserId': test_parameter['track0013']['id']}, 3),
         #                 ('vc_room:1', 'unmute_audience', {'targetUserId': test_parameter['track0012']['id']}, 7),
-        #                 ('vc_room:1', 'get_violation', {}, 30),
+        #                 ('vc_room:1', 'get_violation', {}, 25),
+        #                 ('vc_room:1', 'get_violation', {}, 13),
+
         #             ], 'sleep': 5
         #         },
         #         {'user': 'broadcaster011', 'wait': 0, 'action': [
@@ -810,7 +810,7 @@ def getTestData(test_parameter):
         #     ]
         # ),
 
-        # ('踢出及封鎖的觀眾皆無法再進入此聲聊房，不能踢出及封鎖官方場控，且被踢出的觀眾會加到違規列表中', #理論上官方場控是不能被ban及block的
+        # ('踢出的觀眾皆無法再進入此聲聊房，不能踢出官方場控，且被踢出的觀眾會加到違規列表中',  #踢出原因未說明
         #     [
         #         {'user': 'track0011', 'wait': 0, 'action': [('vc_room:1', 'phx_join', {}, 0), ('vc_room:1', 'book_seat', {}, 1)], 'sleep': 3},
         #         {'user': 'track0012', 'wait': 0, 'action': [('vc_room:1', 'phx_join', {}, 0), ('vc_room:1', 'book_seat', {}, 1)], 'sleep': 3},
@@ -820,21 +820,19 @@ def getTestData(test_parameter):
         #                 ('vc_room:1', 'phx_join', {}, 0), 
         #                 ('vc_room:1', 'take_seat', {'seatIndex': 1 }, 1),
         #                 ('vc_room:1', 'pickup_seat', {'targetUserId': test_parameter['track0011']['id'], 'seatType': 'vip', 'seatIndex':0}, 1),
-        #                 ('vc_room:1', 'ban_audience', {'targetUserId': test_parameter['track0011']['id']}, 1)
+        #                 ('vc_room:1', 'ban_audience', {'targetUserId': test_parameter['track0011']['id'], 'reasonId': 8}, 1)
         #             ], 'sleep': 0
         #         },
         #         {'user': 'broadcaster012', 'wait': 0, 'action': [
         #                 ('vc_room:1', 'phx_join', {}, 0), 
-        #                 ('vc_room:1', 'block_audience', {'targetUserId': test_parameter['track0012']['id']}, 1),
         #                 ('vc_room:1', 'unban_audience', {'targetUserId': test_parameter['track0011']['id']}, 1),
         #                 ('vc_room:1', 'get_violation', {}, 1)
         #             ], 'sleep': 2
         #         },
         #         {'user': 'broadcaster010', 'wait': 0, 'action': [
         #                 ('vc_room:1', 'phx_join', {}, 0),
-        #                 ('vc_room:1', 'ban_audience', {'targetUserId': test_parameter['lv000']['id']}, 1),
-        #                 ('vc_room:1', 'block_audience', {'targetUserId': test_parameter['lv000']['id']}, 1),
-        #                 ('vc_room:1', 'ban_audience', {'targetUserId': test_parameter['broadcaster013']['id']}, 1),
+        #                 ('vc_room:1', 'ban_audience', {'targetUserId': test_parameter['lv000']['id'], 'reasonId': 10}, 1),
+        #                 ('vc_room:1', 'ban_audience', {'targetUserId': test_parameter['broadcaster013']['id'], 'reasonId': 9}, 1),
         #                 ('vc_room:1', 'unban_audience', {'targetUserId': test_parameter['broadcaster013']['id']}, 1),
         #                 ('vc_room:1', 'get_violation', {}, 1)
         #             ], 'sleep': 7
@@ -848,16 +846,7 @@ def getTestData(test_parameter):
         #     [
         #         {'index': 'track0011', 'event': 'audience_banned', 'position': 0, 'check': [
         #                 {'key': 'targetUserId', 'value': test_parameter['track0011']['id']}, 
-        #                 {'key': 'content', 'value': '違反規定，被踢出房間'}
-        #             ]
-        #         },
-        #         {'index': 'track0012', 'event': 'audience_blocked', 'position': 0, 'check': [
-        #                 {'key': 'targetUserId', 'value': test_parameter['track0012']['id']}, 
-        #                 {'key': 'content', 'value': '違反規定，被踢出房間'}
-        #             ]
-        #         },
-        #         {'index': 'broadcaster012', 'event': 'audience_blocked_bcst', 'position': 0, 'check': [
-        #                 {'key': 'content', 'value': '封鎖成功'}
+        #                 {'key': 'content', 'value': '惡意謾罵，被踢出房間'}
         #             ]
         #         },
         #         {'index': 'broadcaster012', 'event': 'audience_unbanned_bcst', 'position': 1, 'check': [
@@ -869,14 +858,13 @@ def getTestData(test_parameter):
         #                 {'key': 'banAudiences', 'value': [test_parameter['track0011']['id']]}
         #             ]
         #         },
-        #         {'index': 'broadcaster010', 'event': 'audience_blocked_bcst', 'position': 0, 'check': []},
         #         {'index': 'broadcaster010', 'event': 'violation_got', 'position': 0, 'check': [
         #                 {'key': 'muteAudiences', 'value': []},
         #                 {'key': 'banAudiences', 'value': []}
         #             ]
         #         }
         #     ]
-        # )                                                                 
+        # ),    
 
         # ('房主可以取得目前管理員清單，一般管理員及觀眾則無權限取得', 
         #     [
@@ -914,79 +902,257 @@ def getTestData(test_parameter):
         #     ]
         # ),
 
-        ('房主可以在房內新增刪除管理員，在房及新入房的人員會收到正確的資訊', 
+        # ('房主可以在房內新增刪除管理員，在房及新入房的人員會收到正確的資訊', 
+        #     [
+        #         {'user': 'broadcaster011', 'wait': 0, 'action': [('vc_room:1', 'phx_join', {}, 0)], 'sleep': 5},
+        #         {'user': 'broadcaster010', 'wait': 1,'action': [
+        #                 ('vc_room:1', 'phx_join', {}, 0), 
+        #                 ('vc_room:1', 'pickup_admin', {'trueLoveId': test_parameter['broadcaster015']['trueloveId']}, 1),
+        #                 ('vc_room:1', 'kickout_admin', {'targetUserId': test_parameter['broadcaster015']['id']}, 5),
+        #                 ('vc_room:1', 'pickup_admin', {'trueLoveId': test_parameter['broadcaster021']['trueloveId']}, 1)
+        #             ], 'sleep': 1
+        #         },
+        #         {'user': 'track0011', 'wait': 3,'action': [('vc_room:1', 'phx_join', {}, 0)], 'sleep': 1},
+        #         {'user': 'track0012', 'wait': 7,'action': [('vc_room:1', 'phx_join', {}, 0)], 'sleep': 0}
+        #     ], 
+        #     [
+        #         {
+        #             'index': 'broadcaster010', 
+        #             'event': 'phx_reply', 
+        #             'position': 0,
+        #             'check': [{'key': 'err', 'value': 'target_user_is_not_live_master'}]
+        #         },
+        #         {
+        #             'index': 'broadcaster011', 
+        #             'event': 'admin_kickedout_bcst', 
+        #             'position': 0,
+        #             'check': 
+        #             [
+        #                 {'key': 'admins', 'value': [
+        #                     test_parameter['broadcaster011']['id'],
+        #                     test_parameter['broadcaster012']['id'],
+        #                     test_parameter['broadcaster013']['id'],
+        #                     test_parameter['broadcaster014']['id']
+        #                 ]}
+        #             ]
+        #         },
+        #         {
+        #             'index': 'broadcaster011', 
+        #             'event': 'admin_pickedup_bcst', 
+        #             'position': 0,
+        #             'check': 
+        #             [
+        #                 {'key': 'admins', 'value': [
+        #                     test_parameter['broadcaster011']['id'],
+        #                     test_parameter['broadcaster012']['id'],
+        #                     test_parameter['broadcaster013']['id'],
+        #                     test_parameter['broadcaster014']['id'],
+        #                     test_parameter['broadcaster015']['id']
+        #                 ]}
+        #             ]
+        #         },
+        #         {
+        #             'index': 'track0011', 
+        #             'event': 'voiceroom_in', 
+        #             'position': 0,
+        #             'check': 
+        #             [
+        #                 {'key': 'admins', 'value': [
+        #                     test_parameter['broadcaster011']['id'],
+        #                     test_parameter['broadcaster012']['id'],
+        #                     test_parameter['broadcaster013']['id'],
+        #                     test_parameter['broadcaster014']['id'],
+        #                     test_parameter['broadcaster015']['id']
+        #                 ]}
+        #             ]
+        #         },
+        #         {
+        #             'index': 'track0012', 
+        #             'event': 'voiceroom_in', 
+        #             'position': 0,
+        #             'check': 
+        #             [
+        #                 {'key': 'admins', 'value': [
+        #                     test_parameter['broadcaster011']['id'],
+        #                     test_parameter['broadcaster012']['id'],
+        #                     test_parameter['broadcaster013']['id'],
+        #                     test_parameter['broadcaster014']['id']
+        #                 ]}
+        #             ]
+        #         },
+        #     ]
+        # ),
+
+        # ('麥位上的房主、管理員及一般user可以發送sticker(sticker group 1, 2, 3應皆可正常',
+        #     [
+        #         {'user': 'track0011', 'wait': 0, 'action': [
+        #                 ('vc_room:1', 'phx_join', {}, 0), 
+        #                 ('vc_room:1', 'book_seat', {}, 0),
+        #                 ('vc_room:1', 'send_sticker', {'stickerId': 11}, 2)
+        #             ], 'sleep': 5
+        #         },
+        #         {'user': 'broadcaster010', 'wait': 1, 'action': [
+        #                 ('vc_room:1', 'phx_join', {}, 0),
+        #                 ('vc_room:1', 'pickup_seat', {'targetUserId': test_parameter['track0011']['id'], 'seatType': 'vips', 'seatIndex':0}, 0),
+        #                 ('vc_room:1', 'send_sticker', {'stickerId': 47}, 3)
+        #             ], 'sleep': 0
+        #         },
+        #         {'user': 'broadcaster011', 'wait': 3, 'action': [
+        #                 ('vc_room:1', 'phx_join', {}, 0), 
+        #                 ('vc_room:1', 'take_seat', {'seatIndex': 1 }, 1),
+        #                 ('vc_room:1', 'send_sticker', {'stickerId': 28}, 2)
+        #             ], 'sleep': 5
+        #         },
+        #     ],
+        #     [
+        #         {
+        #             'index': 'track0011', 
+        #             'event': 'sticker_sent_bcst', 
+        #             'position': 2,
+        #             'check': 
+        #             [
+        #                 {'key': 'sender', 'value': test_parameter['track0011']['id']},
+        #                 {'key': 'stickerId', 'value': 11},
+        #                 {'key': 'stickerAnimationUrl', 'value': 'https://d3eq1e23ftm9f0.cloudfront.net/backend/photo/e4e229fa385311ebaea742010a8c007a.webp'}
+        #             ]
+        #         },
+        #         {
+        #             'index': 'track0011', 
+        #             'event': 'sticker_sent_bcst', 
+        #             'position': 1,
+        #             'check': 
+        #             [
+        #                 {'key': 'sender', 'value': test_parameter['broadcaster010']['id']},
+        #                 {'key': 'stickerId', 'value': 47},
+        #                 {'key': 'stickerAnimationUrl', 'value': 'https://d3eq1e23ftm9f0.cloudfront.net/backend/photo/70662b5c385e11ebaea742010a8c007a.png'}
+        #             ]
+        #         },
+        #         {
+        #             'index': 'track0011', 
+        #             'event': 'sticker_sent_bcst', 
+        #             'position': 0,
+        #             'check': 
+        #             [
+        #                 {'key': 'sender', 'value': test_parameter['broadcaster011']['id']},
+        #                 {'key': 'stickerId', 'value': 28},
+        #                 {'key': 'stickerAnimationUrl', 'value': 'https://d3eq1e23ftm9f0.cloudfront.net/backend/photo/88bf1c86385411ebaea742010a8c007a.webp'}
+        #             ]
+        #         },
+        #     ]
+        # ),
+
+        # ('房主封鎖user時，該user會被踢出房間且再也不能進入，但若是管理員封鎖user僅將該user加入黑名單中；不能對官方場控做封鎖',
+        #     [
+        #         {'user': 'track0011', 'wait': 0, 'action': [
+        #                 ('vc_room:1', 'phx_join', {}, 0),  
+        #                 ('vc_room:1', 'book_seat', {}, 1),
+        #                 ('vc_room:1', 'message', {'content': 'track0011封鎖後發送訊息'}, 4),
+        #             ], 'sleep': 10
+        #         },
+        #         {'user': 'track0012', 'wait': 0, 'action': [
+        #                 ('vc_room:1', 'phx_join', {}, 0), 
+        #                 ('vc_room:1', 'book_seat', {}, 1)
+        #             ], 'sleep': 10
+        #         },
+        #         {'user': 'lv000', 'wait': 0, 'action': [('vc_room:1', 'phx_join', {}, 0)], 'sleep': 3},
+        #         {'user': 'broadcaster011', 'wait': 1, 'action': [
+        #                 ('vc_room:1', 'phx_join', {}, 0), 
+        #                 ('vc_room:1', 'take_seat', {'seatIndex': 1 }, 1),
+        #                 ('vc_room:1', 'pickup_seat', {'targetUserId': test_parameter['track0011']['id'], 'seatType': 'vips', 'seatIndex':0}, 1),
+        #                 ('vc_room:1', 'block_audience', {'targetUserId': test_parameter['track0011']['id']}, 1),
+        #                 ('vc_room:1', 'block_audience', {'targetUserId': test_parameter['track0014']['id']}, 1),
+        #                 ('vc_room:1', 'block_audience', {'targetUserId': test_parameter['broadcaster010']['id']}, 3)
+        #             ], 'sleep': 7
+        #         },
+        #         {'user': 'broadcaster010', 'wait': 3, 'action': [
+        #                 ('vc_room:1', 'phx_join', {}, 0),
+        #                 ('vc_room:1', 'block_audience', {'targetUserId': test_parameter['lv000']['id']}, 1),
+        #                 ('vc_room:1', 'block_audience', {'targetUserId': test_parameter['track0012']['id']}, 1),
+        #                 ('vc_room:1', 'block_audience', {'targetUserId': test_parameter['track0013']['id']}, 1),
+        #                 ('vc_room:1', 'get_violation', {}, 1)
+        #             ], 'sleep': 7
+        #         },
+        #         {'user': 'track0013', 'wait': 7, 'action': [('vc_room:1', 'phx_join', {}, 0)], 'sleep': 0},
+        #         {'user': 'track0014', 'wait': 7, 'action': [('vc_room:1', 'phx_join', {}, 0)], 'sleep': 0},
+        #     ],
+        #     [
+        #         {'index': 'track0012', 'event': 'audience_blocked', 'position': 0, 'check': [
+        #                 {'key': 'targetUserId', 'value': test_parameter['track0012']['id']}, 
+        #                 {'key': 'content', 'value': '違反規定，被踢出房間'}
+        #             ]
+        #         },
+        #         {'index': 'broadcaster011', 'event': 'audience_blocked_bcst', 'position': 0, 'check': [
+        #                 {'key': 'content', 'value': '封鎖成功'}
+        #             ]
+        #         },
+        #         {'index': 'broadcaster011', 'event': 'audience_blocked_bcst', 'position': 1, 'check': [
+        #                 {'key': 'content', 'value': '封鎖成功'}
+        #             ]
+        #         },
+        #         {'index': 'broadcaster011', 'event': 'phx_reply', 'position': 0, 'check': [ #不可封鎖房主，但目前結果是可以的。已回bug
+        #                 {'key': 'err', 'value': 'PERMISSION_DENY'}
+        #             ]
+        #         },
+        #         {'index': 'track0014', 'event': 'voiceroom_in', 'position': 0, 'check': [
+        #                 {'key': 'seatsMute', 'value': []}
+        #             ]
+        #         },
+        #         {'index': 'track0013', 'event': 'phx_reply', 'position': 0, 'check': [
+        #                 {'key': 'err', 'value': 'USER_BLOCKED'}
+        #             ]
+        #         },
+        #         {'index': 'broadcaster010', 'event': 'phx_reply', 'position': 0, 'check': [
+        #                 {'key': 'err', 'value': 'TARGET_USER_IS_LIVE_CONTROLLER'}
+        #             ]
+        #         },
+        #     ]
+        # ),
+
+        ('玩家可以追蹤房主及管理者，但不能追一般user',
             [
-                {'user': 'broadcaster011', 'wait': 0, 'action': [('vc_room:1', 'phx_join', {}, 0)], 'sleep': 5},
-                {'user': 'broadcaster010', 'wait': 1,'action': [
-                        ('vc_room:1', 'phx_join', {}, 0), 
-                        ('vc_room:1', 'pickup_admin', {'trueLoveId': test_parameter['broadcaster015']['trueloveId']}, 1),
-                        ('vc_room:1', 'kickout_admin', {'targetUserId': test_parameter['broadcaster015']['id']}, 5)
+                {'user': 'track0011', 'wait': 0, 'action': [
+                        ('vc_room:1', 'phx_join', {}, 0),  
+                        ('vc_room:1', 'book_seat', {}, 1),
+                        ('vc_room:1', 'ping', {}, 5),
                     ], 'sleep': 1
                 },
-                {'user': 'track0011', 'wait': 3,'action': [('vc_room:1', 'phx_join', {}, 0)], 'sleep': 1},
-                {'user': 'track0012', 'wait': 7,'action': [('vc_room:1', 'phx_join', {}, 0)], 'sleep': 0}
-            ], 
+                {'user': 'broadcaster011', 'wait': 0, 'action': [
+                        ('vc_room:1', 'phx_join', {}, 0),  
+                        ('vc_room:1', 'take_seat', {'seatIndex': 1 }, 1),
+                        ('vc_room:1', 'pickup_seat', {'targetUserId': test_parameter['track0011']['id'], 'seatType': 'vips', 'seatIndex':0}, 1),
+                        ('vc_room:1', 'ping', {}, 5),
+                    ], 'sleep': 1
+                },
+                {'user': 'track0012', 'wait': 0, 'action': [
+                        ('vc_room:1', 'phx_join', {}, 0),  
+                        ('vc_room:1', 'track', {'liveMasterId': test_parameter['broadcaster010']['id']}, 1),
+                        ('vc_room:1', 'track', {'liveMasterId': test_parameter['broadcaster011']['id']}, 1),
+                        ('vc_room:1', 'track', {'liveMasterId': test_parameter['track0011']['id']}, 1)
+                    ], 'sleep': 1
+                },
+            ],
             [
-                {
-                    'index': 'broadcaster011', 
-                    'event': 'admin_kickedout_bcst', 
-                    'position': 0,
-                    'check': 
-                    [
-                        {'key': 'admins', 'value': [
-                            test_parameter['broadcaster011']['id'],
-                            test_parameter['broadcaster012']['id'],
-                            test_parameter['broadcaster013']['id'],
-                            test_parameter['broadcaster014']['id']
-                        ]}
+                {'index': 'track0012', 'event': 'phx_reply', 'position': 0, 'check': [
+                        {'key': 'err', 'value': 'TARGET_USER_IS_LIVE_MASTER'}
                     ]
                 },
-                {
-                    'index': 'broadcaster011', 
-                    'event': 'admin_pickedup_bcst', 
-                    'position': 0,
-                    'check': 
-                    [
-                        {'key': 'admins', 'value': [
-                            test_parameter['broadcaster011']['id'],
-                            test_parameter['broadcaster012']['id'],
-                            test_parameter['broadcaster013']['id'],
-                            test_parameter['broadcaster014']['id'],
-                            test_parameter['broadcaster015']['id']
-                        ]}
+                {'index': 'track0012', 'event': 'tracked_bcst', 'position': 0, 'check': [
+                        {'key': 'roomId', 'value': 1},
+                        {'key': 'liveMasterId', 'value': test_parameter['broadcaster011']['id']},
+                        {'key': 'fansId', 'value': test_parameter['track0012']['id']},
+                        {'key': 'content', 'value': '@track0012 追蹤了 @broadcaster011！'},
                     ]
                 },
-                {
-                    'index': 'track0011', 
-                    'event': 'voiceroom_in', 
-                    'position': 0,
-                    'check': 
-                    [
-                        {'key': 'admins', 'value': [
-                            test_parameter['broadcaster011']['id'],
-                            test_parameter['broadcaster012']['id'],
-                            test_parameter['broadcaster013']['id'],
-                            test_parameter['broadcaster014']['id'],
-                            test_parameter['broadcaster015']['id']
-                        ]}
+                {'index': 'track0012', 'event': 'tracked_bcst', 'position': 1, 'check': [
+                        {'key': 'roomId', 'value': 1},
+                        {'key': 'liveMasterId', 'value': test_parameter['broadcaster010']['id']},
+                        {'key': 'fansId', 'value': test_parameter['track0012']['id']},
+                        {'key': 'content', 'value': '@track0012 追蹤了 @無與倫比的美麗！'},
                     ]
                 },
-                {
-                    'index': 'track0012', 
-                    'event': 'voiceroom_in', 
-                    'position': 0,
-                    'check': 
-                    [
-                        {'key': 'admins', 'value': [
-                            test_parameter['broadcaster011']['id'],
-                            test_parameter['broadcaster012']['id'],
-                            test_parameter['broadcaster013']['id'],
-                            test_parameter['broadcaster014']['id']
-                        ]}
-                    ]
-                },
+
             ]
         )
-        
+
     ]   
     return testData

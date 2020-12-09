@@ -5,9 +5,6 @@ import requests
 from pprint import pprint
 from . import dbConnect
 
-def createAccount():
-    pass
-
-def createLoginInfo():
+def test():
     pass
 

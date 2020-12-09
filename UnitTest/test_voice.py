@@ -19,12 +19,6 @@ header = {'Connection': 'Keep-alive', 'X-Auth-Token': '', 'X-Auth-Nonce': ''}
 
 misc.get_test_data(env, test_parameter)  
 def createVoiceRoom(account):
-    sqlStr   = "insert into sticker_group set name = 'smile', status = 1, created_at = '2020-06-30 19:21:32', "
-    sqlStr  += "updated_at = '2020-06-30 19:21:32', create_user_id = 'lisa', update_user_id = 'lisa'"
-    sqlStr1  = "insert into voice_chat_type set name = 'qa_test', background_image_url = 'http://yahoo.com.tw', "
-    sqlStr1 += "sticker_group_id = 1, max_seats = 3, max_vip_seats = 1"  
-    sqlList = [sqlStr, sqlStr1]
-    dbConnect.dbSetting(DB, sqlList)
     header['X-Auth-Token'] = test_parameter['tl-lisa']['token']
     header['X-Auth-Nonce'] = test_parameter['tl-lisa']['nonce']
     apiName = '/api/v2/backend/voiceChat'

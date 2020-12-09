@@ -63,7 +63,7 @@ def get_test_data(env, test_parameter):
     for i in range(10, 30):
         account = 'track00' + str(i)
         sqlStr += account + "', '" if i < 29 else account + "')"
-        if i < 20:
+        if i < 25:
             account = 'broadcaster0' + str(i)
             sqlStr += account + "', '"
     result = dbConnect.dbQuery(test_parameter['db'], sqlStr)
@@ -78,11 +78,12 @@ def get_test_data(env, test_parameter):
     sqlStr  = "INSERT INTO remain_points(remain_points, ratio, identity_id) VALUES ("
     sqlStr += "20000, 4, '" + test_parameter['track0020']['id'] + "') ON DUPLICATE KEY "
     sqlStr += "UPDATE remain_points = 20000, ratio = 4"
-    sqlStr1  = "UPDATE remain_points SET remain_points = 200000 WHERE identity_id = '"
-    sqlStr1 += test_parameter['track0019']['id'] + "'"
+    sqlStr1  = "UPDATE remain_points SET remain_points = 200000 WHERE identity_id = "
+    sqlStr1 += "'" + test_parameter['track0019']['id'] + "'"
     sqlStr2 = "TRUNCATE TABLE user_blocks"
     sqlStr3 = "TRUNCATE TABLE user_banned"
-    dbConnect.dbSetting(test_parameter['db'], [sqlStr, sqlStr1, sqlStr2, sqlStr3])
+    sqlStr4 = "TRUNCATE TABLE fans"
+    dbConnect.dbSetting(test_parameter['db'], [sqlStr, sqlStr1, sqlStr2, sqlStr3, sqlStr4])
     return
 
 def clearVoice(db):
