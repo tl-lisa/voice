@@ -1120,18 +1120,18 @@ def getTestData(test_parameter):
                         ('vc_room:1', 'phx_join', {}, 0),  
                         ('vc_room:1', 'take_seat', {'seatIndex': 1 }, 1),
                         ('vc_room:1', 'pickup_seat', {'targetUserId': test_parameter['track0011']['id'], 'seatType': 'vips', 'seatIndex':0}, 1),
-                        ('vc_room:1', 'ping', {}, 5),
-                    ], 'sleep': 1
+                        ('vc_room:1', 'ping', {}, 6),
+                    ], 'sleep': 3
                 },
                 {'user': 'track0012', 'wait': 0, 'action': [
                         ('vc_room:1', 'phx_join', {}, 0),  
                         ('vc_room:1', 'track', {'liveMasterId': test_parameter['broadcaster011']['id']}, 1),
                         ('vc_room:1', 'phx_leave', {}, 1),
-                        ('vc_room:1', 'phx_join', {}, 0),  
+                        ('vc_room:1', 'phx_join', {}, 1),  
                         ('vc_room:1', 'track', {'liveMasterId': test_parameter['broadcaster010']['id']}, 1),
                         ('vc_room:1', 'track', {'liveMasterId': test_parameter['track0011']['id']}, 1),
                         ('vc_room:1', 'phx_leave', {}, 1),
-                        ('vc_room:1', 'phx_join', {}, 0),  
+                        ('vc_room:1', 'phx_join', {}, 1),  
                     ], 'sleep': 1
                 },
             ],

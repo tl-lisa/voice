@@ -88,11 +88,11 @@ def get_test_data(env, test_parameter):
 
 def clearVoice(db):
     sqlList = []
-    tableList = ['sticker', 'voice_chat_admin', 'voice_chat_history', 'voice_chat_stream']
+    tableList = ['voice_chat_admin', 'voice_chat_history', 'voice_chat_stream']
     for i in tableList:
         sqlStr = "TRUNCATE TABLE " + i
         sqlList.append(sqlStr)   
-    deleteList = ['voice_chat_room', 'voice_chat_type', 'sticker_group'] 
+    deleteList = ['voice_chat_room', 'voice_chat_type'] 
     for tableName in deleteList:
         sqlList.append("delete from " + tableName)
         sqlList.append("alter table " + tableName + " auto_increment = 1")
