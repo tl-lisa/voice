@@ -10,6 +10,7 @@ from pprint import pprint
 
 class voice():
     def __init__(self, server, userDic, adminList, roomId):
+        self.gift = ['fdbafd5c-93fe-4893-8e7b-7aa6eea209a8', '74d6e57e-1d0c-4717-8ca7-65d5b5baef0c', '5f0bb976-0bc7-459f-8a6a-67ee0b6e7758', '9e63bbf0-3e86-4019-b3fc-e955c175569b']
         self.userDic = userDic
         self.roomId = roomId
         self.adminList = adminList
@@ -43,7 +44,7 @@ class voice():
             3:{'action': 'phx_leave', 'percentage': 85, 'parameter': {}},
             4:{'action': 'track', 'percentage': 65, 'parameter': {}},
             5:{'action': 'gift', 'percentage': 100, 'parameter': {
-                'giftId': None, 
+                'giftId': self.gift[random.randint(0, len(self.gift)-1)], 
                 'targetUserId': random.randint(0, len(adminList)-1), 
                 'count': random.randint(1, 5)}
             },
