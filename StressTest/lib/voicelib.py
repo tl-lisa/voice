@@ -95,7 +95,7 @@ class voice():
 
     def audience(self):
         isLeave = False
-        actionId = random.randint(1, 4)
+        actionId = random.randint(1, 5)
         if (random.randint(1, int(time.time())) % 100) >= self.audienceActionDic[actionId]['percentage']:
             self.ws.send(json.dumps(self.actionBody(self.audienceActionDic[actionId]['action'], self.audienceActionDic[actionId]['parameter'])))
             if self.audienceActionDic[actionId]['action'] in ('abort_seat', 'book_seat'): 
