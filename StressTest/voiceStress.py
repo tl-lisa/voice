@@ -7,7 +7,8 @@ import random
 import traceback
 from pprint import pprint
 from lib import voicelib
-server = '35.234.17.150'
+# server = '35.234.17.150'
+server = 'testing-api.xtars.com'
 loginDic = {}
 roomDic = {}
 voiceDic = {}
@@ -24,13 +25,13 @@ def job (userInfo, userType):
 
 def main(beg, end, num):
     threadList = []    
-    if end <= 20:
+    if beg <= 20:
         for i in range(beg, end):
             account = 'broadcaster' + str(i).zfill(3)
             if voiceDic.get(account):
                 threadList.append(threading.Thread(target=job, args=(voiceDic[account], voiceDic[account]['idType'], )))                
     for i in range(beg, end):
-        account = 'track' + str(i).zfill(4)
+        account = 'guest' + str(999 + i).zfill(4)
         loginDic[account]['roomId'] = random.randint(1, num) if num > 1 else 1
         threadList.append(threading.Thread(target=job, args=(loginDic[account], loginDic[account]['idType'], )))
     try:

@@ -8,10 +8,10 @@ from hashids import Hashids
 from pprint import pprint
 import dbConnect
 
-# env = 'https://testing-api.xtars.com'
-# db = 'testing-api.xtars.com'
-env = 'http://35.234.17.150'
-db = '35.234.17.150'
+env = 'https://testing-api.xtars.com'
+db = 'testing-api.xtars.com'
+# env = 'http://35.234.17.150'
+# db = '35.234.17.150'
 header = {'Connection': 'Keep-alive', 'X-Auth-Token': '', 'X-Auth-Nonce': ''}
 
 def clearCache(hostAddr):
@@ -66,9 +66,10 @@ def user_login(account):
 
 def accountLogin():   
     print('account logging')
-    for i in range(1, 101):
+    for i in range(1, 5000):
         if i < 101: user_login('broadcaster' + str(i).zfill(3))
-        user_login('track' + str(i).zfill(4))
+        user_login('guest' + str(999 + i).zfill(4))
+        if i % 100 == 0: print('login account', 'guest' + str(999 + i).zfill(4))
     return
 
 def createLoginInfo():
@@ -78,8 +79,8 @@ def createLoginInfo():
     adminDic = {}
     roomDic = {}
     sqlStr  = "select login_id, id, token, nonce from identity "
-    sqlStr += "where login_id like 'track%' and length(login_id) < 10 "
-    sqlStr += "and login_id < 'track0101'"
+    sqlStr += "where login_id like 'guest%' and length(login_id) = 9 "
+    # sqlStr += "and login_id < 'track0101'"
     dbResult = dbConnect.dbQuery(db, sqlStr)
     for i in dbResult:
         loginDic[i[0]] = {
@@ -176,7 +177,7 @@ def createVoiceAdmin(header, roomId, account):
 def clearVoice(db):
     print('clear voice room')
     sqlList = []
-    tableList = ['voice_chat_admin', 'voice_chat_history', 'voice_chat_stream']
+    tableList = ['voice_chat_gift_history', 'voice_chat_admin', 'voice_chat_history', 'voice_chat_stream']
     for i in tableList:
         sqlStr = "TRUNCATE TABLE " + i
         sqlList.append(sqlStr)   
@@ -187,22 +188,26 @@ def clearVoice(db):
     dbConnect.dbSetting(db, sqlList)
 
 def createVoiceRoom(lisa):
-    print('create voice room')
     clearVoice(db)
     clearCache(db)
-    for i in range(2):
-        ownerAccount = 'broadcaster0' + str(10 + i * 5)
+    for i in range(5):
+        ownerAccount = 'broadcaster' + str(1 + i * 5).zfill(3)
         header['X-Auth-Token'], header['X-Auth-Nonce'] = createVoiceOwner(lisa, ownerAccount, i+1)
         for j in range(4):
-            adminAccount = 'broadcaster0' + str(11 + i * 5 + j)
+            adminAccount = 'broadcaster' + str(1 + i * 5 + j).zfill(3)
             createVoiceAdmin(header, i+1, adminAccount)
 
 if __name__ == '__main__':
-    sqlStr = "select token, nonce from identity where login_id = 'tl-lisa'"
-    dbResult = dbConnect.dbQuery(db, sqlStr)
-    lisa = [dbResult[0][0], dbResult[0][1]]
-    pprint(lisa)
-    #accountLogin()
-    #createVoiceRoom(lisa)
-    createLoginInfo()
+    if sys.argv[1] == '1':
+        accountLogin()
+    elif sys.argv[1] == '2':
+        sqlStr = "select token, nonce from identity where login_id = 'tl-lisa'"
+        dbResult = dbConnect.dbQuery(db, sqlStr)
+        lisa = [dbResult[0][0], dbResult[0][1]]
+        pprint(lisa)
+        createVoiceRoom(lisa)
+    elif sys.argv[1] == '3':
+        createLoginInfo()
+    else:
+        print('get step is : ', sys.argv[1])
     

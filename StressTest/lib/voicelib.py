@@ -10,7 +10,7 @@ from pprint import pprint
 
 class voice():
     def __init__(self, server, userDic, adminList, roomId):
-        self.gift = ['fdbafd5c-93fe-4893-8e7b-7aa6eea209a8', '74d6e57e-1d0c-4717-8ca7-65d5b5baef0c', '5f0bb976-0bc7-459f-8a6a-67ee0b6e7758', '9e63bbf0-3e86-4019-b3fc-e955c175569b']
+        self.gift = ['4b5d7cbe-485c-41dc-a78c-f0b06cf61a25', 'a700b291-362a-42fa-9db4-6d29d4541273', '49853090-e4cd-47da-826e-1131388bd6c4', 'ddc2eadf-e40f-4e33-896f-764674366dd9', '1a51e630-3956-46e0-8bb9-e334f06b5634']
         self.userDic = userDic
         self.roomId = roomId
         self.adminList = adminList
@@ -25,7 +25,7 @@ class voice():
             0: {'action': 'mute_seat', 'percentage':50, 'parameter': {'targetUserId': self.userDic['id']}},
             1: {'action': 'message', 'percentage': 60, 'parameter': {'content': self.userDic['id']+'發言'}},
             2: {'action': 'phx_leave', 'percentage': 85, 'parameter': {}},
-            3: {'action': 'send_sticker', 'percentage':50, 'parameter': {'stickerId': random.randint(11, 55)}},
+            3: {'action': 'send_sticker', 'percentage':50, 'parameter': {'stickerId': None}},
             4: {'action': 'get_mics_mgm', 'percentage':50, 'parameter': {}},
             5: {'action': 'get_violation', 'percentage':50, 'parameter': {}},
         }
@@ -36,7 +36,7 @@ class voice():
             3: {'action': 'phx_leave', 'percentage': 85, 'parameter': {}},
             4: {'action': 'get_mics_mgm', 'percentage':50, 'parameter': {}},
             5: {'action': 'get_violation', 'percentage':50, 'parameter': {}},
-            6: {'action': 'send_sticker', 'percentage':50, 'parameter': {'stickerId': random.randint(11, 55)}},
+            6: {'action': 'send_sticker', 'percentage':50, 'parameter': {'stickerId': None}},
         }
         self.audienceActionDic = {
             1:{'action': 'message', 'percentage': 60, 'parameter': {'content': self.userDic['id']+'發言'}},
@@ -44,12 +44,11 @@ class voice():
             3:{'action': 'phx_leave', 'percentage': 85, 'parameter': {}},
             4:{'action': 'track', 'percentage': 65, 'parameter': {}},
             5:{'action': 'gift', 'percentage': 100, 'parameter': {
-                'giftId': self.gift[random.randint(0, len(self.gift)-1)], 
+                'giftId': None, 
                 'targetUserId': random.randint(0, len(adminList)-1), 
-                'count': random.randint(1, 5)}
+                'count': random.randint(1, 3)}
             },
         }
-
 
     def actionBody(self, action, parameter):
         payload = {}
@@ -97,6 +96,8 @@ class voice():
         isLeave = False
         actionId = random.randint(1, 5)
         if (random.randint(1, int(time.time())) % 100) >= self.audienceActionDic[actionId]['percentage']:
+            if self.adminActionDic[actionId]['action'] == 'gift':
+                    self.adminActionDic[actionId]['parameter']['giftId'] = self.gift[random.randint(0,4)]                    
             self.ws.send(json.dumps(self.actionBody(self.audienceActionDic[actionId]['action'], self.audienceActionDic[actionId]['parameter'])))
             if self.audienceActionDic[actionId]['action'] in ('abort_seat', 'book_seat'): 
                 if self.audienceActionDic[actionId]['action'] == 'abort_seat':
@@ -115,8 +116,11 @@ class voice():
     def admin(self):
         isLeave = False
         actionId = random.randint(0, 6)
+        while all([actionId == 0, self.adminActionDic[2]['action'] == 'take_seat']):
+            actionId = random.randint(0, 6)
         if (random.randint(1, int(time.time())) % 100) >= self.adminActionDic[actionId]['percentage']:
-            # print(self.adminActionDic[actionId])
+            if self.adminActionDic[actionId]['action'] == 'send_sticker':
+                self.adminActionDic[actionId]['parameter']['stickerId'] = random.randint(11, 55)
             self.ws.send(json.dumps(self.actionBody(self.adminActionDic[actionId]['action'], self.adminActionDic[actionId]['parameter'])))   
             if actionId == 2:         
                 if  self.adminActionDic[actionId]['action'] == 'take_seat':               
@@ -138,7 +142,8 @@ class voice():
         isLeave = False
         actionId = random.randint(0, 5)
         if (random.randint(1, int(time.time())) % 100) >= self.ownerActionDic[actionId]['percentage']:
-            # print('action: ', self.ownerActionDic[actionId] )
+            if self.adminActionDic[actionId]['action'] == 'send_sticker':
+                self.adminActionDic[actionId]['parameter']['stickerId'] = random.randint(11, 55)
             self.ws.send(json.dumps(self.actionBody(self.ownerActionDic[actionId]['action'], self.ownerActionDic[actionId]['parameter'])))
             if actionId == 0:
                 self.ownerActionDic[actionId]['action'] = 'unmute_seat' if self.ownerActionDic[actionId]['action'] == 'mute_seat' else 'mute_seat'
