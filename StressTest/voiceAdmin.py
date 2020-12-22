@@ -26,13 +26,13 @@ def job (userInfo, userType):
 def main(beg, end, num):
     threadList = []    
     for i in range(beg, end):
-        account = 'guest' + str(999 + i).zfill(4)
-        loginDic[account]['roomId'] = random.randint(1, num) if num > 1 else 1
-        threadList.append(threading.Thread(target=job, args=(loginDic[account], loginDic[account]['idType'], )))
+        account = 'broadcaster' + str(i).zfill(3)
+        if voiceDic.get(account):
+            threadList.append(threading.Thread(target=job, args=(voiceDic[account], voiceDic[account]['idType'], )))                
     try:
         for p in threadList:
             p.start()
-            time.sleep(1)
+            time.sleep(0.5)
     except Exception as err:
         print('Process abnormal %s' % err)
         traceback.print_exc()
