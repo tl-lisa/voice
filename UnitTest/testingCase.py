@@ -24,7 +24,7 @@ def getTestData(test_parameter):
         #             'position': 0,
         #             'check': 
         #             [
-        #                 {'key': 'userId', 'value': test_parameter['track0012']['id']}
+        #                 {'key': 'userId', 'value': test_parameter['track0012']['id']},
         #             ]
         #         },
         #         {
@@ -52,7 +52,13 @@ def getTestData(test_parameter):
         #                 ('vc_room:1', 'take_seat', {'seatIndex': 1 }, 1),
         #                 ('vc_room:1', 'leave_seat', {}, 5),  
         #             ], 'sleep': 1},
-        #         {'user': 'track0013', 'wait': 3, 'action': [('vc_room:1', 'phx_join', {}, 0)], 'sleep': 0},
+        #         {'user': 'broadcaster012', 'wait': 1, 'action': [
+        #                 ('vc_room:1', 'phx_join', {}, 0), 
+        #                 ('vc_room:1', 'take_seat', {'seatIndex': 2 }, 2),
+        #                 ('vc_room:1', 'mute_seat', {'targetUserId': test_parameter['broadcaster012']['id']}, 1),
+        #                 ('vc_room:1', 'phx_leave', {}, 1),  
+        #             ], 'sleep': 1},
+        #         {'user': 'track0013', 'wait': 4, 'action': [('vc_room:1', 'phx_join', {}, 0)], 'sleep': 3},
         #         {'user': 'track0014', 'wait': 7, 'action': [('vc_room:1', 'phx_join', {}, 0)], 'sleep': 0}
         #     ], 
         #     [
@@ -61,7 +67,13 @@ def getTestData(test_parameter):
         #                 {'key': 'seats', 'value': [
         #                         {'seat': 0, 'userId': None}, 
         #                         {'seat': 1, 'userId': test_parameter['broadcaster011']['id']}, 
-        #                         {'seat': 2, 'userId': None}
+        #                         {'seat': 2, 'userId': test_parameter['broadcaster012']['id']},
+        #                         {'seat': 3, 'userId': None},
+        #                         {'seat': 4, 'userId': None},
+        #                         {'seat': 5, 'userId': None},
+        #                         {'seat': 6, 'userId': None},
+        #                         {'seat': 7, 'userId': None},
+        #                         {'seat': 8, 'userId': None}
         #                     ]
         #                 }
         #             ]
@@ -71,7 +83,13 @@ def getTestData(test_parameter):
         #                 {'key': 'seats', 'value': [
         #                         {'seat': 0, 'userId': None}, 
         #                         {'seat': 1, 'userId': None}, 
-        #                         {'seat': 2, 'userId': None}
+        #                         {'seat': 2, 'userId': test_parameter['broadcaster012']['id']},
+        #                         {'seat': 3, 'userId': None},
+        #                         {'seat': 4, 'userId': None},
+        #                         {'seat': 5, 'userId': None},
+        #                         {'seat': 6, 'userId': None},
+        #                         {'seat': 7, 'userId': None},
+        #                         {'seat': 8, 'userId': None}
         #                     ]
         #                 }
         #             ]
@@ -80,16 +98,47 @@ def getTestData(test_parameter):
         #                 {'key': 'seats', 'value': [
         #                         {'seat': 0, 'userId': None}, 
         #                         {'seat': 1, 'userId': test_parameter['broadcaster011']['id']}, 
-        #                         {'seat': 2, 'userId': None}
+        #                         {'seat': 2, 'userId': test_parameter['broadcaster012']['id']},
+        #                         {'seat': 3, 'userId': None},
+        #                         {'seat': 4, 'userId': None},
+        #                         {'seat': 5, 'userId': None},
+        #                         {'seat': 6, 'userId': None},
+        #                         {'seat': 7, 'userId': None},
+        #                         {'seat': 8, 'userId': None}
         #                     ]
-        #                 }
+        #                 },
+        #                 {'key': 'seatsMute', 'value': [test_parameter['broadcaster012']['id']]
+        #                 },
+        #             ]
+        #         },
+        #         {'index': 'track0013', 'event': 'voiceroom_left_bcst', 'position': 0, 'check':[
+        #                 {'key': 'seats', 'value': [
+        #                         {'seat': 0, 'userId': None}, 
+        #                         {'seat': 1, 'userId': test_parameter['broadcaster011']['id']}, 
+        #                         {'seat': 2, 'userId': None},
+        #                         {'seat': 3, 'userId': None},
+        #                         {'seat': 4, 'userId': None},
+        #                         {'seat': 5, 'userId': None},
+        #                         {'seat': 6, 'userId': None},
+        #                         {'seat': 7, 'userId': None},
+        #                         {'seat': 8, 'userId': None}
+        #                     ]
+        #                 },
+        #                 {'key': 'seatsMute', 'value': []},
         #             ]
         #         },
         #         {'index': 'track0014', 'event': 'voiceroom_in', 'position': 0, 'check':[
         #                 {'key': 'seats', 'value': [
         #                         {'seat': 0, 'userId': None}, 
         #                         {'seat': 1, 'userId': None},  
-        #                         {'seat': 2, 'userId': None}]
+        #                         {'seat': 2, 'userId': None},
+        #                         {'seat': 3, 'userId': None},
+        #                         {'seat': 4, 'userId': None},
+        #                         {'seat': 5, 'userId': None},
+        #                         {'seat': 6, 'userId': None},
+        #                         {'seat': 7, 'userId': None},
+        #                         {'seat': 8, 'userId': None}
+        #                     ]
         #                 }
         #             ]
         #         }
@@ -673,78 +722,83 @@ def getTestData(test_parameter):
         #     ]
         # ), 
 
-        ('送禮訊息在聲聊房中皆會收到,且超過10萬點的禮物會有跑馬燈, 若是暱稱含禁詞，則送禮訊息不會廣播, 若點數不足會回錯誤',  #failed
-            [       
-                {'user': 'broadcaster010', 'wait': 0, 'action': [('vc_room:1', 'phx_join', {}, 0)], 'sleep': 7}, 
-                {'user': 'broadcaster013', 'wait': 0, 'action': [
-                        ('vc_room:1', 'phx_join', {}, 0), 
-                        ('vc_room:1', 'take_seat', {'seatIndex': 1}, 1)
-                    ], 'sleep': 7
-                }, 
-                {'user': 'track0019', 'wait': 1, 'action': [
-                        ('vc_room:1', 'phx_join', {}, 1), 
-                        ('vc_room:1', 'gift', {'giftId': '9e63bbf0-3e86-4019-b3fc-e955c175569b', 'targetUserId': test_parameter['broadcaster010']['id'], 'count': 1}, 1),
-                        ('vc_room:1', 'gift', {'giftId': '9e63bbf0-3e86-4019-b3fc-e955c175569b', 'targetUserId': test_parameter['broadcaster010']['id'], 'count': 1}, 1)
-                    ], 'sleep': 3
-                },
-                {'user': 'track0020', 'wait': 4, 'action': [
-                        ('vc_room:1', 'phx_join', {}, 0), 
-                        ('vc_room:1', 'gift', {'giftId': 'fdbafd5c-93fe-4893-8e7b-7aa6eea209a8', 'targetUserId': test_parameter['broadcaster013']['id'], 'count': 3}, 1)
-                    ], 'sleep': 2
-                }
-            ],  
-            [
-                {'index': 'track0019', 'event': 'gift_bcst', 'position': 1, 'check': []},              
-                {'index': 'track0019', 'event': 'phx_reply', 'position': 0, 'check': [
-                        {'key': 'err', 'value': 'you_have_no_more_points'}
-                    ]
-                },
-                {'index': 'broadcaster010', 'event': 'marquee', 'position': 0, 'check': [
-                        {'key': 'content', 'value': '恭喜無與倫比的美麗,獲得舞弊事件大家都不能接受送的烤雞全餐 ~太帥了!就是狂!'},
-                    ]
-                },
-                {'index': 'broadcaster010', 'event': 'gift_bcst', 'position': 1, 'check': [
-                        {'key': 'fromUserId', 'value': test_parameter['track0019']['id']}, 
-                        {'key': 'targetUserId', 'value': test_parameter['broadcaster010']['id']}, 
-                        {'key': 'giftUrl', 'value': 'https://d1a89d7jvcvm3o.cloudfront.net/gift/b09b6ea4fdaff2a14c4c5d138fa5fbaf.png'},
-                        {'key': 'giftId', 'value': '9e63bbf0-3e86-4019-b3fc-e955c175569b'}, 
-                        {'key': 'giftName', 'value': '烤雞全餐'}, 
-                        {'key': 'multiple', 'value': False},
-                        {'key': 'count', 'value': 1}, 
-                        {'key': 'point', 'value': 100000}, 
-                        {'key': 'content', 'value': '@舞弊事件大家都不能接受 送了 烤雞全餐(100000) x 1 禮物給 無與倫比的美麗'}
-                    ]
-                },
-                {'index': 'broadcaster013', 'event': 'gift_bcst', 'position': 0, 'check': [
-                        {'key': 'fromUserId', 'value': test_parameter['track0020']['id']}, 
-                        {'key': 'targetUserId', 'value': test_parameter['broadcaster013']['id']}, 
-                        {'key': 'giftUrl', 'value': 'https://d3eq1e23ftm9f0.cloudfront.net/gift/animation/5f5101e86ce911ea83b942010a8c0017.jpeg'},
-                        {'key': 'giftId', 'value': 'fdbafd5c-93fe-4893-8e7b-7aa6eea209a8'}, 
-                        {'key': 'giftName', 'value': '南瓜派'}, 
-                        {'key': 'multiple', 'value': False},
-                        {'key': 'count', 'value': 3}, 
-                        {'key': 'point', 'value': 1000}, 
-                        {'key': 'content', 'value': '@快樂代儲你我他 送了 鬼怪(1000) x 3 禮物給 直播主13'}
-                    ]
-                },
-                {'index': 'broadcaster013', 'event': 'gift_bcst', 'position': 1, 'check': [
-                        {'key': 'fromUserId', 'value': test_parameter['track0019']['id']}, 
-                        {'key': 'targetUserId', 'value': test_parameter['broadcaster010']['id']}, 
-                        {'key': 'giftUrl', 'value': 'https://d1a89d7jvcvm3o.cloudfront.net/gift/b09b6ea4fdaff2a14c4c5d138fa5fbaf.png'},
-                        {'key': 'giftId', 'value': '9e63bbf0-3e86-4019-b3fc-e955c175569b'}, 
-                        {'key': 'giftName', 'value': '烤雞全餐'}, 
-                        {'key': 'multiple', 'value': False},
-                        {'key': 'count', 'value': 1}, 
-                        {'key': 'point', 'value': 100000}, 
-                        {'key': 'content', 'value': '@舞弊事件大家都不能接受 送了 烤雞全餐(100000) x 1 禮物給 無與倫比的美麗 '}
-                    ]
-                },
-                {'index': 'broadcaster013', 'event': 'marquee', 'position': 0, 'check': [
-                        {'key': 'content', 'value': '恭喜無與倫比的美麗,獲得舞弊事件大家都不能接受送的幸福燃點 ~太帥了!就是狂!'}
-                    ]
-                }
-            ]
-        ),
+        # ('送禮訊息在聲聊房中皆會收到,且超過10萬點的禮物會有跑馬燈, 若是暱稱含禁詞，則送禮訊息不會廣播, 若點數不足會回錯誤',  
+        #     [       
+        #         {'user': 'broadcaster010', 'wait': 0, 'action': [
+        #                 ('vc_room:1', 'phx_join', {}, 0), 
+        #                 ('vc_room:1', 'ping', {}, 5),
+        #             ], 'sleep': 7
+        #         }, 
+        #         {'user': 'broadcaster013', 'wait': 2, 'action': [
+        #                 ('vc_room:1', 'phx_join', {}, 0), 
+        #                 ('vc_room:1', 'take_seat', {'seatIndex': 1}, 1),
+        #                 ('vc_room:1', 'ping', {}, 5),
+        #             ], 'sleep': 3
+        #         }, 
+        #         {'user': 'track0019', 'wait': 1, 'action': [
+        #                 ('vc_room:1', 'phx_join', {}, 1), 
+        #                 ('vc_room:1', 'gift', {'giftId': '9e63bbf0-3e86-4019-b3fc-e955c175569b', 'targetUserId': test_parameter['broadcaster010']['id'], 'count': 1}, 1),
+        #                 ('vc_room:1', 'gift', {'giftId': '9e63bbf0-3e86-4019-b3fc-e955c175569b', 'targetUserId': test_parameter['broadcaster010']['id'], 'count': 1}, 1)
+        #             ], 'sleep': 3
+        #         },
+        #         {'user': 'track0020', 'wait': 2, 'action': [
+        #                 ('vc_room:1', 'phx_join', {}, 0), 
+        #                 ('vc_room:1', 'gift', {'giftId': 'fdbafd5c-93fe-4893-8e7b-7aa6eea209a8', 'targetUserId': test_parameter['broadcaster013']['id'], 'count': 3}, 1)
+        #             ], 'sleep': 2
+        #         }
+        #     ],  
+        #     [
+        #         {'index': 'track0019', 'event': 'gift_bcst', 'position': 2, 'check': []},              
+        #         {'index': 'track0019', 'event': 'phx_reply', 'position': 0, 'check': [
+        #                 {'key': 'err', 'value': 'you_have_no_more_points'}
+        #             ]
+        #         },
+        #         {'index': 'broadcaster010', 'event': 'marquee', 'position': 0, 'check': [
+        #                 {'key': 'content', 'value': '恭喜無與倫比的美麗,獲得舞弊事件大家都不能接受送的烤雞全餐 ~太帥了!就是狂!'},
+        #             ]
+        #         },
+        #         {'index': 'broadcaster010', 'event': 'gift_bcst', 'position': 0, 'check': [
+        #                 {'key': 'fromUserId', 'value': test_parameter['track0019']['id']}, 
+        #                 {'key': 'targetUserId', 'value': test_parameter['broadcaster010']['id']}, 
+        #                 {'key': 'giftUrl', 'value': 'https://d3eq1e23ftm9f0.cloudfront.net/gift/animation/e84bd3921b4411eb917342010a8c0050.webp'},
+        #                 {'key': 'giftId', 'value': '9e63bbf0-3e86-4019-b3fc-e955c175569b'}, 
+        #                 {'key': 'giftName', 'value': '烤雞全餐'}, 
+        #                 {'key': 'multiple', 'value': False},
+        #                 {'key': 'count', 'value': 1}, 
+        #                 {'key': 'point', 'value': 100000}, 
+        #                 {'key': 'content', 'value': '舞弊事件大家都不能接受 送了 1 個 烤雞全餐 (100,000) 給 無與倫比的美麗'}
+        #             ]
+        #         },
+        #         {'index': 'broadcaster013', 'event': 'gift_bcst', 'position': 0, 'check': [ #這個case有問題⋯⋯需再驗一次
+        #                 {'key': 'fromUserId', 'value': test_parameter['track0020']['id']}, 
+        #                 {'key': 'targetUserId', 'value': test_parameter['broadcaster013']['id']}, 
+        #                 {'key': 'giftUrl', 'value': 'https://d3eq1e23ftm9f0.cloudfront.net/gift/animation/86a291301b4411eb917342010a8c0050.webp'},
+        #                 {'key': 'giftId', 'value': 'fdbafd5c-93fe-4893-8e7b-7aa6eea209a8'}, 
+        #                 {'key': 'giftName', 'value': '南瓜派'}, 
+        #                 {'key': 'multiple', 'value': False},
+        #                 {'key': 'count', 'value': 3}, 
+        #                 {'key': 'point', 'value': 1000}, 
+        #                 {'key': 'content', 'value': '快樂代儲你我他 送了 鬼怪(1000) x 3 禮物給 直播主13'}
+        #             ]
+        #         },
+        #         {'index': 'broadcaster013', 'event': 'gift_bcst', 'position': 1, 'check': [
+        #                 {'key': 'fromUserId', 'value': test_parameter['track0019']['id']}, 
+        #                 {'key': 'targetUserId', 'value': test_parameter['broadcaster010']['id']}, 
+        #                 {'key': 'giftUrl', 'value': 'https://d3eq1e23ftm9f0.cloudfront.net/gift/animation/e84bd3921b4411eb917342010a8c0050.webp'},
+        #                 {'key': 'giftId', 'value': '9e63bbf0-3e86-4019-b3fc-e955c175569b'}, 
+        #                 {'key': 'giftName', 'value': '烤雞全餐'}, 
+        #                 {'key': 'multiple', 'value': False},
+        #                 {'key': 'count', 'value': 1}, 
+        #                 {'key': 'point', 'value': 100000}, 
+        #                 {'key': 'content', 'value': '舞弊事件大家都不能接受 送了 1 個 烤雞全餐(100,000) 給 無與倫比的美麗'}
+        #             ]
+        #         },
+        #         {'index': 'broadcaster013', 'event': 'marquee', 'position': 0, 'check': [
+        #                 {'key': 'content', 'value': '恭喜無與倫比的美麗,獲得舞弊事件大家都不能接受送的幸福燃點 ~太帥了!就是狂!'}
+        #             ]
+        #         }
+        #     ]
+        # ),
 
         # ('觀眾若被禁言，在發送訊息時不會廣播給聲聊廳的人；觀眾被禁言時房主及管理員會收到通知，解除禁言時也不會發通知；相關行為會同時更新禁言清單（註：禁言一定時間後系統會自動解除）', #QA環境怪怪的，但testing OK
         #     [

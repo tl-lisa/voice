@@ -106,7 +106,7 @@ class TestVoiceScoket():
         if verifyInfo['check']:
             assert isGetEvent, "should get check data, but not"
         else:
-            assert not isGetEvent, "should not get check data, but not"
+            assert not isGetEvent, "should not get check data, but get event(%s) at position(%d)"%(i['event'], position)
         if isGetEvent:
             for j in verifyInfo['check']:
                 count = 0

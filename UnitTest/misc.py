@@ -76,9 +76,9 @@ def get_test_data(env, test_parameter):
         }
     #pprint(test_parameter)
     sqlStr  = "INSERT INTO remain_points(remain_points, ratio, identity_id) VALUES ("
-    sqlStr += "20000, 4, '" + test_parameter['track0020']['id'] + "') ON DUPLICATE KEY "
+    sqlStr += "200000, 4, '" + test_parameter['track0020']['id'] + "') ON DUPLICATE KEY "
     sqlStr += "UPDATE remain_points = 20000, ratio = 4"
-    sqlStr1  = "UPDATE remain_points SET remain_points = 200000 WHERE identity_id = "
+    sqlStr1  = "UPDATE remain_points SET remain_points = 100000 WHERE identity_id = "
     sqlStr1 += "'" + test_parameter['track0019']['id'] + "'"
     sqlStr2 = "TRUNCATE TABLE user_blocks"
     sqlStr3 = "TRUNCATE TABLE user_banned"
