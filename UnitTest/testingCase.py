@@ -1101,72 +1101,76 @@ def getTestData(test_parameter):
         #     ]
         # ),
 
-        # ('房主封鎖user時，該user會被踢出房間且再也不能進入，但若是管理員封鎖user僅將該user加入黑名單中；不能對官方場控做封鎖',
-        #     [
-        #         {'user': 'track0011', 'wait': 0, 'action': [
-        #                 ('vc_room:1', 'phx_join', {}, 0),  
-        #                 ('vc_room:1', 'book_seat', {}, 1),
-        #                 ('vc_room:1', 'message', {'content': 'track0011封鎖後發送訊息'}, 4),
-        #             ], 'sleep': 10
-        #         },
-        #         {'user': 'track0012', 'wait': 0, 'action': [
-        #                 ('vc_room:1', 'phx_join', {}, 0), 
-        #                 ('vc_room:1', 'book_seat', {}, 1)
-        #             ], 'sleep': 10
-        #         },
-        #         {'user': 'lv000', 'wait': 0, 'action': [('vc_room:1', 'phx_join', {}, 0)], 'sleep': 3},
-        #         {'user': 'broadcaster011', 'wait': 1, 'action': [
-        #                 ('vc_room:1', 'phx_join', {}, 0), 
-        #                 ('vc_room:1', 'take_seat', {'seatIndex': 1 }, 1),
-        #                 ('vc_room:1', 'pickup_seat', {'targetUserId': test_parameter['track0011']['id'], 'seatType': 'vips', 'seatIndex':0}, 1),
-        #                 ('vc_room:1', 'block_audience', {'targetUserId': test_parameter['track0011']['id']}, 1),
-        #                 ('vc_room:1', 'block_audience', {'targetUserId': test_parameter['track0014']['id']}, 1),
-        #                 ('vc_room:1', 'block_audience', {'targetUserId': test_parameter['broadcaster010']['id']}, 3)
-        #             ], 'sleep': 7
-        #         },
-        #         {'user': 'broadcaster010', 'wait': 3, 'action': [
-        #                 ('vc_room:1', 'phx_join', {}, 0),
-        #                 ('vc_room:1', 'block_audience', {'targetUserId': test_parameter['lv000']['id']}, 1),
-        #                 ('vc_room:1', 'block_audience', {'targetUserId': test_parameter['track0012']['id']}, 1),
-        #                 ('vc_room:1', 'block_audience', {'targetUserId': test_parameter['track0013']['id']}, 1),
-        #                 ('vc_room:1', 'get_violation', {}, 1)
-        #             ], 'sleep': 7
-        #         },
-        #         {'user': 'track0013', 'wait': 7, 'action': [('vc_room:1', 'phx_join', {}, 0)], 'sleep': 0},
-        #         {'user': 'track0014', 'wait': 7, 'action': [('vc_room:1', 'phx_join', {}, 0)], 'sleep': 0},
-        #     ],
-        #     [
-        #         {'index': 'track0012', 'event': 'audience_blocked', 'position': 0, 'check': [
-        #                 {'key': 'targetUserId', 'value': test_parameter['track0012']['id']}, 
-        #                 {'key': 'content', 'value': '違反規定，被踢出房間'}
-        #             ]
-        #         },
-        #         {'index': 'broadcaster011', 'event': 'audience_blocked_bcst', 'position': 0, 'check': [
-        #                 {'key': 'content', 'value': '封鎖成功'}
-        #             ]
-        #         },
-        #         {'index': 'broadcaster011', 'event': 'audience_blocked_bcst', 'position': 1, 'check': [
-        #                 {'key': 'content', 'value': '封鎖成功'}
-        #             ]
-        #         },
-        #         {'index': 'broadcaster011', 'event': 'phx_reply', 'position': 0, 'check': [ #不可封鎖房主，但目前結果是可以的。已回bug
-        #                 {'key': 'err', 'value': 'PERMISSION_DENY'}
-        #             ]
-        #         },
-        #         {'index': 'track0014', 'event': 'voiceroom_in', 'position': 0, 'check': [
-        #                 {'key': 'seatsMute', 'value': []}
-        #             ]
-        #         },
-        #         {'index': 'track0013', 'event': 'phx_reply', 'position': 0, 'check': [
-        #                 {'key': 'err', 'value': 'USER_BLOCKED'}
-        #             ]
-        #         },
-        #         {'index': 'broadcaster010', 'event': 'phx_reply', 'position': 0, 'check': [
-        #                 {'key': 'err', 'value': 'TARGET_USER_IS_LIVE_CONTROLLER'}
-        #             ]
-        #         },
-        #     ]
-        # ),
+        ('房主封鎖user時，該user會被踢出房間且再也不能進入，但若是管理員封鎖user僅將該user加入黑名單中也可封鎖房主；不能對官方場控做封鎖',
+            [
+                {'user': 'track0011', 'wait': 0, 'action': [
+                        ('vc_room:1', 'phx_join', {}, 0),  
+                        ('vc_room:1', 'book_seat', {}, 1),
+                        ('vc_room:1', 'message', {'content': 'track0011封鎖後發送訊息'}, 4),
+                    ], 'sleep': 10
+                },
+                {'user': 'track0012', 'wait': 0, 'action': [
+                        ('vc_room:1', 'phx_join', {}, 0), 
+                        ('vc_room:1', 'book_seat', {}, 1)
+                    ], 'sleep': 10
+                },
+                {'user': 'lv000', 'wait': 0, 'action': [('vc_room:1', 'phx_join', {}, 0)], 'sleep': 3},
+                {'user': 'broadcaster011', 'wait': 0, 'action': [
+                        ('vc_room:1', 'phx_join', {}, 0), 
+                        ('vc_room:1', 'take_seat', {'seatIndex': 1 }, 1),
+                        ('vc_room:1', 'pickup_seat', {'targetUserId': test_parameter['track0011']['id'], 'seatType': 'vips', 'seatIndex':0}, 1),
+                        ('vc_room:1', 'block_audience', {'targetUserId': test_parameter['track0011']['id']}, 1),
+                        ('vc_room:1', 'block_audience', {'targetUserId': test_parameter['track0014']['id']}, 1),
+                        ('vc_room:1', 'block_audience', {'targetUserId': test_parameter['broadcaster010']['id']}, 3)
+                    ], 'sleep': 7
+                },
+                {'user': 'broadcaster010', 'wait': 3, 'action': [
+                        ('vc_room:1', 'phx_join', {}, 0),
+                        ('vc_room:1', 'block_audience', {'targetUserId': test_parameter['lv000']['id']}, 1),
+                        ('vc_room:1', 'block_audience', {'targetUserId': test_parameter['track0012']['id']}, 1),
+                        ('vc_room:1', 'block_audience', {'targetUserId': test_parameter['track0013']['id']}, 1),
+                        ('vc_room:1', 'get_violation', {}, 1)
+                    ], 'sleep': 7
+                },
+                {'user': 'track0013', 'wait': 7, 'action': [('vc_room:1', 'phx_join', {}, 0)], 'sleep': 0},
+                {'user': 'track0014', 'wait': 7, 'action': [('vc_room:1', 'phx_join', {}, 0)], 'sleep': 0},
+            ],
+            [
+                {'index': 'track0012', 'event': 'audience_blocked', 'position': 0, 'check': [
+                        {'key': 'targetUserId', 'value': test_parameter['track0012']['id']}, 
+                        {'key': 'content', 'value': '違反規定，被踢出房間'}
+                    ]
+                },
+                {'index': 'broadcaster011', 'event': 'audience_blocked_bcst', 'position': 0, 'check': [
+                        {'key': 'content', 'value': '無與倫比的美麗 已被 broadcaster011 封鎖成功'}
+                    ]
+                },
+                {'index': 'broadcaster011', 'event': 'audience_blocked_bcst', 'position': 1, 'check': [
+                        {'key': 'content', 'value': 'track0013 已被 無與倫比的美麗 封鎖成功'}
+                    ]
+                },
+                {'index': 'broadcaster011', 'event': 'audience_blocked_bcst', 'position': 2, 'check': [
+                        {'key': 'content', 'value': 'track0012 已被 無與倫比的美麗 封鎖成功'}
+                    ]
+                },
+                {'index': 'broadcaster011', 'event': 'audience_blocked_bcst', 'position': 3, 'check': [ 
+                        {'key': 'content', 'value': 'track0014 已被 broadcaster011 封鎖成功'}
+                    ]
+                },
+                {'index': 'track0014', 'event': 'voiceroom_in', 'position': 0, 'check': [
+                        {'key': 'seatsMute', 'value': []}
+                    ]
+                },
+                {'index': 'track0013', 'event': 'phx_reply', 'position': 0, 'check': [
+                        {'key': 'err', 'value': 'USER_BLOCKED'}
+                    ]
+                },
+                {'index': 'broadcaster010', 'event': 'phx_reply', 'position': 0, 'check': [
+                        {'key': 'err', 'value': 'TARGET_USER_IS_LIVE_CONTROLLER'}
+                    ]
+                },
+            ]
+        ),
 
         # ('玩家可以追蹤房主及管理者，但不能追一般user',
         #     [
