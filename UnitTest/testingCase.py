@@ -969,7 +969,8 @@ def getTestData(test_parameter):
         #                 ('vc_room:1', 'phx_join', {}, 0), 
         #                 ('vc_room:1', 'pickup_admin', {'trueLoveId': test_parameter['broadcaster015']['trueloveId']}, 1),
         #                 ('vc_room:1', 'kickout_admin', {'targetUserId': test_parameter['broadcaster015']['id']}, 5),
-        #                 ('vc_room:1', 'pickup_admin', {'trueLoveId': test_parameter['broadcaster021']['trueloveId']}, 1)
+        #                 ('vc_room:1', 'pickup_admin', {'trueLoveId': test_parameter['broadcaster021']['trueloveId']}, 1),
+        #                 ('vc_room:1', 'pickup_admin', {'trueLoveId': test_parameter['broadcaster011']['trueloveId']}, 1)
         #             ], 'sleep': 1
         #         },
         #         {'user': 'track0011', 'wait': 3,'action': [('vc_room:1', 'phx_join', {}, 0)], 'sleep': 1},
@@ -980,7 +981,13 @@ def getTestData(test_parameter):
         #             'index': 'broadcaster010', 
         #             'event': 'phx_reply', 
         #             'position': 0,
-        #             'check': [{'key': 'err', 'value': 'target_user_is_not_live_master'}]
+        #             'check': [{'key': 'err', 'value': 'TARGET_USER_ALREADY_IN_ADMIN_LIST'}]
+        #         },
+        #         {
+        #             'index': 'broadcaster010', 
+        #             'event': 'phx_reply', 
+        #             'position': 1,
+        #             'check': [{'key': 'err', 'value': 'TARGET_USER_IS_NOT_VOICE_MASTER'}]
         #         },
         #         {
         #             'index': 'broadcaster011', 
