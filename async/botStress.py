@@ -12,7 +12,7 @@ from datetime import datetime
 #server = 'testing-api.xtars.com'
 adminList = []
 
-def actionBody(action, parameter, roomId):
+async def actionBody(action, parameter, roomId):
     payload = {}
     bodyDic = {
         'noPayload': ['phx_join', 'heartbeat', 'phx_leave', 'book_seat', 'leave_seat', 'abort_seat', 'get_mics_mgm', 'get_violation'],
@@ -37,13 +37,13 @@ def actionBody(action, parameter, roomId):
             'event': action,
             'payload': payload
     }
-    print('send time: ', datetime.now().strftime('%H:%M:%S'))
-    pprint(body)
+    # print('send time: ', datetime.now().strftime('%H:%M:%S'))
+    # pprint(body)
     return body
 
-def audience(roomId):
+async def audience():
     global adminList
-    body = {}
+    isActivate = False
     msgList = [
         '太冷了⋯⋯今天早點下班', '加油加油～聲聊上線～', '我是免費仔，絕對不送禮', '主播姐姐聲音真好聽', 
         '勉強送個禮好了，不然被人嫌', '狗腿一下小馬好帥', '寒流來襲，抱啥可以？', '想要一個大紅包⋯⋯',
@@ -58,40 +58,47 @@ def audience(roomId):
             '176fbe34-6f97-466a-99e4-6c5c755486f8'
     ]    
     audienceActionDic = {
-            1:{'action': 'message', 'percentage': 85, 'parameter': {'content': None}},
-            2:{'action': 'book_seat', 'percentage': 98, 'parameter': {}},
-            3:{'action': 'phx_leave', 'percentage': 99, 'parameter': {}},
-            4:{'action': 'track', 'percentage': 100, 'parameter': {'liveMasterId': None}},
-            5:{'action': 'gift', 'percentage': 98, 'parameter': {'giftId': None, 'targetUserId': None, 'count': None}}
+            1:{'action': 'message', 'percentage': 145, 'parameter': {'content': None}},
+            2:{'action': 'book_seat', 'percentage': 149, 'parameter': {}},
+            3:{'action': 'phx_leave', 'percentage': 150, 'parameter': {}},
+            4:{'action': 'track', 'percentage': 150, 'parameter': {'liveMasterId': None}},
+            5:{'action': 'gift', 'percentage': 149, 'parameter': {'giftId': None, 'targetUserId': None, 'count': None}}
     }
-    isLeave = ''
     actionId = random.randint(1, 5)
-    if random.randint(1, 100) > audienceActionDic[actionId]['percentage']:
+    if random.randint(1, 150) > audienceActionDic[actionId]['percentage']:
+        isActivate = True
         if audienceActionDic[actionId]['action'] == 'message': 
             audienceActionDic[actionId]['parameter']['content'] = msgList[random.randint(0, len(msgList)-1)] + '@' + datetime.now().strftime('%H:%M:%S')
         if audienceActionDic[actionId]['action'] == 'track': audienceActionDic[actionId]['parameter']['liveMasterId'] = adminList[random.randint(0, len(adminList)-1)]
-        if audienceActionDic[actionId]['action'] == 'gift':
-            print('送禮物看坐位列表-adminList')
-            pprint(adminList)
+        if all([audienceActionDic[actionId]['action'] == 'gift', len(adminList) > 0]):
+            # print('送禮物看坐位列表-adminList')
+            # pprint(adminList)
             audienceActionDic[actionId]['parameter']['giftId'] = giftList[random.randint(0, len(giftList)-1)]   
             audienceActionDic[actionId]['parameter']['targetUserId'] = adminList[random.randint(0, len(adminList)-1)]
-            audienceActionDic[actionId]['parameter']['count'] = random.randint(1, 3)          
-        body = actionBody(audienceActionDic[actionId]['action'], audienceActionDic[actionId]['parameter'], roomId)
+            if audienceActionDic[actionId]['parameter']['giftId'] != '176fbe34-6f97-466a-99e4-6c5c755486f8':
+                audienceActionDic[actionId]['parameter']['count'] = random.randint(1, 3)          
+            else:
+                audienceActionDic[actionId]['parameter']['count'] = 1
+        action = audienceActionDic[actionId]['action']
+        parameter = audienceActionDic[actionId]['parameter']
+    else:
+        action = 'heartbeat'
+        parameter = {}
+    if isActivate:
         if audienceActionDic[actionId]['action'] == 'abort_seat':
             audienceActionDic[actionId]['action'] = 'book_seat'
-            audienceActionDic[actionId]['percentage'] = 98
+            audienceActionDic[actionId]['percentage'] = 145
         elif audienceActionDic[actionId]['action'] == 'book_seat':
             audienceActionDic[actionId]['action'] = 'abort_seat'
-            audienceActionDic[actionId]['percentage'] = 70
-        if audienceActionDic[actionId]['action'] == 'phx_leave':
-            isLeave = 'Leave' if random.randint(1, int(time.time())) % 100 > 95 else 're-Join'
-    return isLeave, body
+            audienceActionDic[actionId]['percentage'] = 125
+        # if audienceActionDic[actionId]['action'] == 'phx_leave':
+        #     isLeave = 're-Join'
+        #     # isLeave = 'Leave' if random.randint(1, 100) > 98 else 're-Join'
+    return action, parameter
  
 async def getData(recMsg, userInfo):
     global adminList
     upList = []
-    print( recMsg['event'], ' receive time: ', datetime.now().strftime('%H:%M:%S'))    
-    pprint(recMsg)
     if recMsg['event'] == 'voiceroom_in': 
         userInfo['ownerId'] = recMsg['payload']['data']['ownerUserId']
         userInfo['id'] = recMsg['payload']['data']['joinUserId']
@@ -99,37 +106,41 @@ async def getData(recMsg, userInfo):
         for i in recMsg['payload']['data']['seats']:
             if i['userId']: upList.append(i['userId'])
         if all([userInfo['ownerId'], userInfo['ownerId'] not in upList]): upList.append(userInfo['ownerId']) 
-        print('坐位列表發生異動-upList')
-        pprint(upList)
     if upList: adminList = upList
-    # print('取得坐位列表, type= ', type(adminList))
-    # pprint(adminList)
     return 
     
 
 async def botJob(userInfo):
     global adminList
     roomId = userInfo['roomId']
-    serverList = ['130.211.248.253']
+    serverList =  ['10.140.0.159']
     sNum = random.randint(0, len(serverList) - 1) if len(serverList) > 1 else 0
     connectStr = 'ws://%s/socket/websocket?token=%s&nonce=%s'%(serverList[sNum], userInfo['token'], userInfo['nonce'])
-    #pprint(connectStr)
     try:
         ws = await websockets.connect(connectStr, ping_interval=None)
-        await ws.send(json.dumps(actionBody('phx_join', {}, roomId)))   
+        await asyncio.sleep(random.randint(2, 5))
+        await ws.send(json.dumps(await actionBody('phx_join', {}, roomId)))   
         await getData(json.loads(await ws.recv()), userInfo)
-        while 1:
-            await asyncio.sleep(10)
-            leave, body = audience(roomId)
-            if body: 
-                await ws.send(json.dumps(body))  
-            else:
-                await ws.send(json.dumps(actionBody('heartbeat', {}, roomId)))
-            if leave == 'Leave':
+        while 1: 
+            if not ws.open:
+                print ('Websocket NOT connected. Trying to reconnect.')
+                ws = await websockets.connect(connectStr, ping_interval=None)
+                await ws.send(json.dumps(await actionBody('phx_join', {}, roomId)))   
+                await getData(json.loads(await ws.recv()), userInfo)
+            try:
+                begTime = int(time.time())
+                action, parameter = await audience()
+                await ws.send(json.dumps(await actionBody(action, parameter, roomId)))
+                await getData(json.loads(await ws.recv()), userInfo)
+                if int(time.time()) - begTime > 10:
+                    print('waiting time over 10 sec')
+                else:
+                    remainTime = 10 - (int(time.time()) - begTime)
+                    await asyncio.sleep(remainTime)
+            except Exception as e:
+                print('Error!: ', e)
+                traceback.print_exc()
                 break
-            elif leave == 're-Join':    
-                await ws.send(json.dumps(actionBody('phx_join', {}, roomId)))   
-            await getData(json.loads(await ws.recv()), userInfo)
     except Exception as e:
         print('bot job get err: ', e)
         traceback.print_exc()
@@ -153,7 +164,9 @@ def main(beg, end, num):
             'id': None            
         }
         loginDic['roomId'] = random.randint(1, num) if num > 1 else 1
-        taskList.append(asyncio.ensure_future(botJob(loginDic)))
+        task = loop.create_task(botJob(loginDic))
+        # taskList.append(asyncio.ensure_future(botJob(loginDic)))
+        taskList.append(task)
     try:
         loop.run_until_complete(asyncio.wait(taskList))
         loop.run_until_complete(asyncio.sleep(2.0))

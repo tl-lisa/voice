@@ -42,7 +42,7 @@ def getTestData(test_parameter):
         #             ]
         #         }
         #     ]
-        # )
+        # ),
 
         # ('直播主上下麥，已在房中的人及後來進房的人會收到系統廣播及相關訊息', 
         #     [
@@ -750,51 +750,51 @@ def getTestData(test_parameter):
         #     [
         #         {'index': 'track0019', 'event': 'gift_bcst', 'position': 2, 'check': []},              
         #         {'index': 'track0019', 'event': 'phx_reply', 'position': 0, 'check': [
-        #                 {'key': 'err', 'value': 'you_have_no_more_points'}
+        #                 {'key': ['err'], 'value': 'you_have_no_more_points'}
         #             ]
         #         },
         #         {'index': 'broadcaster010', 'event': 'marquee', 'position': 0, 'check': [
-        #                 {'key': 'content', 'value': '恭喜無與倫比的美麗,獲得舞弊事件大家都不能接受送的烤雞全餐 ~太帥了!就是狂!'},
+        #                 {'key': ['content'], 'value': '恭喜無與倫比的美麗,獲得舞弊事件大家都不能接受送的烤雞全餐 ~太帥了!就是狂!'},
         #             ]
         #         },
         #         {'index': 'broadcaster010', 'event': 'gift_bcst', 'position': 0, 'check': [
-        #                 {'key': 'fromUserId', 'value': test_parameter['track0019']['id']}, 
-        #                 {'key': 'targetUserId', 'value': test_parameter['broadcaster010']['id']}, 
-        #                 {'key': 'giftUrl', 'value': 'https://d3eq1e23ftm9f0.cloudfront.net/gift/animation/e84bd3921b4411eb917342010a8c0050.webp'},
-        #                 {'key': 'giftId', 'value': '9e63bbf0-3e86-4019-b3fc-e955c175569b'}, 
-        #                 {'key': 'giftName', 'value': '烤雞全餐'}, 
-        #                 {'key': 'multiple', 'value': False},
-        #                 {'key': 'count', 'value': 1}, 
-        #                 {'key': 'point', 'value': 100000}, 
-        #                 {'key': 'content', 'value': '舞弊事件大家都不能接受 送了 1 個 烤雞全餐 (100,000) 給 無與倫比的美麗'}
+        #                 {'key': ['fromUserId'], 'value': test_parameter['track0019']['id']}, 
+        #                 {'key': ['targetUserId'], 'value': test_parameter['broadcaster010']['id']}, 
+        #                 {'key': ['giftUrl'], 'value': 'https://d3eq1e23ftm9f0.cloudfront.net/gift/animation/e84bd3921b4411eb917342010a8c0050.webp'},
+        #                 {'key': ['giftId'], 'value': '9e63bbf0-3e86-4019-b3fc-e955c175569b'}, 
+        #                 {'key': ['giftName'], 'value': '烤雞全餐'}, 
+        #                 {'key': ['multiple'], 'value': False},
+        #                 {'key': ['count'], 'value': 1}, 
+        #                 {'key': ['point'], 'value': 100000}, 
+        #                 {'key': ['content'], 'value': '舞弊事件大家都不能接受 送了 1 個 烤雞全餐 (100,000) 給 無與倫比的美麗'}
         #             ]
         #         },
         #         {'index': 'broadcaster013', 'event': 'gift_bcst', 'position': 0, 'check': [ #這個case有問題⋯⋯需再驗一次
-        #                 {'key': 'fromUserId', 'value': test_parameter['track0020']['id']}, 
-        #                 {'key': 'targetUserId', 'value': test_parameter['broadcaster013']['id']}, 
-        #                 {'key': 'giftUrl', 'value': 'https://d3eq1e23ftm9f0.cloudfront.net/gift/animation/86a291301b4411eb917342010a8c0050.webp'},
-        #                 {'key': 'giftId', 'value': 'fdbafd5c-93fe-4893-8e7b-7aa6eea209a8'}, 
-        #                 {'key': 'giftName', 'value': '南瓜派'}, 
-        #                 {'key': 'multiple', 'value': False},
-        #                 {'key': 'count', 'value': 3}, 
-        #                 {'key': 'point', 'value': 1000}, 
-        #                 {'key': 'content', 'value': '快樂代儲你我他 送了 鬼怪(1000) x 3 禮物給 直播主13'}
+        #                 {'key': ['fromUserId'], 'value': test_parameter['track0020']['id']}, 
+        #                 {'key': ['targetUserId'], 'value': test_parameter['broadcaster013']['id']}, 
+        #                 {'key': ['giftUrl'], 'value': 'https://d3eq1e23ftm9f0.cloudfront.net/gift/animation/86a291301b4411eb917342010a8c0050.webp'},
+        #                 {'key': ['giftId'], 'value': 'fdbafd5c-93fe-4893-8e7b-7aa6eea209a8'}, 
+        #                 {'key': ['giftName'], 'value': '南瓜派'}, 
+        #                 {'key': ['multiple'], 'value': False},
+        #                 {'key': ['count'], 'value': 3}, 
+        #                 {'key': ['point'], 'value': 1000}, 
+        #                 {'key': ['content'], 'value': '快樂代儲你我他 送了 鬼怪(1000) x 3 禮物給 直播主13'}
         #             ]
         #         },
         #         {'index': 'broadcaster013', 'event': 'gift_bcst', 'position': 1, 'check': [
-        #                 {'key': 'fromUserId', 'value': test_parameter['track0019']['id']}, 
-        #                 {'key': 'targetUserId', 'value': test_parameter['broadcaster010']['id']}, 
-        #                 {'key': 'giftUrl', 'value': 'https://d3eq1e23ftm9f0.cloudfront.net/gift/animation/e84bd3921b4411eb917342010a8c0050.webp'},
-        #                 {'key': 'giftId', 'value': '9e63bbf0-3e86-4019-b3fc-e955c175569b'}, 
-        #                 {'key': 'giftName', 'value': '烤雞全餐'}, 
-        #                 {'key': 'multiple', 'value': False},
-        #                 {'key': 'count', 'value': 1}, 
-        #                 {'key': 'point', 'value': 100000}, 
-        #                 {'key': 'content', 'value': '舞弊事件大家都不能接受 送了 1 個 烤雞全餐(100,000) 給 無與倫比的美麗'}
+        #                 {'key': ['fromUserId'], 'value': test_parameter['track0019']['id']}, 
+        #                 {'key': ['targetUserId'], 'value': test_parameter['broadcaster010']['id']}, 
+        #                 {'key': ['giftUrl'], 'value': 'https://d3eq1e23ftm9f0.cloudfront.net/gift/animation/e84bd3921b4411eb917342010a8c0050.webp'},
+        #                 {'key': ['giftId'], 'value': '9e63bbf0-3e86-4019-b3fc-e955c175569b'}, 
+        #                 {'key': ['giftName'], 'value': '烤雞全餐'}, 
+        #                 {'key': ['multiple'], 'value': False},
+        #                 {'key': ['count'], 'value': 1}, 
+        #                 {'key': ['point'], 'value': 100000}, 
+        #                 {'key': ['content'], 'value': '舞弊事件大家都不能接受 送了 1 個 烤雞全餐(100,000) 給 無與倫比的美麗'}
         #             ]
         #         },
         #         {'index': 'broadcaster013', 'event': 'marquee', 'position': 0, 'check': [
-        #                 {'key': 'content', 'value': '恭喜無與倫比的美麗,獲得舞弊事件大家都不能接受送的幸福燃點 ~太帥了!就是狂!'}
+        #                 {'key': ['content'], 'value': '恭喜無與倫比的美麗,獲得舞弊事件大家都不能接受送的幸福燃點 ~太帥了!就是狂!'}
         #             ]
         #         }
         #     ]
@@ -1010,12 +1010,13 @@ def getTestData(test_parameter):
         #             'check': 
         #             [
         #                 {'key': 'admins', 'value': [
-        #                     test_parameter['broadcaster011']['id'],
-        #                     test_parameter['broadcaster012']['id'],
-        #                     test_parameter['broadcaster013']['id'],
-        #                     test_parameter['broadcaster014']['id'],
-        #                     test_parameter['broadcaster015']['id']
-        #                 ]}
+        #                         test_parameter['broadcaster011']['id'],
+        #                         test_parameter['broadcaster012']['id'],
+        #                         test_parameter['broadcaster013']['id'],
+        #                         test_parameter['broadcaster014']['id'],
+        #                         test_parameter['broadcaster015']['id']
+        #                     ]
+        #                 }
         #             ]
         #         },
         #         {
@@ -1108,76 +1109,76 @@ def getTestData(test_parameter):
         #     ]
         # ),
 
-        ('房主封鎖user時，該user會被踢出房間且再也不能進入，但若是管理員封鎖user僅將該user加入黑名單中也可封鎖房主；不能對官方場控做封鎖',
-            [
-                {'user': 'track0011', 'wait': 0, 'action': [
-                        ('vc_room:1', 'phx_join', {}, 0),  
-                        ('vc_room:1', 'book_seat', {}, 1),
-                        ('vc_room:1', 'message', {'content': 'track0011封鎖後發送訊息'}, 4),
-                    ], 'sleep': 10
-                },
-                {'user': 'track0012', 'wait': 0, 'action': [
-                        ('vc_room:1', 'phx_join', {}, 0), 
-                        ('vc_room:1', 'book_seat', {}, 1)
-                    ], 'sleep': 10
-                },
-                {'user': 'lv000', 'wait': 0, 'action': [('vc_room:1', 'phx_join', {}, 0)], 'sleep': 3},
-                {'user': 'broadcaster011', 'wait': 0, 'action': [
-                        ('vc_room:1', 'phx_join', {}, 0), 
-                        ('vc_room:1', 'take_seat', {'seatIndex': 1 }, 1),
-                        ('vc_room:1', 'pickup_seat', {'targetUserId': test_parameter['track0011']['id'], 'seatType': 'vips', 'seatIndex':0}, 1),
-                        ('vc_room:1', 'block_audience', {'targetUserId': test_parameter['track0011']['id']}, 1),
-                        ('vc_room:1', 'block_audience', {'targetUserId': test_parameter['track0014']['id']}, 1),
-                        ('vc_room:1', 'block_audience', {'targetUserId': test_parameter['broadcaster010']['id']}, 3)
-                    ], 'sleep': 7
-                },
-                {'user': 'broadcaster010', 'wait': 3, 'action': [
-                        ('vc_room:1', 'phx_join', {}, 0),
-                        ('vc_room:1', 'block_audience', {'targetUserId': test_parameter['lv000']['id']}, 1),
-                        ('vc_room:1', 'block_audience', {'targetUserId': test_parameter['track0012']['id']}, 1),
-                        ('vc_room:1', 'block_audience', {'targetUserId': test_parameter['track0013']['id']}, 1),
-                        ('vc_room:1', 'get_violation', {}, 1)
-                    ], 'sleep': 7
-                },
-                {'user': 'track0013', 'wait': 7, 'action': [('vc_room:1', 'phx_join', {}, 0)], 'sleep': 0},
-                {'user': 'track0014', 'wait': 7, 'action': [('vc_room:1', 'phx_join', {}, 0)], 'sleep': 0},
-            ],
-            [
-                {'index': 'track0012', 'event': 'audience_blocked', 'position': 0, 'check': [
-                        {'key': 'targetUserId', 'value': test_parameter['track0012']['id']}, 
-                        {'key': 'content', 'value': '違反規定，被踢出房間'}
-                    ]
-                },
-                {'index': 'broadcaster011', 'event': 'audience_blocked_bcst', 'position': 0, 'check': [
-                        {'key': 'content', 'value': '無與倫比的美麗 已被 broadcaster011 封鎖成功'}
-                    ]
-                },
-                {'index': 'broadcaster011', 'event': 'audience_blocked_bcst', 'position': 1, 'check': [
-                        {'key': 'content', 'value': 'track0013 已被 無與倫比的美麗 封鎖成功'}
-                    ]
-                },
-                {'index': 'broadcaster011', 'event': 'audience_blocked_bcst', 'position': 2, 'check': [
-                        {'key': 'content', 'value': 'track0012 已被 無與倫比的美麗 封鎖成功'}
-                    ]
-                },
-                {'index': 'broadcaster011', 'event': 'audience_blocked_bcst', 'position': 3, 'check': [ 
-                        {'key': 'content', 'value': 'track0014 已被 broadcaster011 封鎖成功'}
-                    ]
-                },
-                {'index': 'track0014', 'event': 'voiceroom_in', 'position': 0, 'check': [
-                        {'key': 'seatsMute', 'value': []}
-                    ]
-                },
-                {'index': 'track0013', 'event': 'phx_reply', 'position': 0, 'check': [
-                        {'key': 'err', 'value': 'USER_BLOCKED'}
-                    ]
-                },
-                {'index': 'broadcaster010', 'event': 'phx_reply', 'position': 0, 'check': [
-                        {'key': 'err', 'value': 'TARGET_USER_IS_LIVE_CONTROLLER'}
-                    ]
-                },
-            ]
-        ),
+        # ('房主封鎖user時，該user會被踢出房間且再也不能進入，但若是管理員封鎖user僅將該user加入黑名單中也可封鎖房主；不能對官方場控做封鎖',
+        #     [
+        #         {'user': 'track0011', 'wait': 0, 'action': [
+        #                 ('vc_room:1', 'phx_join', {}, 0),  
+        #                 ('vc_room:1', 'book_seat', {}, 1),
+        #                 ('vc_room:1', 'message', {'content': 'track0011封鎖後發送訊息'}, 4),
+        #             ], 'sleep': 10
+        #         },
+        #         {'user': 'track0012', 'wait': 0, 'action': [
+        #                 ('vc_room:1', 'phx_join', {}, 0), 
+        #                 ('vc_room:1', 'book_seat', {}, 1)
+        #             ], 'sleep': 10
+        #         },
+        #         {'user': 'lv000', 'wait': 0, 'action': [('vc_room:1', 'phx_join', {}, 0)], 'sleep': 3},
+        #         {'user': 'broadcaster011', 'wait': 0, 'action': [
+        #                 ('vc_room:1', 'phx_join', {}, 0), 
+        #                 ('vc_room:1', 'take_seat', {'seatIndex': 1 }, 1),
+        #                 ('vc_room:1', 'pickup_seat', {'targetUserId': test_parameter['track0011']['id'], 'seatType': 'vips', 'seatIndex':0}, 1),
+        #                 ('vc_room:1', 'block_audience', {'targetUserId': test_parameter['track0011']['id']}, 1),
+        #                 ('vc_room:1', 'block_audience', {'targetUserId': test_parameter['track0014']['id']}, 1),
+        #                 ('vc_room:1', 'block_audience', {'targetUserId': test_parameter['broadcaster010']['id']}, 3)
+        #             ], 'sleep': 7
+        #         },
+        #         {'user': 'broadcaster010', 'wait': 3, 'action': [
+        #                 ('vc_room:1', 'phx_join', {}, 0),
+        #                 ('vc_room:1', 'block_audience', {'targetUserId': test_parameter['lv000']['id']}, 1),
+        #                 ('vc_room:1', 'block_audience', {'targetUserId': test_parameter['track0012']['id']}, 1),
+        #                 ('vc_room:1', 'block_audience', {'targetUserId': test_parameter['track0013']['id']}, 1),
+        #                 ('vc_room:1', 'get_violation', {}, 1)
+        #             ], 'sleep': 7
+        #         },
+        #         {'user': 'track0013', 'wait': 7, 'action': [('vc_room:1', 'phx_join', {}, 0)], 'sleep': 0},
+        #         {'user': 'track0014', 'wait': 7, 'action': [('vc_room:1', 'phx_join', {}, 0)], 'sleep': 0},
+        #     ],
+        #     [
+        #         {'index': 'track0012', 'event': 'audience_blocked', 'position': 0, 'check': [
+        #                 {'key': 'targetUserId', 'value': test_parameter['track0012']['id']}, 
+        #                 {'key': 'content', 'value': '違反規定，被踢出房間'}
+        #             ]
+        #         },
+        #         {'index': 'broadcaster011', 'event': 'audience_blocked_bcst', 'position': 0, 'check': [
+        #                 {'key': 'content', 'value': '無與倫比的美麗 已被 broadcaster011 封鎖成功'}
+        #             ]
+        #         },
+        #         {'index': 'broadcaster011', 'event': 'audience_blocked_bcst', 'position': 1, 'check': [
+        #                 {'key': 'content', 'value': 'track0013 已被 無與倫比的美麗 封鎖成功'}
+        #             ]
+        #         },
+        #         {'index': 'broadcaster011', 'event': 'audience_blocked_bcst', 'position': 2, 'check': [
+        #                 {'key': 'content', 'value': 'track0012 已被 無與倫比的美麗 封鎖成功'}
+        #             ]
+        #         },
+        #         {'index': 'broadcaster011', 'event': 'audience_blocked_bcst', 'position': 3, 'check': [ 
+        #                 {'key': 'content', 'value': 'track0014 已被 broadcaster011 封鎖成功'}
+        #             ]
+        #         },
+        #         {'index': 'track0014', 'event': 'voiceroom_in', 'position': 0, 'check': [
+        #                 {'key': 'seatsMute', 'value': []}
+        #             ]
+        #         },
+        #         {'index': 'track0013', 'event': 'phx_reply', 'position': 0, 'check': [
+        #                 {'key': 'err', 'value': 'USER_BLOCKED'}
+        #             ]
+        #         },
+        #         {'index': 'broadcaster010', 'event': 'phx_reply', 'position': 0, 'check': [
+        #                 {'key': 'err', 'value': 'TARGET_USER_IS_LIVE_CONTROLLER'}
+        #             ]
+        #         },
+        #     ]
+        # ),
 
         # ('玩家可以追蹤房主及管理者，但不能追一般user',
         #     [
@@ -1234,7 +1235,64 @@ def getTestData(test_parameter):
         #             ]
         #         },
         #     ]
-        # )
+        # ),
+
+        ('用戶首次分享會增加熱度，但之後再分享即不會增加熱度。每日00：00清除記錄 #3369',
+            [
+                {'user': 'track0011', 'wait': 0, 'action': [
+                        ('vc_room:1', 'phx_join', {}, 0),
+                        ('vc_room:1', 'share', {}, 1),
+                        ('vc_room:1', 'phx_leave', {}, 2),
+                    ], 'sleep': 1
+                },
+                {'user': 'track0012', 'wait': 4, 'action': [
+                        ('vc_room:1', 'phx_join', {}, 0),
+                        ('vc_room:1', 'share', {}, 3),
+                        ('vc_room:1', 'share', {}, 3),
+                        ('vc_room:1', 'phx_leave', {}, 0),
+                    ], 'sleep': 1
+                },
+            ],
+            [
+                {
+                    'index': 'track0011', 
+                    'event': 'shared_bcst', 
+                    'position': 0,
+                    'check': [
+                        {'key': ['content', 'en'], 'value': '{fromUser.name} 分享了 {targetUser.name}，提升了聲聊廳熱度！'},
+                        {'key': ['content', 'zh'], 'value': '{fromUser.name} 分享了 {targetUser.name}，提升了聲聊廳熱度！'},
+                        {'key': ['content', 'ja'], 'value': '{fromUser.name} 分享了 {targetUser.name}，提升了聲聊廳熱度！'},
+                        {'key': ['fromUser', 'id'], 'value': test_parameter['track0011']['id']},
+                        {'key': ['targetUser', 'id'], 'value': test_parameter['broadcaster010']['id']},
+                    ]
+                },             
+                {
+                    'index': 'track0012', 
+                    'event': 'shared_bcst', 
+                    'position': 1,
+                    'check': [
+                        {'key': ['content', 'en'], 'value': '{fromUser.name} 分享了 {targetUser.name}，提升了聲聊廳熱度！'},
+                        {'key': ['content', 'zh'], 'value': '{fromUser.name} 分享了 {targetUser.name}，提升了聲聊廳熱度！'},
+                        {'key': ['content', 'ja'], 'value': '{fromUser.name} 分享了 {targetUser.name}，提升了聲聊廳熱度！'},
+                        {'key': ['fromUser', 'id'], 'value': test_parameter['track0012']['id']},
+                        {'key': ['targetUser', 'id'], 'value': test_parameter['broadcaster010']['id']},
+                    ]
+                },             
+                {
+                    'index': 'track0012', 
+                    'event': 'shared_bcst', 
+                    'position': 0,
+                    'check': [
+                        {'key': ['content', 'en'], 'value': '{fromUser.name} 分享了 {targetUser.name} ！'},
+                        {'key': ['content', 'zh'], 'value': '{fromUser.name} 分享了 {targetUser.name} ！'},
+                        {'key': ['content', 'ja'], 'value': '{fromUser.name} 分享了 {targetUser.name} ！'},
+                        {'key': ['fromUser', 'id'], 'value': test_parameter['track0012']['id']},
+                        {'key': ['targetUser', 'id'], 'value': test_parameter['broadcaster010']['id']},
+                    ]
+                },             
+            ]
+
+        ),
 
     ]   
     return testData

@@ -50,21 +50,23 @@ def getTrueLoveId(tureLoveId):
     )
     return hashids.encode(tureLoveId)
 
-def get_test_data(env, test_parameter):    
+def get_test_data(env, test_parameter, masterPrefix):    
     if env == 'QA':
         test_parameter['prefix'] = 'http://35.234.17.150'
         test_parameter['db'] = '35.234.17.150'
     elif env == 'test':
-        test_parameter['prefix'] = 'http://testing-api.truelovelive.com.tw'
-        test_parameter['db'] = 'testing-api.truelovelive.com.tw'
+        test_parameter['prefix'] = 'http://testing-api.xtars.com.tw'
+        test_parameter['db'] = 'testing-api.xtars.com.tw'
     test_parameter['errAccount'] = {'token': 'aa24385', 'nonce': 'noceiw'}
-    sqlStr  = "select login_id, id, token, nonce, truelove_id from identity "
+    sqlStr = "select login_id, id, token, nonce, truelove_id, nickname, IFNULL(points, 0) from identity "
+    sqlStr += "left join live_master_date_points on id = live_master_id " 
     sqlStr += "where login_id in ('tl-lisa', 'lv000', 'lv001', 'lv002', '"
     for i in range(10, 30):
         account = 'track00' + str(i)
         sqlStr += account + "', '" if i < 29 else account + "')"
         if i < 25:
-            account = 'broadcaster0' + str(i)
+            #account = 'broadcaster0' + str(i)
+            account = masterPrefix + str(i)
             sqlStr += account + "', '"
     result = dbConnect.dbQuery(test_parameter['db'], sqlStr)
     for i in result:
@@ -72,18 +74,24 @@ def get_test_data(env, test_parameter):
             'id': i[1],
             'token': i[2],
             'nonce': i[3],
-            'trueloveId': getTrueLoveId(i[4])
+            'trueloveId': getTrueLoveId(i[4]),
+            'nickname': i[5],
+            'dailyPoints': i[6]
         }
     #pprint(test_parameter)
     sqlStr  = "INSERT INTO remain_points(remain_points, ratio, identity_id) VALUES ("
-    sqlStr += "200000, 4, '" + test_parameter['track0020']['id'] + "') ON DUPLICATE KEY "
-    sqlStr += "UPDATE remain_points = 20000, ratio = 4"
-    sqlStr1  = "UPDATE remain_points SET remain_points = 100000 WHERE identity_id = "
-    sqlStr1 += "'" + test_parameter['track0019']['id'] + "'"
-    sqlStr2 = "TRUNCATE TABLE user_blocks"
+    sqlStr += "20000000, 4, '" + test_parameter['track0020']['id'] + "') ON DUPLICATE KEY "
+    sqlStr += "UPDATE remain_points = 20000000, ratio = 4"
+    sqlStr1  = "INSERT INTO remain_points(remain_points, ratio, identity_id) VALUES ("
+    sqlStr1 += "20000000, 4, '" + test_parameter['track0011']['id'] + "') ON DUPLICATE KEY "
+    sqlStr1 += "UPDATE remain_points = 20000000, ratio = 4"    
+    sqlStr2 = "TRUNCATE TABLE user_blocks" 
     sqlStr3 = "TRUNCATE TABLE user_banned"
     sqlStr4 = "TRUNCATE TABLE fans"
-    dbConnect.dbSetting(test_parameter['db'], [sqlStr, sqlStr1, sqlStr2, sqlStr3, sqlStr4])
+    sqlStr5 = "Delete from live_master_date_points where live_master_id = '" 
+    sqlStr5 += test_parameter['master10']['id'] + "'"
+    dbConnect.dbSetting(test_parameter['db'], [sqlStr, sqlStr1, sqlStr2, sqlStr3, sqlStr4, sqlStr5])
+    clearCache(test_parameter['db'])
     return
 
 def clearVoice(db):

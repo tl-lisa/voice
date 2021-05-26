@@ -17,7 +17,7 @@ test_parameter = {}
 idlist = []
 header = {'Connection': 'Keep-alive', 'X-Auth-Token': '', 'X-Auth-Nonce': ''}
 
-misc.get_test_data(env, test_parameter)  
+misc.get_test_data(env, test_parameter, 'broadcaster0')  
 def createVoiceRoom(account):
     header['X-Auth-Token'] = test_parameter['tl-lisa']['token']
     header['X-Auth-Nonce'] = test_parameter['tl-lisa']['nonce']
@@ -28,11 +28,7 @@ def createVoiceRoom(account):
         'title': account+'的直播間',
         'description': '快來加入'+account+'的直播間吧！',
         'password': '',
-        'streamId':[
-            'voiceChat_1_1',
-            'voiceChat_1_2',
-            'voiceChat_1_3'
-        ]
+        'status': 1
     }
     misc.apiFunction(test_parameter['prefix'], header, apiName, 'post', body)
     return 
@@ -41,7 +37,6 @@ def createVoiceRoom(account):
 @pytest.fixture(scope="class")
 def editInit():
     # 建立聲聊房資訊。若已建立則不需再call
-    pass
     # misc.clearVoice(test_parameter['db'])
     # misc.clearCache(test_parameter['db'])
     # createVoiceRoom('broadcaster010')
@@ -55,9 +50,8 @@ def editInit():
     #         'userId': test_parameter[admin]['id']
     #     }
     #     misc.apiFunction(test_parameter['prefix'], header, apiName, 'post', body)
-    # header['X-Auth-Token'] = test_parameter['tl-lisa']['token']
-    # header['X-Auth-Nonce'] = test_parameter['tl-lisa']['nonce']
     # misc.changeRole(test_parameter['prefix'], test_parameter['tl-lisa']['token'], test_parameter['tl-lisa']['nonce'], [test_parameter['broadcaster021']['id']], 4)
+    pass
     
 
 class TestVoiceScoket(): 
@@ -86,7 +80,7 @@ class TestVoiceScoket():
         finally:
             del voice
 
-    def verifyResult(self, data, verifyInfo):
+    def oldverifyResult(self, data, verifyInfo):
         isGetEvent = False 
         position = 0
         event = None
@@ -138,7 +132,67 @@ class TestVoiceScoket():
                     else:
                         count += 1                   
                 assert isGetKey, "Cannot get key("+j['key']+ ")"
-                        
+
+    def verifyResult(self, data, verifyInfo):
+        isGetEvent = False 
+        position = 0
+        event = None
+        for i in data:
+            print('data event=', i['event'],' verify event=',verifyInfo['event'], ' position=', position,' verify position=',verifyInfo['position'])
+            if i['event'] == verifyInfo['event']:
+                if verifyInfo['position'] == position:
+                    isGetEvent = True
+                    event = i
+                    break
+                else:
+                    position += 1
+        if verifyInfo['check']:
+            assert isGetEvent, "should get check data, but not"
+        else:
+            assert not isGetEvent, "should not get check data, but get event(%s) at position(%d)"%(i['event'], position)
+        if isGetEvent:
+            pprint(event)
+            for j in verifyInfo['check']:
+                if event['event'] == 'phx_reply':
+                    kk = event['payload']
+                else:
+                    kk = event['payload']['data']
+                    pprint(kk)
+                    isFound = False
+                    findKey = j['key']
+                    # print('find key is ', findKey)
+                    itemName = findKey.pop(0)
+                    for key, value in kk.items():
+                        # print('get key(%s) compare itemName(%s)'%(key, itemName))
+                        if key == itemName:
+                            # print('get key(', itemName, ')')
+                            if len(findKey) > 0:
+                                yy = value     
+                                itemName = findKey.pop(0)
+                                isContinue = True
+                                while isContinue:
+                                    # print('while loop remaind value: %s and next key is %s'%(str(yy), itemName))
+                                    for k1, v1 in yy.items():
+                                        # print('for loop get key(%s) compare itemName(%s)'%(k1, itemName))
+                                        if all([k1 == itemName, len(findKey) == 0]):
+                                            # print('check [%s] get value = %s and we expected value = %s'%(itemName, str(v1), str(j['value'])))
+                                            assert v1 == j['value']
+                                            isContinue = False
+                                            isFound = True
+                                            break
+                                        elif all([k1 == itemName, len(findKey) > 0]):
+                                            yy = v1    
+                                            itemName = findKey.pop(0)
+                                            isContinue = True
+                                            break
+                                        else:
+                                            isContinue = False
+                            else:
+                                assert value == j['value']
+                                isFound = True
+                            break
+                    assert isFound, "should not get check key(%s) at event(%s)"%(itemName, i['event'])            
+
     @pytest.mark.parametrize("scenario, data, verifyInfo", testingCase.getTestData(test_parameter))
     def testVoice(self, editInit, scenario, data, verifyInfo):   
         threadList = []
