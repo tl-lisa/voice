@@ -86,11 +86,11 @@ def get_test_data(env, test_parameter, masterPrefix):
     sqlStr1 += "20000000, 4, '" + test_parameter['track0011']['id'] + "') ON DUPLICATE KEY "
     sqlStr1 += "UPDATE remain_points = 20000000, ratio = 4"    
     sqlStr2 = "TRUNCATE TABLE user_blocks" 
-    sqlStr3 = "TRUNCATE TABLE user_banned"
+    # sqlStr3 = "TRUNCATE TABLE user_banned"
     sqlStr4 = "TRUNCATE TABLE fans"
-    sqlStr5 = "Delete from live_master_date_points where live_master_id = '" 
-    sqlStr5 += test_parameter['master10']['id'] + "'"
-    dbConnect.dbSetting(test_parameter['db'], [sqlStr, sqlStr1, sqlStr2, sqlStr3, sqlStr4, sqlStr5])
+    # sqlStr5 = "Delete from live_master_date_points where live_master_id = '" 
+    # sqlStr5 += test_parameter['master10']['id'] + "'"
+    dbConnect.dbSetting(test_parameter['db'], [sqlStr, sqlStr1, sqlStr2,  sqlStr4])
     clearCache(test_parameter['db'])
     return
 

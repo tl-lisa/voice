@@ -1237,59 +1237,106 @@ def getTestData(test_parameter):
         #     ]
         # ),
 
-        ('用戶首次分享會增加熱度，但之後再分享即不會增加熱度。每日00：00清除記錄 #3369',
+        # ('用戶首次分享會增加熱度，但之後再分享即不會增加熱度。每日00：00清除記錄 #3369',
+        #     [
+        #         {'user': 'track0013', 'wait': 0, 'action': [
+        #                 ('vc_room:1', 'phx_join', {}, 0),
+        #                 ('vc_room:1', 'share', {}, 1),
+        #                 ('vc_room:1', 'phx_leave', {}, 2),
+        #             ], 'sleep': 1
+        #         },
+        #         {'user': 'track0014', 'wait': 4, 'action': [
+        #                 ('vc_room:1', 'phx_join', {}, 0),
+        #                 ('vc_room:1', 'share', {}, 3),
+        #                 ('vc_room:1', 'share', {}, 3),
+        #                 ('vc_room:1', 'phx_leave', {}, 3),
+        #             ], 'sleep': 1
+        #         },
+        #         {'user': 'track0020', 'wait': 5, 'action': [
+        #                 ('vc_room:1', 'phx_join', {'code': ''}, 0),
+        #                 ('vc_room:1', 'share', {}, 3),
+        #                 ('vc_room:1', 'phx_leave', {'code': ''}, 1),
+        #             ], 'sleep': 1
+        #         },
+        #     ],
+        #     [
+        #         {
+        #             'index': 'track0013', 
+        #             'event': 'shared_bcst', 
+        #             'position': 0,
+        #             'check': [
+        #                 {'key': ['content', 'en'], 'value': '{fromUser.name} 分享了 {targetUser.name}，提升了聲聊廳熱度！'},
+        #                 {'key': ['content', 'zh'], 'value': '{fromUser.name} 分享了 {targetUser.name}，提升了聲聊廳熱度！'},
+        #                 {'key': ['content', 'ja'], 'value': '{fromUser.name} 分享了 {targetUser.name}，提升了聲聊廳熱度！'},
+        #                 {'key': ['fromUser', 'id'], 'value': test_parameter['track0013']['id']},
+        #                 {'key': ['targetUser', 'id'], 'value': test_parameter['broadcaster010']['id']},
+        #             ]
+        #         },             
+        #         {
+        #             'index': 'track0014', 
+        #             'event': 'shared_bcst', 
+        #             'position': 1,
+        #             'check': [
+        #                 {'key': ['content', 'en'], 'value': '{fromUser.name} 分享了 {targetUser.name}，提升了聲聊廳熱度！'},
+        #                 {'key': ['content', 'zh'], 'value': '{fromUser.name} 分享了 {targetUser.name}，提升了聲聊廳熱度！'},
+        #                 {'key': ['content', 'ja'], 'value': '{fromUser.name} 分享了 {targetUser.name}，提升了聲聊廳熱度！'},
+        #                 {'key': ['fromUser', 'id'], 'value': test_parameter['track0014']['id']},
+        #                 {'key': ['targetUser', 'id'], 'value': test_parameter['broadcaster010']['id']},
+        #             ]
+        #         },             
+        #         {
+        #             'index': 'track0014', 
+        #             'event': 'shared_bcst', 
+        #             'position': 0,
+        #             'check': [
+        #                 {'key': ['content', 'en'], 'value': '{fromUser.name} 分享了 {targetUser.name} ！'},
+        #                 {'key': ['content', 'zh'], 'value': '{fromUser.name} 分享了 {targetUser.name} ！'},
+        #                 {'key': ['content', 'ja'], 'value': '{fromUser.name} 分享了 {targetUser.name} ！'},
+        #                 {'key': ['fromUser', 'id'], 'value': test_parameter['track0014']['id']},
+        #                 {'key': ['targetUser', 'id'], 'value': test_parameter['broadcaster010']['id']},
+        #             ]
+        #         },                           
+        #         {
+        #             'index': 'track0020', 
+        #             'event': 'shared', 
+        #             'position': 0,
+        #             'check': [
+        #                 {'key': ['content', 'en'], 'value': '{fromUser.name} 分享了 {targetUser.name}，提升了聲聊廳熱度！'},
+        #                 {'key': ['content', 'zh'], 'value': '{fromUser.name} 分享了 {targetUser.name}，提升了聲聊廳熱度！'},
+        #                 {'key': ['content', 'ja'], 'value': '{fromUser.name} 分享了 {targetUser.name}，提升了聲聊廳熱度！'},
+        #                 {'key': ['fromUser', 'id'], 'value': test_parameter['track0020']['id']},
+        #                 {'key': ['targetUser', 'id'], 'value': test_parameter['broadcaster010']['id']},
+        #             ]
+        #         },             
+
+        #     ]
+
+        # ),
+
+        ('用戶reconnect不應造成hot激增 ', #4383
             [
-                {'user': 'track0011', 'wait': 0, 'action': [
+                {'user': 'track0013', 'wait': 0, 'action': [
                         ('vc_room:1', 'phx_join', {}, 0),
-                        ('vc_room:1', 'share', {}, 1),
+                        ('vc_room:1', 'ping', {}, 20),
                         ('vc_room:1', 'phx_leave', {}, 2),
+                    ], 'sleep': 1 
+                },
+                {'user': 'track0014', 'wait': 2, 'action': [
+                        ('vc_room:1', 'phx_join', {}, 0),
+                        ('vc_room:1', 'phx_join', {'action': 'reconnect'}, 3),
+                        ('vc_room:1', 'phx_join', {'action': 'reconnect'}, 3),
+                        ('vc_room:1', 'phx_join', {'action': 'reconnect'}, 3),
+                        ('vc_room:1', 'phx_leave', {}, 3),
                     ], 'sleep': 1
                 },
-                {'user': 'track0012', 'wait': 4, 'action': [
+                {'user': 'track0015', 'wait': 12, 'action': [
                         ('vc_room:1', 'phx_join', {}, 0),
-                        ('vc_room:1', 'share', {}, 3),
-                        ('vc_room:1', 'share', {}, 3),
-                        ('vc_room:1', 'phx_leave', {}, 0),
-                    ], 'sleep': 1
+                        ('vc_room:1', 'ping', {}, 10),
+                        ('vc_room:1', 'phx_leave', {}, 2),
+                    ], 'sleep': 1 
                 },
             ],
             [
-                {
-                    'index': 'track0011', 
-                    'event': 'shared_bcst', 
-                    'position': 0,
-                    'check': [
-                        {'key': ['content', 'en'], 'value': '{fromUser.name} 分享了 {targetUser.name}，提升了聲聊廳熱度！'},
-                        {'key': ['content', 'zh'], 'value': '{fromUser.name} 分享了 {targetUser.name}，提升了聲聊廳熱度！'},
-                        {'key': ['content', 'ja'], 'value': '{fromUser.name} 分享了 {targetUser.name}，提升了聲聊廳熱度！'},
-                        {'key': ['fromUser', 'id'], 'value': test_parameter['track0011']['id']},
-                        {'key': ['targetUser', 'id'], 'value': test_parameter['broadcaster010']['id']},
-                    ]
-                },             
-                {
-                    'index': 'track0012', 
-                    'event': 'shared_bcst', 
-                    'position': 1,
-                    'check': [
-                        {'key': ['content', 'en'], 'value': '{fromUser.name} 分享了 {targetUser.name}，提升了聲聊廳熱度！'},
-                        {'key': ['content', 'zh'], 'value': '{fromUser.name} 分享了 {targetUser.name}，提升了聲聊廳熱度！'},
-                        {'key': ['content', 'ja'], 'value': '{fromUser.name} 分享了 {targetUser.name}，提升了聲聊廳熱度！'},
-                        {'key': ['fromUser', 'id'], 'value': test_parameter['track0012']['id']},
-                        {'key': ['targetUser', 'id'], 'value': test_parameter['broadcaster010']['id']},
-                    ]
-                },             
-                {
-                    'index': 'track0012', 
-                    'event': 'shared_bcst', 
-                    'position': 0,
-                    'check': [
-                        {'key': ['content', 'en'], 'value': '{fromUser.name} 分享了 {targetUser.name} ！'},
-                        {'key': ['content', 'zh'], 'value': '{fromUser.name} 分享了 {targetUser.name} ！'},
-                        {'key': ['content', 'ja'], 'value': '{fromUser.name} 分享了 {targetUser.name} ！'},
-                        {'key': ['fromUser', 'id'], 'value': test_parameter['track0012']['id']},
-                        {'key': ['targetUser', 'id'], 'value': test_parameter['broadcaster010']['id']},
-                    ]
-                },             
             ]
 
         ),

@@ -6,7 +6,7 @@ from sshtunnel import SSHTunnelForwarder
 from pprint import pprint
 
 def dbQuery(hostAddr, sqlStr):
-    sshtunnel.SSH_TIMEOUT = 5
+    sshtunnel.SSH_TIMEOUT = 15
     ssh_host = hostAddr #'35.201.246.119'            #SSH服务器地址
     ssh_port = 22                  #SSH端口
     keyfile = './lisakey'            #SSH密钥
@@ -33,7 +33,7 @@ def dbQuery(hostAddr, sqlStr):
         cursor = db.cursor()
         collect = []
         try:    
-            print(sqlStr)
+            # print(sqlStr)
             cursor.execute(sqlStr)
             data = cursor.fetchall()
             for result in data:
@@ -50,7 +50,7 @@ def dbQuery(hostAddr, sqlStr):
 def dbSetting(hostAddr, sqlStr):
     #print('server adder=%s'%hostAddr)
     #pprint(sqlStr)
-    sshtunnel.SSH_TIMEOUT = 5
+    sshtunnel.SSH_TIMEOUT = 15
     ssh_host = hostAddr #'35.201.246.119'            #SSH服务器地址
     ssh_port = 22                  #SSH端口
     keyfile = './lisakey'            #SSH密钥

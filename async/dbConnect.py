@@ -1,6 +1,4 @@
 import pymysql
-import os
-import time
 import sshtunnel
 from sshtunnel import SSHTunnelForwarder
 from pprint import pprint
@@ -33,7 +31,7 @@ def dbQuery(hostAddr, sqlStr):
         cursor = db.cursor()
         collect = []
         try:    
-            print(sqlStr)
+            #print(sqlStr)
             cursor.execute(sqlStr)
             data = cursor.fetchall()
             for result in data:

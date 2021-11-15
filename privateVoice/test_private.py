@@ -6,28 +6,25 @@ import random
 import types
 import traceback
 from pprint import pprint
-from . import chatlib
+from . import voicelib
 from . import dbConnect
 from . import misc
-from . import chatCase
+from . import testingCase
 
 env = 'QA'
 DB = '35.234.17.150'
 test_parameter = {}
+idlist = []
 header = {'Connection': 'Keep-alive', 'X-Auth-Token': '', 'X-Auth-Nonce': ''}
 
-misc.get_test_data(env, test_parameter, 'master')    
+misc.get_test_data(env, test_parameter, 'private', 1, 21, 3)      
 
-class TestChatScoket(): 
+@pytest.fixture(scope="class")
+def clearCach():
+    misc.clearCache(DB)
+
+class TestVoiceScoket(): 
     wsDic = {}
-    def setUp_class(self):
-        prefix = 'http://35.234.17.150'
-        header['X-Auth-Token'] = test_parameter['tl-lisa']['token']
-        header['X-Auth-Nonce'] = test_parameter['tl-lisa']['nonce']
-        apiName = '/api/v3/task/resetLiveMasterHotMarqueeHistory'
-        body = {'token' : test_parameter['master10']['id']}
-        misc.apiFunction(prefix, header, apiName, 'post', body)
-
     def wsJob(self, data, id):
         #print('%d start at %d'%(id, int(time.time())))
         eventList = []
@@ -44,13 +41,14 @@ class TestChatScoket():
             eventList.append(body)
         account = data['user']
         info  = 'ws://'+test_parameter['db']+'/socket/websocket?token='+test_parameter[account]['token'] + '&nonce=' + test_parameter[account]['nonce']
-        chat = chatlib.chatUser(info, eventList, data['sleep'], data['wait'], id)
+        voice = voicelib.voiceUser(info, eventList, data['sleep'], data['wait'], id)
         try:
-            self.wsDic[account] = chat.messageList
+            self.wsDic[account] = voice.messageList
         except Exception as err:
             print('get Error: ', err)
         finally:
-            del chat
+            del voice
+
 
     def verifyResult(self, data, verifyInfo):
         isGetEvent = False 
@@ -66,36 +64,36 @@ class TestChatScoket():
                 else:
                     position += 1
         if verifyInfo['check']:
-            assert isGetEvent, "should get check data, but not"
+            assert isGetEvent, "(%s) cannot found event(%s) at expect position(%d)"%(verifyInfo['index'], verifyInfo['event'], verifyInfo['position'])
         else:
             assert not isGetEvent, "should not get check data, but get event(%s) at position(%d)"%(i['event'], position)
         if isGetEvent:
             pprint(event)
+            kk = event['payload']
             for j in verifyInfo['check']:
-                if event['event'] in ('room_closed', 'phx_reply'):
-                    kk = event['payload']
-                else:
-                    kk = event['payload']['data']
-                    pprint(kk)
-                    isFound = False
-                    findKey = j['key']
-                    # print('find key is ', findKey)
-                    itemName = findKey.pop(0)
-                    for key, value in kk.items():
-                        # print('get key(%s) compare itemName(%s)'%(key, itemName))
-                        if key == itemName:
-                            # print('get key(', itemName, ')')
-                            if len(findKey) > 0:
-                                yy = value     
-                                itemName = findKey.pop(0)
-                                isContinue = True
-                                while isContinue:
-                                    # print('while loop remaind value: %s and next key is %s'%(str(yy), itemName))
+                isFound = False
+                findKey = j['key']
+                print('find key is ', findKey)
+                itemName = findKey.pop(0)
+                for key, value in kk.items():
+                    print('get key(%s) compare itemName(%s)'%(key, itemName))
+                    if key == itemName:
+                        print('get key(', itemName, ')')
+                        if len(findKey) > 0:
+                            yy = value     
+                            itemName = findKey.pop(0)
+                            isContinue = True
+                            while isContinue:
+                                print('while loop remaind value: %s and next key is %s'%(str(yy), itemName))
+                                if yy:
                                     for k1, v1 in yy.items():
-                                        # print('for loop get key(%s) compare itemName(%s)'%(k1, itemName))
+                                        print('for loop get key(%s) compare itemName(%s)'%(k1, itemName))
                                         if all([k1 == itemName, len(findKey) == 0]):
-                                            # print('check [%s] get value = %s and we expected value = %s'%(itemName, str(v1), str(j['value'])))
-                                            assert v1 == j['value']
+                                            print('check [%s] get value = %s and we expected value = %s'%(itemName, str(v1), str(j['value'])))
+                                            if 'index' in j:
+                                                assert v1[j['index']] == j['value'],'check [%s] get value = %s but we expected value = %s'%(itemName, str(v1[j['index']]), str(j['value']))
+                                            else: 
+                                                assert v1 == j['value'], 'check [%s] get value is: %s but we expected result is: %s'%(itemName, str(v1), str(j['value']))
                                             isContinue = False
                                             isFound = True
                                             break
@@ -106,15 +104,19 @@ class TestChatScoket():
                                             break
                                         else:
                                             isContinue = False
+                                else:
+                                    isContinue = False
+                        else:
+                            if j.get('index'):
+                                assert value[j['index']] == j['value']
                             else:
                                 assert value == j['value']
-                                isFound = True
-                            break
-                    assert isFound, "should not get check key(%s) at event(%s)"%(itemName, i['event'])            
+                            isFound = True
+                        break
+                assert isFound, "should get key(%s) at event(%s), but didn't"%(itemName, i['event'])            
 
-                        
-    @pytest.mark.parametrize("scenario, data, verifyInfo", chatCase.getTestData(test_parameter))
-    def testChat(self, scenario, data, verifyInfo):   
+    @pytest.mark.parametrize("scenario, data, verifyInfo", testingCase.getTestData(test_parameter))
+    def testPrivate(self, scenario, data, verifyInfo):   
         threadList = []
         self.wsDic.clear()
         for i in range(len(data)):
@@ -123,9 +125,10 @@ class TestChatScoket():
         for i in reversed(threadList):
             i.join()
         pprint(self.wsDic)   
+        print('scenario is: %s'%scenario)
         for k in verifyInfo:
             if self.wsDic[k['index']]:
-                #print('check: ', k['index'])
+                print('check: ', k['index'])
                 self.verifyResult(self.wsDic[k['index']], k) 
             else:
                 print('無資料比對')
