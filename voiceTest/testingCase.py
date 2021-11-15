@@ -1313,32 +1313,150 @@ def getTestData(test_parameter):
 
         # ),
 
-        ('用戶reconnect不應造成hot激增 ', #4383
+        # ('用戶reconnect不應造成hot激增 ', #4383
+        #     [
+        #         {'user': 'track0013', 'wait': 0, 'action': [
+        #                 ('vc_room:1', 'phx_join', {}, 0),
+        #                 ('vc_room:1', 'ping', {}, 20),
+        #                 ('vc_room:1', 'phx_leave', {}, 2),
+        #             ], 'sleep': 1 
+        #         },
+        #         {'user': 'track0014', 'wait': 2, 'action': [
+        #                 ('vc_room:1', 'phx_join', {}, 0),
+        #                 ('vc_room:1', 'phx_join', {'action': 'reconnect'}, 3),
+        #                 ('vc_room:1', 'phx_join', {'action': 'reconnect'}, 3),
+        #                 ('vc_room:1', 'phx_join', {'action': 'reconnect'}, 3),
+        #                 ('vc_room:1', 'phx_leave', {}, 3),
+        #             ], 'sleep': 1
+        #         },
+        #         {'user': 'track0015', 'wait': 12, 'action': [
+        #                 ('vc_room:1', 'phx_join', {}, 0),
+        #                 ('vc_room:1', 'ping', {}, 10),
+        #                 ('vc_room:1', 'phx_leave', {}, 2),
+        #             ], 'sleep': 1 
+        #         },
+        #     ],
+        #     [
+        #     ]
+        # ),
+
+        # ('暱稱正常及觸發文字嶽，追蹤時收到的event應不同', #4585 
+        #     [
+        #         {'user': 'broadcaster011', 'wait': 0, 'action': [
+        #                 ('vc_room:8', 'phx_join', {}, 0),  
+        #                 ('vc_room:8', 'take_seat', {'seatIndex': 1 }, 1),
+        #                 ('vc_room:8', 'phx_leave', {}, 10),
+        #             ], 'sleep': 1
+        #         },
+        #         {'user': 'track0012', 'wait': 1, 'action': [
+        #                 ('vc_room:8', 'phx_join', {}, 0),  
+        #                 ('vc_room:8', 'track', {'liveMasterId': test_parameter['broadcaster011']['id']}, 1),
+        #                 ('vc_room:8', 'phx_leave', {}, 5),
+        #             ], 'sleep': 1
+        #         },
+        #         {'user': 'track0020', 'wait': 1, 'action': [
+        #                 ('vc_room:8', 'phx_join', {}, 0),  
+        #                 ('vc_room:8', 'track', {'liveMasterId': test_parameter['broadcaster011']['id']}, 2),
+        #                 ('vc_room:8', 'phx_leave', {}, 5),
+        #             ], 'sleep': 1
+        #         },
+        #     ],
+        #     [
+        #         {'index': 'track0020', 'event': 'tracked_bcst', 'position': 0, 'check': [
+        #                 {'key': ['roomId'], 'value': 8},
+        #                 {'key': ['liveMasterId'], 'value': test_parameter['broadcaster011']['id']},
+        #                 {'key': ['fansId'], 'value': test_parameter['track0012']['id']},
+        #                 {'key': ['roles'], 'value': ["ROLE_USER"]},
+        #                 {'key': ['content'], 'value': '@%s 追蹤了 %s！'%(test_parameter['track0012']['nickname'], test_parameter['broadcaster011']['nickname'])},
+        #             ]
+        #         },
+        #         {'index': 'track0012', 'event': 'tracked_bcst', 'position': 0, 'check': [
+        #                 {'key': ['roomId'], 'value': 8},
+        #                 {'key': ['liveMasterId'], 'value': test_parameter['broadcaster011']['id']},
+        #                 {'key': ['fansId'], 'value': test_parameter['track0012']['id']},
+        #                 {'key': ['roles'], 'value': ["ROLE_USER"]},
+        #                 {'key': ['content'], 'value': '@%s 追蹤了 %s！'%(test_parameter['track0012']['nickname'], test_parameter['broadcaster011']['nickname'])},
+        #             ]
+        #         },
+        #         {'index': 'track0020', 'event': 'tracked', 'position': 0, 'check': [
+        #                 {'key': ['roomId'], 'value': 8},
+        #                 {'key': ['liveMasterId'], 'value': test_parameter['broadcaster011']['id']},
+        #                 {'key': ['fansId'], 'value': test_parameter['track0020']['id']},
+        #                 {'key': ['roles'], 'value': ["ROLE_USER"]},
+        #                 {'key': ['content'], 'value': '@%s 追蹤了 %s！'%(test_parameter['track0020']['nickname'], test_parameter['broadcaster011']['nickname'])},
+        #             ]
+        #         },
+        #         {'index': 'track0012', 'event': 'tracked', 'position': 0, 'check': [
+        #                 {'key': ['roomId'], 'value': 8},
+        #                 {'key': ['liveMasterId'], 'value': test_parameter['broadcaster011']['id']},
+        #                 {'key': ['fansId'], 'value': test_parameter['track0012']['id']},
+        #                 {'key': ['roles'], 'value': ["ROLE_USER"]},
+        #                 {'key': ['content'], 'value': '@%s 追蹤了 %s！'%(test_parameter['track0012']['nickname'], test_parameter['broadcaster011']['nickname'])},
+        #             ]
+        #         },
+        #     ]
+        # ),
+
+        ('推拉流 id 使用方法更新', #4552
             [
-                {'user': 'track0013', 'wait': 0, 'action': [
-                        ('vc_room:1', 'phx_join', {}, 0),
-                        ('vc_room:1', 'ping', {}, 20),
-                        ('vc_room:1', 'phx_leave', {}, 2),
-                    ], 'sleep': 1 
-                },
-                {'user': 'track0014', 'wait': 2, 'action': [
-                        ('vc_room:1', 'phx_join', {}, 0),
-                        ('vc_room:1', 'phx_join', {'action': 'reconnect'}, 3),
-                        ('vc_room:1', 'phx_join', {'action': 'reconnect'}, 3),
-                        ('vc_room:1', 'phx_join', {'action': 'reconnect'}, 3),
-                        ('vc_room:1', 'phx_leave', {}, 3),
+                {'user': 'broadcaster011', 'wait': 0, 'action': [
+                        ('vc_room:8', 'phx_join', {}, 0),  
+                        ('vc_room:8', 'take_seat', {'seatIndex': 1 }, 1),
+                        ('vc_room:8', 'pickup_seat', {'seatIndex': 2, 'targetUserId': test_parameter['track0012']['id'], 'seatType': 'host'}, 2),
+                        ('vc_room:8', 'pickup_seat', {'seatIndex': 2, 'targetUserId': test_parameter['track0011']['id'], 'seatType': 'host'}, 2),
+                        ('vc_room:8', 'kickout_seat', {'targetUserId': test_parameter['track0011']['id']}, 2),
+                        ('vc_room:8', 'phx_leave', {}, 20),
                     ], 'sleep': 1
                 },
-                {'user': 'track0015', 'wait': 12, 'action': [
-                        ('vc_room:1', 'phx_join', {}, 0),
-                        ('vc_room:1', 'ping', {}, 10),
-                        ('vc_room:1', 'phx_leave', {}, 2),
-                    ], 'sleep': 1 
+                {'user': 'track0012', 'wait': 1, 'action': [
+                        ('vc_room:8', 'phx_join', {}, 0),  
+                        ('vc_room:8', 'book_seat', {}, 1),
+                        ('vc_room:8', 'leave_seat', {}, 3),
+                        ('vc_room:8', 'phx_leave', {}, 1),
+                    ], 'sleep': 1
+                },
+                {'user': 'track0011', 'wait': 6, 'action': [
+                        ('vc_room:8', 'phx_join', {}, 0),  
+                        ('vc_room:8', 'book_seat', {}, 1),
+                        ('vc_room:8', 'phx_leave', {}, 4),
+                    ], 'sleep': 1
                 },
             ],
             [
+                {'index': 'broadcaster011', 'event': 'seat_taken', 'position': 0, 'check': [
+                        {'key': ['roomId'], 'value': 8},
+                        {'key': ['seats', 'streamId'], 'index': 1, 'value': test_parameter['broadcaster011']['id']},
+                    ]
+                },
+                {'index': 'track0012', 'event': 'voiceroom_in', 'position': 0, 'check': [
+                        {'key': ['roomId'], 'value': 8},
+                        {'key': ['seats', 'streamId'], 'index': 1, 'value': test_parameter['broadcaster011']['id']},
+                    ]
+                },
+                {'index': 'track0012', 'event': 'seat_pickedup', 'position': 0, 'check': [
+                        {'key': ['roomId'], 'value': 8},
+                        {'key': ['seats', 'streamId'], 'index': 2, 'value': test_parameter['track0012']['id']},
+                    ]
+                },
+                {'index': 'track0012', 'event': 'seat_left', 'position': 0, 'check': [
+                        {'key': ['roomId'], 'value': 8},
+                        {'key': ['seats', 'streamId'], 'index': 1, 'value': test_parameter['broadcaster011']['id']},
+                        {'key': ['seats', 'streamId'], 'index': 2, 'value': None},
+                    ]
+                },
+                {'index': 'broadcaster011', 'event': 'seat_kickedout', 'position': 0, 'check': [
+                        {'key': ['roomId'], 'value': 8},
+                        {'key': ['seats', 'streamId'], 'index': 1, 'value': test_parameter['broadcaster011']['id']},
+                        {'key': ['seats', 'streamId'], 'index': 2, 'value': None},
+                    ]
+                },
+                {'index': 'broadcaster011', 'event': 'voiceroom_left_bcst', 'position': 0, 'check': [
+                        {'key': ['roomId'], 'value': 8},
+                        {'key': ['seats', 'streamId'], 'index': 1, 'value': None},
+                        {'key': ['seats', 'streamId'], 'index': 2, 'value': None},
+                    ]
+                },
             ]
-
         ),
 
     ]   

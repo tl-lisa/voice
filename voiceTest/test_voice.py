@@ -17,7 +17,7 @@ test_parameter = {}
 idlist = []
 header = {'Connection': 'Keep-alive', 'X-Auth-Token': '', 'X-Auth-Nonce': ''}
 
-misc.get_test_data(env, test_parameter, 'broadcaster0')  
+misc.get_test_data(env, test_parameter, 'broadcaster')  
 def createVoiceRoom(account):
     header['X-Auth-Token'] = test_parameter['tl-lisa']['token']
     header['X-Auth-Nonce'] = test_parameter['tl-lisa']['nonce']
@@ -151,13 +151,12 @@ class TestVoiceScoket():
         else:
             assert not isGetEvent, "should not get check data, but get event(%s) at position(%d)"%(i['event'], position)
         if isGetEvent:
-            pprint(event)
             for j in verifyInfo['check']:
+                print('check key: %s'%str(j['key']))
                 if event['event'] == 'phx_reply':
                     kk = event['payload']
                 else:
                     kk = event['payload']['data']
-                    pprint(kk)
                     isFound = False
                     findKey = j['key']
                     # print('find key is ', findKey)
@@ -167,7 +166,7 @@ class TestVoiceScoket():
                         if key == itemName:
                             # print('get key(', itemName, ')')
                             if len(findKey) > 0:
-                                yy = value     
+                                yy = value[j['index']] if type(value) == list else value  
                                 itemName = findKey.pop(0)
                                 isContinue = True
                                 while isContinue:
@@ -175,20 +174,22 @@ class TestVoiceScoket():
                                     for k1, v1 in yy.items():
                                         # print('for loop get key(%s) compare itemName(%s)'%(k1, itemName))
                                         if all([k1 == itemName, len(findKey) == 0]):
-                                            # print('check [%s] get value = %s and we expected value = %s'%(itemName, str(v1), str(j['value'])))
                                             assert v1 == j['value']
                                             isContinue = False
                                             isFound = True
                                             break
                                         elif all([k1 == itemName, len(findKey) > 0]):
-                                            yy = v1    
+                                            yy = v1[j['index']] if type(v1) == list else value  
                                             itemName = findKey.pop(0)
                                             isContinue = True
                                             break
                                         else:
                                             isContinue = False
                             else:
-                                assert value == j['value']
+                                if type(value) == list: 
+                                    assert value[j['index']] == j['value']
+                                else:
+                                    assert value == j['value']
                                 isFound = True
                             break
                     assert isFound, "should not get check key(%s) at event(%s)"%(itemName, i['event'])            
@@ -207,17 +208,17 @@ class TestVoiceScoket():
             if self.wsDic[k['index']]:
                 print('check: ', k['index'])
                 self.verifyResult(self.wsDic[k['index']], k) 
-                if all([k['index'] == 'track0012', k['event'] == 'voiceroom_in']): #for ticket2585 查詢陪伴區的觀眾
-                    header['X-Auth-Token'] = test_parameter['track0012']['token']
-                    header['X-Auth-Nonce'] = test_parameter['track0012']['nonce']
-                    apiName = '/api/v2/identity/roomAudiences/voiceChat/1'
-                    res = misc.apiFunction(test_parameter['prefix'], header, apiName, 'get', None)
-                    resText = json.loads(res.text)
-                    assert len(resText['data']) == 2
-                    assert all([item in resText['data'] for item in [
-                        test_parameter['track0012']['id'], test_parameter['track0012']['id'], 
-                        test_parameter['track0012']['id'], test_parameter['track0011']['id']
-                    ]]) == True
+                # if all([k['index'] == 'track0012', k['event'] == 'voiceroom_in']): #for ticket2585 查詢陪伴區的觀眾
+                #     header['X-Auth-Token'] = test_parameter['track0012']['token']
+                #     header['X-Auth-Nonce'] = test_parameter['track0012']['nonce']
+                #     apiName = '/api/v2/identity/roomAudiences/voiceChat/1'
+                #     res = misc.apiFunction(test_parameter['prefix'], header, apiName, 'get', None)
+                #     resText = json.loads(res.text)
+                #     assert len(resText['data']) == 2
+                #     assert all([item in resText['data'] for item in [
+                #         test_parameter['track0012']['id'], test_parameter['track0012']['id'], 
+                #         test_parameter['track0012']['id'], test_parameter['track0011']['id']
+                #     ]]) == True
             else:
                 print('無資料比對')
                 

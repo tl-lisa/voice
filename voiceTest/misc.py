@@ -61,11 +61,10 @@ def get_test_data(env, test_parameter, masterPrefix):
     sqlStr  = "select login_id, id, token, nonce, truelove_id, nickname from identity "
     sqlStr += "where login_id in ('tl-lisa', 'lv000', 'lv001', 'lv002', '"
     for i in range(10, 30):
-        account = 'track00' + str(i)
+        account = 'track' + str(i).zfill(4)
         sqlStr += account + "', '" if i < 29 else account + "')"
         if i < 25:
-            #account = 'broadcaster0' + str(i)
-            account = masterPrefix + str(i)
+            account = masterPrefix + str(i).zfill(3)
             sqlStr += account + "', '"
     result = dbConnect.dbQuery(test_parameter['db'], sqlStr)
     for i in result:
