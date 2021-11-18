@@ -20,11 +20,11 @@ def apiFunction(prefix, head, apiName, way, body):
         if head.get('Content-Type'):
             del head['Content-Type']
         res1 = resquestDic[way](url, headers=head)
-    # print(head)
-    # print('url = %s, method= %s'% (url, way))
-    # print(body) if body else print('no body')
-    # pprint('status code = %d'%res1.status_code)
-    # pprint(json.loads(res1.text))
+    print(head)
+    print('url = %s, method= %s'% (url, way))
+    print(body) if body else print('no body')
+    pprint('status code = %d'%res1.status_code)
+    pprint(json.loads(res1.text))
     return res1
 
 def clearCache(hostAddr):
@@ -46,6 +46,16 @@ def changeRole(prefix, token, nonce, idList, roleType):
     res = apiFunction(prefix, header, url, 'patch', body)
     return(res)
 
+def getDicKeys(dd, keyList):  
+    for keys, values in dd.items():
+        keyList.append(keys)
+        if type(values) == dict:
+            getDicKeys(values, keyList)
+        elif all([type(values) == list, values]):
+            if type(values[0]) == dict:getDicKeys(values[0], keyList)
+        else:
+            continue          
+    return 
 
 def getTrueLoveId(tureLoveId):
     hashids = Hashids(

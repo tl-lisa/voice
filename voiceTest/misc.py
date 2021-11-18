@@ -42,6 +42,18 @@ def search_user(prefix, account, header):
     else:
         return(json_result['data'][0]['id'])
 
+def getDicKeys(dd, keyList):  
+    keyList.append(dd.keys())  
+    for keys, values in dd.items():
+        keyList.append(keys)
+        if type(values) == dict:
+            getDicKeys(values, keyList)
+        elif all([type(values) == list, values]):
+            if type(values[0]) == dict:getDicKeys(values[0], keyList)
+        else:
+            continue          
+    return 
+
 def getTrueLoveId(tureLoveId):
     hashids = Hashids(
             salt = 'ChktKbMtT7bG6h87PbQ7',

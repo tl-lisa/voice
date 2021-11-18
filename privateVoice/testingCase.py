@@ -1,30 +1,20 @@
 def getTestData(test_parameter):
     #check中的資料先以第一層為主，之後再看下層資料
     testData = [
-        # ('2位私密主進房及官方場控，僅房主與核准的用戶可以成功進入，在accept時session即應建立，若房主先離房則應close session及清redis', 
+        # ('僅房主與核准的用戶可以成功進入，在accept時session即應建立，若房主先離房則應close session及清redis', #4581
         #     [
         #         {'user': 'private001', 'wait': 0, 'action': [
         #                 ('private_vc_room:37', 'phx_join', {}, 0),
         #                 ('private_vc_room:37', 'private_vc_enter', {}, 0),
-        #                 ('private_vc_room:37', 'private_vc_review', {"userId": test_parameter['track0001']['id'],"result": "accept"}, 5),
-        #                 ('private_vc_room:37', 'phx_leave', {}, 20),
-        #             ], 'sleep': 5
+        #                 ('private_vc_room:37', 'private_vc_review', {"userId": test_parameter['track0001']['id'],"result": "accept"}, 1),
+        #                 ('private_vc_room:37', 'private_vc_leave', {}, 4),
+        #             ], 'sleep': 2
         #         },
-        #         {'user': 'private002', 'wait': 1, 'action': [
-        #                 ('private_vc_room:37', 'phx_join', {}, 0),
-        #                 ('private_vc_room:37', 'private_vc_enter', {}, 1),
-        #             ], 'sleep': 4
-        #         },
-        #         {'user': 'lv000', 'wait': 2, 'action': [
-        #                 ('private_vc_room:37', 'phx_join', {}, 0),
-        #                 ('private_vc_room:37', 'private_vc_enter', {}, 1),
-        #             ], 'sleep': 4
-        #         },
-        #         {'user': 'track0001', 'wait': 3, 'action': [
+        #         {'user': 'track0001', 'wait': 1, 'action': [
         #                 ('private_vc_room:37', 'phx_join', {}, 1),
-        #                 ('private_vc_room:37', 'private_vc_enter', {}, 5),
-        #                 ('private_vc_room:37', 'ping', {}, 20),
-        #             ], 'sleep': 4
+        #                 ('private_vc_room:37', 'private_vc_enter', {}, 2),
+        #                 ('private_vc_room:37', 'ping', {}, 10),
+        #             ], 'sleep': 2
         #         },
         #     ], 
         #     [
@@ -38,17 +28,99 @@ def getTestData(test_parameter):
         #                 {'key': ['data', 'ownerUserId'], 'value': test_parameter['private001']['id']}, 
         #                 {'key': ['data', 'joinUserId'], 'value': test_parameter['track0001']['id']}, 
         #                 {'key': ['data', 'seatsMute'], 'value': []}, 
-        #                 {'key': ['data', 'seats'], 'index':0, 'value':{'seat': 0, 'streamId': 'privateVc_37_33_b0659b54-09ce-4b03-aff5-56d2d92b584a', 'userId':test_parameter['private001']['id']}},
-        #                 {'key': ['data', 'seats'], 'index':1, 'value':{'seat': 1, 'streamId': 'privateVc_37_33_e785b6f6-beb3-4ed7-bb75-672197e01746', 'userId':test_parameter['track0001']['id']}}
+        #                 {'key': ['data', 'seats'], 'index':0, 'value':{'seat': 0, 'streamId': 'privateVc_37_69_b0659b54-09ce-4b03-aff5-56d2d92b584a', 'userId':test_parameter['private001']['id']}},
+        #                 {'key': ['data', 'seats'], 'index':1, 'value':{'seat': 1, 'streamId': 'privateVc_37_69_e785b6f6-beb3-4ed7-bb75-672197e01746', 'userId':test_parameter['track0001']['id']}}
         #             ]
         #         },
+        #         {
+        #             'index': 'private001', 
+        #             'event': 'private_vc_enter_bcst', 
+        #             'position': 0,
+        #             'keyList': 
+        #             [
+        #                 'data','roomId', 'ownerUserId', 'joinUserId', 'seats', 'seat', 'userId', 'streamId', 'seatsMute',
+        #                 'tracked', 'hot', 'title', 'description', 'userLevel', 'levelId', 'levelNum', 'userName', 'sendTime'
+        #             ]
+        #         },
+
+        #     ]
+        # ),
+
+        ('房主若修改了房間資訊，應在房內公告room_data_changed_bcst ', #4567
+            [
+                {'user': 'private001', 'wait': 0, 'action': [
+                        ('private_vc_room:37', 'phx_join', {}, 0),
+                        ('private_vc_room:37', 'private_vc_enter', {}, 0),
+                        # ('private_vc_room:37', 'private_vc_review', {"userId": test_parameter['track0001']['id'],"result": "accept"}, 1),
+                        ('api',{
+                            'apiName': '/api/v2/app/privateVoiceChat/37',
+                            'prefix': test_parameter['prefix'],
+                            'header': {'Connection': 'Keep-alive', 'X-Auth-Token': test_parameter['private001']['token'], 'X-Auth-Nonce': test_parameter['private001']['nonce']},
+                            'method': 'patch',
+                            'body': {'title': '房內變更標題', 'description': '房內變更說明', 'ownerStatus': 'busy'}}, 1),
+                        ('private_vc_room:37', 'private_vc_leave', {}, 4),
+                    ], 'sleep': 2
+                },
+                # {'user': 'track0001', 'wait': 1, 'action': [
+                #         ('private_vc_room:37', 'phx_join', {}, 1),
+                #         ('private_vc_room:37', 'private_vc_enter', {}, 2),
+                #         ('private_vc_room:37', 'private_vc_leave', {}, 10),
+                #     ], 'sleep': 2
+                # },
+            ], 
+            [
+                {
+                    'index': 'private001', 
+                    'event': 'room_data_changed_bcst', 
+                    'position': 0,
+                    'check': 
+                    [
+                        {'key': ['data', 'roomId'], 'value': 37}, 
+                        {'key': ['data', 'title'], 'value': '房內變更標題'}, 
+                        {'key': ['data', 'description'], 'value': '房內變更說明'}, 
+                    ]
+                },
+            ]
+        ),
+
+        # ('除房主外，在phx_join時應確認是否已綁定',  #4549
+        #     [
+        #         {'user': 'private001', 'wait': 0, 'action': [
+        #                 ('private_vc_room:37', 'phx_join', {}, 0),
+        #                 ('private_vc_room:37', 'private_vc_enter', {}, 0),
+        #                 ('private_vc_room:37', 'private_vc_review', {"userId": test_parameter['track0001']['id'],"result": "accept"}, 5),
+        #                 ('private_vc_room:37', 'phx_leave', {}, 20),
+        #             ], 'sleep': 5
+        #         },
+        #         {'user': 'private002', 'wait': 1, 'action': [
+        #                 ('private_vc_room:37', 'phx_join', {}, 0),
+        #             ], 'sleep': 4
+        #         },
+        #         {'user': 'lv000', 'wait': 2, 'action': [
+        #                 ('private_vc_room:37', 'phx_join', {}, 0),
+        #             ], 'sleep': 4
+        #         },
+        #         {'user': 'track0001', 'wait': 1, 'action': [
+        #                 ('private_vc_room:37', 'phx_join', {}, 1),
+        #                 ('private_vc_room:37', 'private_vc_apply', {}, 1),
+        #                 ('private_vc_room:37', 'private_vc_abort', {}, 2),
+        #             ], 'sleep': 4
+        #         },
+        #         {'user': 'track0002', 'wait': 2, 'action': [
+        #                 ('private_vc_room:37', 'phx_join', {}, 1),
+        #                 ('private_vc_room:37', 'private_vc_apply', {}, 1),
+        #                 ('private_vc_room:37', 'private_vc_abort', {}, 1),
+        #             ], 'sleep': 4
+        #         },
+        #     ], 
+        #     [
         #         {
         #             'index': 'lv000', 
         #             'event': 'phx_reply', 
         #             'position': 0,
         #             'check': 
         #             [
-        #                 {'key': ['response', 'err'], 'value': 'PERMISSION_DENY'}, 
+        #                 {'key': ['response', 'err'], 'value': 'HAS_NOT_BOUND'}, 
         #             ]
         #         },
         #         {
@@ -57,7 +129,23 @@ def getTestData(test_parameter):
         #             'position': 0,
         #             'check': 
         #             [
-        #                 {'key': ['response', 'err'], 'value': 'PERMISSION_DENY'}, 
+        #                 {'key': ['response', 'err'], 'value': 'HAS_NOT_BOUND'}, 
+        #             ]
+        #         },
+        #         {
+        #             'index': 'private001', 
+        #             'event': 'private_vc_apply_bcst', 
+        #             'position': 0,
+        #             'check': 
+        #             [
+        #                 {'key': ['data', 'userId'], 'value': test_parameter['track0002']['id']}, 
+        #                 {
+        #                     'key': ['data', 'waitQueue'], 
+        #                     'value': [
+        #                         test_parameter['track0001']['id'],
+        #                         test_parameter['track0002']['id'],
+        #                     ]
+        #                 }, 
         #             ]
         #         },
 
@@ -293,45 +381,45 @@ def getTestData(test_parameter):
         #     ]
         # ),
 
-        ('房主審核通過後用戶可立即上麥，用戶被請出房後， DB應結束該場session且記錄為goodbye。', 
-            [
-                {'user': 'private001', 'wait': 0, 'action': [
-                        ('private_vc_room:37', 'phx_join', {}, 0),
-                        ('private_vc_room:37', 'private_vc_enter', {}, 1),
-                        ('private_vc_room:37', 'private_vc_review', {"userId": test_parameter['track0001']['id'],"result": "accept"}, 2),
-                        ('private_vc_room:37', 'private_vc_goodbye', {"userId": test_parameter['track0001']['id']}, 4),
-                        ('private_vc_room:37', 'private_vc_leave', {}, 7)
-                    ], 'sleep': 5
-                },
-                {'user': 'track0001', 'wait': 1, 'action': [
-                        ('private_vc_room:37', 'phx_join', {}, 1),
-                        ('private_vc_room:37', 'private_vc_apply', {}, 1),
-                        ('private_vc_room:37', 'private_vc_enter', {}, 2),
-                        ('private_vc_room:37', 'ping', {}, 7),
-                    ], 'sleep': 5
-                },
-            ], 
-            [
-                { 
-                    'index': 'private001', 
-                    'event': 'private_vc_goodbye_bcst', 
-                    'position': 0,
-                    'check': 
-                    [
-                        {'key': ['data', 'userId'], 'value': test_parameter['track0001']['id']}, 
-                    ]
-                },
-                {
-                    'index': 'track0001', 
-                    'event': 'private_vc_goodbye_bcst', 
-                    'position': 0,
-                    'check': 
-                    [
-                        {'key': ['data', 'userId'], 'value': test_parameter['track0001']['id']}, 
-                    ]
-                },
-            ]
-        ),
+        # ('房主審核通過後用戶可立即上麥，用戶被請出房後， DB應結束該場session且記錄為goodbye。', 
+        #     [
+        #         {'user': 'private001', 'wait': 0, 'action': [
+        #                 ('private_vc_room:37', 'phx_join', {}, 0),
+        #                 ('private_vc_room:37', 'private_vc_enter', {}, 1),
+        #                 ('private_vc_room:37', 'private_vc_review', {"userId": test_parameter['track0001']['id'],"result": "accept"}, 2),
+        #                 ('private_vc_room:37', 'private_vc_goodbye', {"userId": test_parameter['track0001']['id']}, 4),
+        #                 ('private_vc_room:37', 'private_vc_leave', {}, 7)
+        #             ], 'sleep': 5
+        #         },
+        #         {'user': 'track0001', 'wait': 1, 'action': [
+        #                 ('private_vc_room:37', 'phx_join', {}, 1),
+        #                 ('private_vc_room:37', 'private_vc_apply', {}, 1),
+        #                 ('private_vc_room:37', 'private_vc_enter', {}, 2),
+        #                 ('private_vc_room:37', 'ping', {}, 7),
+        #             ], 'sleep': 5
+        #         },
+        #     ], 
+        #     [
+        #         { 
+        #             'index': 'private001', 
+        #             'event': 'private_vc_goodbye_bcst', 
+        #             'position': 0,
+        #             'check': 
+        #             [
+        #                 {'key': ['data', 'userId'], 'value': test_parameter['track0001']['id']}, 
+        #             ]
+        #         },
+        #         {
+        #             'index': 'track0001', 
+        #             'event': 'private_vc_goodbye_bcst', 
+        #             'position': 0,
+        #             'check': 
+        #             [
+        #                 {'key': ['data', 'userId'], 'value': test_parameter['track0001']['id']}, 
+        #             ]
+        #         },
+        #     ]
+        # ),
 
         # ('房主及用戶在麥位，但房主發生上斷線，該房應轉成offline且結束該場session(disconnect)', # 4452
         #     [

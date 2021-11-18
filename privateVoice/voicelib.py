@@ -1,9 +1,6 @@
 import json
-import sys
 import time
-import asyncio
-import random         
-import websocket
+from . import misc
 from  websockets import connect
 from  websocket import WebSocketApp
 from pprint import pprint
@@ -43,6 +40,9 @@ class voiceUser():
         for i in self.actionList:
             sleep = i.pop('sleep')
             time.sleep(sleep)
-            self.ws.send(json.dumps(i))
-            # pprint(i)
+            if i.get('apiName'):
+                misc.apiFunction(i['prefix'], i['header'], i['apiName'], i['method'], i['body'])
+            else:
+                self.ws.send(json.dumps(i))
+                # pprint(i)
         time.sleep(self.sleepTime)

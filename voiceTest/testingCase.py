@@ -1340,7 +1340,7 @@ def getTestData(test_parameter):
         #     ]
         # ),
 
-        # ('暱稱正常及觸發文字嶽，追蹤時收到的event應不同', #4585 
+        # ('觸發track event的用戶，其數到track的回覆，會依暱稱中是否包含禁詞而不同', #4585 
         #     [
         #         {'user': 'broadcaster011', 'wait': 0, 'action': [
         #                 ('vc_room:8', 'phx_join', {}, 0),  
@@ -1384,14 +1384,6 @@ def getTestData(test_parameter):
         #                 {'key': ['fansId'], 'value': test_parameter['track0020']['id']},
         #                 {'key': ['roles'], 'value': ["ROLE_USER"]},
         #                 {'key': ['content'], 'value': '@%s 追蹤了 %s！'%(test_parameter['track0020']['nickname'], test_parameter['broadcaster011']['nickname'])},
-        #             ]
-        #         },
-        #         {'index': 'track0012', 'event': 'tracked', 'position': 0, 'check': [
-        #                 {'key': ['roomId'], 'value': 8},
-        #                 {'key': ['liveMasterId'], 'value': test_parameter['broadcaster011']['id']},
-        #                 {'key': ['fansId'], 'value': test_parameter['track0012']['id']},
-        #                 {'key': ['roles'], 'value': ["ROLE_USER"]},
-        #                 {'key': ['content'], 'value': '@%s 追蹤了 %s！'%(test_parameter['track0012']['nickname'], test_parameter['broadcaster011']['nickname'])},
         #             ]
         #         },
         #     ]
@@ -1456,7 +1448,7 @@ def getTestData(test_parameter):
                         {'key': ['seats', 'streamId'], 'index': 2, 'value': None},
                     ]
                 },
-            ]
+            ],
         ),
 
     ]   

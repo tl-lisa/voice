@@ -1,10 +1,6 @@
 import time
-import json
 import pytest
 import threading
-import random
-import types
-import traceback
 from pprint import pprint
 from . import voicelib
 from . import dbConnect
@@ -80,59 +76,6 @@ class TestVoiceScoket():
         finally:
             del voice
 
-    def oldverifyResult(self, data, verifyInfo):
-        isGetEvent = False 
-        position = 0
-        event = None
-        for i in data:
-            print('data event=', i['event'],' verify event=',verifyInfo['event'], ' position=', position,' verify position=',verifyInfo['position'])
-            if i['event'] == verifyInfo['event']:
-                if i['event'] == 'audience_blocked':
-                    pass #check user_blocks  
-                elif i['event'] == '':
-                    pass #check fnas
-                if verifyInfo['position'] == position:
-                    isGetEvent = True
-                    event = i
-                    break
-                else:
-                    position += 1
-        if verifyInfo['check']:
-            assert isGetEvent, "should get check data, but not"
-        else:
-            assert not isGetEvent, "should not get check data, but get event(%s) at position(%d)"%(i['event'], position)
-        if isGetEvent:
-            for j in verifyInfo['check']:
-                count = 0
-                tmp = event
-                isGetKey = False
-                while not isGetKey:
-                    if tmp:
-                        for key, value in tmp.items():
-                            if key == j['key']:
-                                if j['value'] and type(j['value']) == list:
-                                    isGetValue = False
-                                    for vv in j['value']:
-                                        print('check key is ',key, ' check event is', event, ' check value is', vv)
-                                        isGetValue = True if vv in value else False
-                                    assert isGetValue
-                                else:
-                                    print('check key is ',key, ' check event is', event, ' check value is', value)
-                                    assert j['value'] == value
-                                isGetKey = True
-                                break
-                            else:
-                                if type(value) == dict:
-                                    tmp = tmp[key]
-                                    break
-                    else:
-                        break
-                    if count > 8:
-                        break
-                    else:
-                        count += 1                   
-                assert isGetKey, "Cannot get key("+j['key']+ ")"
-
     def verifyResult(self, data, verifyInfo):
         isGetEvent = False 
         position = 0
@@ -195,8 +138,9 @@ class TestVoiceScoket():
                     assert isFound, "should not get check key(%s) at event(%s)"%(itemName, i['event'])            
 
     @pytest.mark.parametrize("scenario, data, verifyInfo", testingCase.getTestData(test_parameter))
-    def testVoice(self, editInit, scenario, data, verifyInfo):   
+    def testVoice(self, scenario, data, verifyInfo):   
         threadList = []
+        checkKeys = []
         self.wsDic.clear()
         for i in range(len(data)):
             threadList.append(threading.Thread(target = self.wsJob, args = (data[i], i, )))
@@ -208,17 +152,6 @@ class TestVoiceScoket():
             if self.wsDic[k['index']]:
                 print('check: ', k['index'])
                 self.verifyResult(self.wsDic[k['index']], k) 
-                # if all([k['index'] == 'track0012', k['event'] == 'voiceroom_in']): #for ticket2585 查詢陪伴區的觀眾
-                #     header['X-Auth-Token'] = test_parameter['track0012']['token']
-                #     header['X-Auth-Nonce'] = test_parameter['track0012']['nonce']
-                #     apiName = '/api/v2/identity/roomAudiences/voiceChat/1'
-                #     res = misc.apiFunction(test_parameter['prefix'], header, apiName, 'get', None)
-                #     resText = json.loads(res.text)
-                #     assert len(resText['data']) == 2
-                #     assert all([item in resText['data'] for item in [
-                #         test_parameter['track0012']['id'], test_parameter['track0012']['id'], 
-                #         test_parameter['track0012']['id'], test_parameter['track0011']['id']
-                #     ]]) == True
             else:
                 print('無資料比對')
                 
