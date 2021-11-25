@@ -46,42 +46,181 @@ def getTestData(test_parameter):
         #     ]
         # ),
 
-        ('房主若修改了房間資訊，應在房內公告room_data_changed_bcst ', #4567
+        ('移除非私密聲聊房所需的event', #4598
             [
                 {'user': 'private001', 'wait': 0, 'action': [
                         ('private_vc_room:37', 'phx_join', {}, 0),
                         ('private_vc_room:37', 'private_vc_enter', {}, 0),
-                        # ('private_vc_room:37', 'private_vc_review', {"userId": test_parameter['track0001']['id'],"result": "accept"}, 1),
-                        ('api',{
-                            'apiName': '/api/v2/app/privateVoiceChat/37',
-                            'prefix': test_parameter['prefix'],
-                            'header': {'Connection': 'Keep-alive', 'X-Auth-Token': test_parameter['private001']['token'], 'X-Auth-Nonce': test_parameter['private001']['nonce']},
-                            'method': 'patch',
-                            'body': {'title': '房內變更標題', 'description': '房內變更說明', 'ownerStatus': 'busy'}}, 1),
-                        ('private_vc_room:37', 'private_vc_leave', {}, 4),
+                        ('private_vc_room:37', 'private_vc_review', {"userId": test_parameter['track0002']['id'],"result": "refuse"}, 7),
+                        ('private_vc_room:37', 'private_vc_review', {"userId": test_parameter['track0001']['id'],"result": "accept"}, 4),
+                        ('private_vc_room:37', 'private_vc_goodbye', {"userId": test_parameter['track0001']['id']}, 4),
+                        ('private_vc_room:37', 'private_vc_leave', {}, 8),
                     ], 'sleep': 2
                 },
-                # {'user': 'track0001', 'wait': 1, 'action': [
-                #         ('private_vc_room:37', 'phx_join', {}, 1),
-                #         ('private_vc_room:37', 'private_vc_enter', {}, 2),
-                #         ('private_vc_room:37', 'private_vc_leave', {}, 10),
-                #     ], 'sleep': 2
-                # },
+                {'user': 'track0001', 'wait': 1, 'action': [
+                        ('private_vc_room:37', 'phx_join', {}, 1),
+                        ('private_vc_room:37', 'private_vc_apply', {}, 1),
+                        ('private_vc_room:37', 'private_vc_abort', {}, 2),
+                        ('private_vc_room:37', 'private_vc_apply', {}, 4),
+                        ('private_vc_room:37', 'private_vc_enter', {}, 6),
+                        ('private_vc_room:37', 'ping', {}, 6),
+                    ], 'sleep': 2
+                },
+                {'user': 'track0002', 'wait': 5, 'action': [
+                        ('private_vc_room:37', 'phx_join', {}, 1),
+                        ('private_vc_room:37', 'private_vc_apply', {}, 1),
+                        ('private_vc_room:37', 'ping', {}, 3),
+                    ], 'sleep': 2
+                },
             ], 
             [
                 {
                     'index': 'private001', 
-                    'event': 'room_data_changed_bcst', 
+                    'event': 'private_voiceroom_join', 
                     'position': 0,
                     'check': 
                     [
-                        {'key': ['data', 'roomId'], 'value': 37}, 
-                        {'key': ['data', 'title'], 'value': '房內變更標題'}, 
-                        {'key': ['data', 'description'], 'value': '房內變更說明'}, 
+                        {'key': ['data', 'isAllowed'], 'value': False}, 
+                        {'key': ['data', 'isOwner'], 'value': True}, 
                     ]
                 },
+                {
+                    'index': 'private001', 
+                    'event': 'voiceroom_in', 
+                    'position': 0,
+                    'check': []
+                },
+                {
+                    'index': 'private001', 
+                    'event': 'voiceroom_in_bcst', 
+                    'position': 0,
+                    'check': []
+                },
+                {
+                    'index': 'private001', 
+                    'event': 'take_seat', 
+                    'position': 0,
+                    'check': []
+                },
+                {
+                    'index': 'private001', 
+                    'event': 'seat_taken', 
+                    'position': 0,
+                    'check': []
+                },
+                {
+                    'index': 'track0001', 
+                    'event': 'leave_seat', 
+                    'position': 0,
+                    'check': []
+                },
+                {
+                    'index': 'track0001', 
+                    'event': 'seat_left', 
+                    'position': 0,
+                    'check': []
+                },
+                {
+                    'index': 'track0001', 
+                    'event': 'book_seat', 
+                    'position': 0,
+                    'check': []
+                },
+                {
+                    'index': 'private001', 
+                    'event': 'seat_booked', 
+                    'position': 0,
+                    'check': []
+                },
+                {
+                    'index': 'track0001', 
+                    'event': 'abort_seat', 
+                    'position': 0,
+                    'check': []
+                },
+                {
+                    'index': 'private001', 
+                    'event': 'seat_aborted', 
+                    'position': 0,
+                    'check': []
+                },
+                {
+                    'index': 'track0001', 
+                    'event': 'seat_pickedup', 
+                    'position': 0,
+                    'check': []
+                },
+                {
+                    'index': 'private001', 
+                    'event': 'pickup_seat', 
+                    'position': 0,
+                    'check': []
+                },
+                {
+                    'index': 'track0001', 
+                    'event': 'seat_kickedout', 
+                    'position': 0,
+                    'check': []
+                },
+                {
+                    'index': 'private001', 
+                    'event': 'kickout_seat', 
+                    'position': 0,
+                    'check': []
+                },
+                {
+                    'index': 'track0002', 
+                    'event': 'seat_rejected', 
+                    'position': 0,
+                    'check': []
+                },
+                {
+                    'index': 'private001', 
+                    'event': 'reject_seat', 
+                    'position': 0,
+                    'check': []
+                },
+
             ]
         ),
+
+
+        # ('房主若修改了房間資訊，應在房內公告room_data_changed_bcst ', #4567
+        #     [
+        #         {'user': 'private001', 'wait': 0, 'action': [
+        #                 ('private_vc_room:37', 'phx_join', {}, 0),
+        #                 ('private_vc_room:37', 'private_vc_enter', {}, 0),
+        #                 ('private_vc_room:37', 'private_vc_review', {"userId": test_parameter['track0001']['id'],"result": "accept"}, 1),
+        #                 ('api',{
+        #                     'apiName': '/api/v2/app/privateVoiceChat/37',
+        #                     'prefix': test_parameter['prefix'],
+        #                     'header': {'Connection': 'Keep-alive', 'X-Auth-Token': test_parameter['private001']['token'], 'X-Auth-Nonce': test_parameter['private001']['nonce']},
+        #                     'method': 'patch',
+        #                     'body': {'title': '房內變更標題1', 'description': '房內變更說明1', 'ownerStatus': 'busy'}}, 5),
+        #                 ('private_vc_room:37', 'private_vc_leave', {}, 4),
+        #             ], 'sleep': 2
+        #         },
+        #         {'user': 'track0001', 'wait': 4, 'action': [
+        #                 ('private_vc_room:37', 'phx_join', {}, 1),
+        #                 ('private_vc_room:37', 'private_vc_enter', {}, 2),
+        #                 ('private_vc_room:37', 'private_vc_leave', {}, 10),
+        #             ], 'sleep': 2
+        #         },
+        #     ], 
+        #     [
+        #         {
+        #             'index': 'private001', 
+        #             'event': 'room_data_changed_bcst', 
+        #             'position': 0,
+        #             'check': 
+        #             [
+        #                 {'key': ['data', 'roomId'], 'value': 37}, 
+        #                 {'key': ['data', 'title'], 'value': '房內變更標題1'}, 
+        #                 {'key': ['data', 'description'], 'value': '房內變更說明1'}, 
+        #             ]
+        #         },
+        #     ]
+        # ),
 
         # ('除房主外，在phx_join時應確認是否已綁定',  #4549
         #     [

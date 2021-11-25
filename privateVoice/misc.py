@@ -70,8 +70,8 @@ def get_test_data(env, test_parameter, masterPrefix, beg, end, fillzero):
         test_parameter['prefix'] = 'http://35.234.17.150'
         test_parameter['db'] = '35.234.17.150'
     elif env == 'test':
-        test_parameter['prefix'] = 'http://testing-api.truelovelive.com.tw'
-        test_parameter['db'] = 'testing-api.truelovelive.com.tw'
+        test_parameter['prefix'] = 'http://testing-api.xtars.com.tw'
+        test_parameter['db'] = 'testing-api.xtars.com.tw'
     test_parameter['errAccount'] = {'token': 'aa24385', 'nonce': 'noceiw'}
     sqlStr  = "select login_id, id, token, nonce, truelove_id, nickname from identity "
     sqlStr += "where login_id in ('tl-lisa', 'lv000', 'lv001', 'lv002', '"
