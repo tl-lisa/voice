@@ -659,68 +659,68 @@ def getTestData(test_parameter):
         #     ]
         # ),
 
-        # ('訊息或暱稱包括禁詞除自己外，其他人不會收到訊息',
-        #     [
-        #         {'user': 'broadcaster012', 'wait': 0, 'action': [
-        #                 ('vc_room:1', 'phx_join', {},0), 
-        #                 ('vc_room:1', 'take_seat', {'seatIndex': 1}, 1)
-        #             ], 
-        #             'sleep': 7
-        #         }, 
-        #         {'user': 'broadcaster011', 'wait': 1, 'action': [
-        #                 ('vc_room:1', 'phx_join', {}, 0), 
-        #                 ('vc_room:1', 'mute_seat', {'targetUserId': test_parameter['broadcaster012']['id']}, 1)
-        #             ], 
-        #             'sleep': 6
-        #         },
-        #         {'user': 'broadcaster013', 'wait': 2, 'action': [
-        #                 ('vc_room:1', 'phx_join', {}, 0), 
-        #                 ('vc_room:1', 'message', {'content': 'broadcaster13 發送訊息'}, 1)
-        #             ], 
-        #             'sleep': 5
-        #         },
-        #         {'user': 'track0020', 'wait': 2, 'action': [
-        #                     ('vc_room:1', 'phx_join', {}, 0), 
-        #                     ('vc_room:1', 'message', {'content': '我的nickname有禁詞'}, 1)
-        #                 ], 
-        #                 'sleep': 3
-        #         },
-        #         {'user': 'track0011', 'wait': 2, 'action': [
-        #                     ('vc_room:1', 'phx_join', {}, 0), 
-        #                     ('vc_room:1', 'message', {'content': '我發的訊息有代儲值'},1)
-        #                 ], 
-        #                 'sleep': 1
-        #         }
-        #     ],
-        #     [
-        #         {'index': 'broadcaster012', 'event': 'message_bcst',  'position': 0, 'check': [
-        #                 {'key': 'userId', 'value': test_parameter['broadcaster013']['id']}, 
-        #                 {'key': 'content', 'value': '@直播主13 broadcaster13 發送訊息'}
-        #             ]
-        #         },
-        #         {'index': 'broadcaster012', 'event': 'message_bcst', 'position': 1, 'check': []},
-        #         {'index': 'track0020', 'event': 'message',  'position': 0, 'check': [
-        #                 {'key': 'userId', 'value': test_parameter['track0020']['id']}, 
-        #                 {'key': 'content', 'value': '@快樂代儲你我他 我的nickname有禁詞'}
-        #             ]
-        #         },
-        #         {'index': 'track0020', 'event': 'message_bcst', 'position': 0, 'check': [
-        #                 {'key': 'userId', 'value': test_parameter['broadcaster013']['id']}, 
-        #                 {'key': 'content', 'value': '@直播主13 broadcaster13 發送訊息'}
-        #             ]
-        #         },
-        #         {'index': 'track0011', 'event': 'message_bcst', 'position': 0, 'check': [
-        #                 {'key': 'userId', 'value': test_parameter['broadcaster013']['id']}, 
-        #                 {'key': 'content', 'value': '@直播主13 broadcaster13 發送訊息'}
-        #             ]
-        #         },
-        #         {'index': 'track0011', 'event': 'message', 'position': 0, 'check': [
-        #                 {'key': 'userId', 'value': test_parameter['track0011']['id']}, 
-        #                 {'key': 'content', 'value': '@我是小QA的迷妹 我發的訊息有代儲值'}
-        #             ]
-        #         }
-        #     ]
-        # ), 
+        ('訊息或暱稱包括禁詞除自己外，其他人不會收到訊息',
+            [
+                {'user': 'broadcaster012', 'wait': 0, 'action': [
+                        ('vc_room:1', 'phx_join', {},0), 
+                        ('vc_room:1', 'take_seat', {'seatIndex': 1}, 1)
+                    ], 
+                    'sleep': 7
+                }, 
+                {'user': 'broadcaster011', 'wait': 1, 'action': [
+                        ('vc_room:1', 'phx_join', {}, 0), 
+                        ('vc_room:1', 'mute_seat', {'targetUserId': test_parameter['broadcaster012']['id']}, 1)
+                    ], 
+                    'sleep': 6
+                },
+                {'user': 'broadcaster013', 'wait': 2, 'action': [
+                        ('vc_room:1', 'phx_join', {}, 0), 
+                        ('vc_room:1', 'message', {'content': 'broadcaster13 發送訊息'}, 1)
+                    ], 
+                    'sleep': 5
+                },
+                {'user': 'track0020', 'wait': 2, 'action': [
+                            ('vc_room:1', 'phx_join', {}, 0), 
+                            ('vc_room:1', 'message', {'content': '我的nickname有禁詞'}, 1)
+                        ], 
+                        'sleep': 3
+                },
+                {'user': 'track0011', 'wait': 2, 'action': [
+                            ('vc_room:1', 'phx_join', {}, 0), 
+                            ('vc_room:1', 'message', {'content': '我發的訊息有代儲值'},1)
+                        ], 
+                        'sleep': 1
+                }
+            ],
+            [
+                {'index': 'broadcaster012', 'event': 'message_bcst',  'position': 0, 'check': [
+                        {'key': 'userId', 'value': test_parameter['broadcaster013']['id']}, 
+                        {'key': 'content', 'value': '@直播主13 broadcaster13 發送訊息'}
+                    ]
+                },
+                {'index': 'broadcaster012', 'event': 'message_bcst', 'position': 1, 'check': []},
+                {'index': 'track0020', 'event': 'message',  'position': 0, 'check': [
+                        {'key': 'userId', 'value': test_parameter['track0020']['id']}, 
+                        {'key': 'content', 'value': '@快樂代儲你我他 我的nickname有禁詞'}
+                    ]
+                },
+                {'index': 'track0020', 'event': 'message_bcst', 'position': 0, 'check': [
+                        {'key': 'userId', 'value': test_parameter['broadcaster013']['id']}, 
+                        {'key': 'content', 'value': '@直播主13 broadcaster13 發送訊息'}
+                    ]
+                },
+                {'index': 'track0011', 'event': 'message_bcst', 'position': 0, 'check': [
+                        {'key': 'userId', 'value': test_parameter['broadcaster013']['id']}, 
+                        {'key': 'content', 'value': '@直播主13 broadcaster13 發送訊息'}
+                    ]
+                },
+                {'index': 'track0011', 'event': 'message', 'position': 0, 'check': [
+                        {'key': 'userId', 'value': test_parameter['track0011']['id']}, 
+                        {'key': 'content', 'value': '@我是小QA的迷妹 我發的訊息有代儲值'}
+                    ]
+                }
+            ]
+        ), 
 
         # ('送禮訊息在聲聊房中皆會收到,且超過10萬點的禮物會有跑馬燈, 若是暱稱含禁詞，則送禮訊息不會廣播, 若點數不足會回錯誤',  
         #     [       
@@ -1389,67 +1389,454 @@ def getTestData(test_parameter):
         #     ]
         # ),
 
-        ('推拉流 id 使用方法更新', #4552
-            [
-                {'user': 'broadcaster011', 'wait': 0, 'action': [
-                        ('vc_room:8', 'phx_join', {}, 0),  
-                        ('vc_room:8', 'take_seat', {'seatIndex': 1 }, 1),
-                        ('vc_room:8', 'pickup_seat', {'seatIndex': 2, 'targetUserId': test_parameter['track0012']['id'], 'seatType': 'host'}, 2),
-                        ('vc_room:8', 'pickup_seat', {'seatIndex': 2, 'targetUserId': test_parameter['track0011']['id'], 'seatType': 'host'}, 2),
-                        ('vc_room:8', 'kickout_seat', {'targetUserId': test_parameter['track0011']['id']}, 2),
-                        ('vc_room:8', 'phx_leave', {}, 20),
-                    ], 'sleep': 1
-                },
-                {'user': 'track0012', 'wait': 1, 'action': [
-                        ('vc_room:8', 'phx_join', {}, 0),  
-                        ('vc_room:8', 'book_seat', {}, 1),
-                        ('vc_room:8', 'leave_seat', {}, 3),
-                        ('vc_room:8', 'phx_leave', {}, 1),
-                    ], 'sleep': 1
-                },
-                {'user': 'track0011', 'wait': 6, 'action': [
-                        ('vc_room:8', 'phx_join', {}, 0),  
-                        ('vc_room:8', 'book_seat', {}, 1),
-                        ('vc_room:8', 'phx_leave', {}, 4),
-                    ], 'sleep': 1
-                },
-            ],
-            [
-                {'index': 'broadcaster011', 'event': 'seat_taken', 'position': 0, 'check': [
-                        {'key': ['roomId'], 'value': 8},
-                        {'key': ['seats', 'streamId'], 'index': 1, 'value': test_parameter['broadcaster011']['id']},
-                    ]
-                },
-                {'index': 'track0012', 'event': 'voiceroom_in', 'position': 0, 'check': [
-                        {'key': ['roomId'], 'value': 8},
-                        {'key': ['seats', 'streamId'], 'index': 1, 'value': test_parameter['broadcaster011']['id']},
-                    ]
-                },
-                {'index': 'track0012', 'event': 'seat_pickedup', 'position': 0, 'check': [
-                        {'key': ['roomId'], 'value': 8},
-                        {'key': ['seats', 'streamId'], 'index': 2, 'value': test_parameter['track0012']['id']},
-                    ]
-                },
-                {'index': 'track0012', 'event': 'seat_left', 'position': 0, 'check': [
-                        {'key': ['roomId'], 'value': 8},
-                        {'key': ['seats', 'streamId'], 'index': 1, 'value': test_parameter['broadcaster011']['id']},
-                        {'key': ['seats', 'streamId'], 'index': 2, 'value': None},
-                    ]
-                },
-                {'index': 'broadcaster011', 'event': 'seat_kickedout', 'position': 0, 'check': [
-                        {'key': ['roomId'], 'value': 8},
-                        {'key': ['seats', 'streamId'], 'index': 1, 'value': test_parameter['broadcaster011']['id']},
-                        {'key': ['seats', 'streamId'], 'index': 2, 'value': None},
-                    ]
-                },
-                {'index': 'broadcaster011', 'event': 'voiceroom_left_bcst', 'position': 0, 'check': [
-                        {'key': ['roomId'], 'value': 8},
-                        {'key': ['seats', 'streamId'], 'index': 1, 'value': None},
-                        {'key': ['seats', 'streamId'], 'index': 2, 'value': None},
-                    ]
-                },
-            ],
-        ),
+        # ('推拉流 id 使用方法更新', #4552
+        #     [
+        #         {'user': 'broadcaster011', 'wait': 0, 'action': [
+        #                 ('vc_room:8', 'phx_join', {}, 0),  
+        #                 ('vc_room:8', 'take_seat', {'seatIndex': 1 }, 1),
+        #                 ('vc_room:8', 'pickup_seat', {'seatIndex': 2, 'targetUserId': test_parameter['track0012']['id'], 'seatType': 'host'}, 2),
+        #                 ('vc_room:8', 'pickup_seat', {'seatIndex': 2, 'targetUserId': test_parameter['track0011']['id'], 'seatType': 'host'}, 2),
+        #                 ('vc_room:8', 'kickout_seat', {'targetUserId': test_parameter['track0011']['id']}, 2),
+        #                 ('vc_room:8', 'phx_leave', {}, 20),
+        #             ], 'sleep': 1
+        #         },
+        #         {'user': 'track0012', 'wait': 1, 'action': [
+        #                 ('vc_room:8', 'phx_join', {}, 0),  
+        #                 ('vc_room:8', 'book_seat', {}, 1),
+        #                 ('vc_room:8', 'leave_seat', {}, 3),
+        #                 ('vc_room:8', 'phx_leave', {}, 1),
+        #             ], 'sleep': 1
+        #         },
+        #         {'user': 'track0011', 'wait': 6, 'action': [
+        #                 ('vc_room:8', 'phx_join', {}, 0),  
+        #                 ('vc_room:8', 'book_seat', {}, 1),
+        #                 ('vc_room:8', 'phx_leave', {}, 4),
+        #             ], 'sleep': 1
+        #         },
+        #     ],
+        #     [
+        #         {'index': 'broadcaster011', 'event': 'seat_taken', 'position': 0, 'check': [
+        #                 {'key': ['roomId'], 'value': 8},
+        #                 {'key': ['seats', 'streamId'], 'index': 1, 'value': test_parameter['broadcaster011']['id']},
+        #             ]
+        #         },
+        #         {'index': 'track0012', 'event': 'voiceroom_in', 'position': 0, 'check': [
+        #                 {'key': ['roomId'], 'value': 8},
+        #                 {'key': ['seats', 'streamId'], 'index': 1, 'value': test_parameter['broadcaster011']['id']},
+        #             ]
+        #         },
+        #         {'index': 'track0012', 'event': 'seat_pickedup', 'position': 0, 'check': [
+        #                 {'key': ['roomId'], 'value': 8},
+        #                 {'key': ['seats', 'streamId'], 'index': 2, 'value': test_parameter['track0012']['id']},
+        #             ]
+        #         },
+        #         {'index': 'track0012', 'event': 'seat_left', 'position': 0, 'check': [
+        #                 {'key': ['roomId'], 'value': 8},
+        #                 {'key': ['seats', 'streamId'], 'index': 1, 'value': test_parameter['broadcaster011']['id']},
+        #                 {'key': ['seats', 'streamId'], 'index': 2, 'value': None},
+        #             ]
+        #         },
+        #         {'index': 'broadcaster011', 'event': 'seat_kickedout', 'position': 0, 'check': [
+        #                 {'key': ['roomId'], 'value': 8},
+        #                 {'key': ['seats', 'streamId'], 'index': 1, 'value': test_parameter['broadcaster011']['id']},
+        #                 {'key': ['seats', 'streamId'], 'index': 2, 'value': None},
+        #             ]
+        #         },
+        #         {'index': 'broadcaster011', 'event': 'voiceroom_left_bcst', 'position': 0, 'check': [
+        #                 {'key': ['roomId'], 'value': 8},
+        #                 {'key': ['seats', 'streamId'], 'index': 1, 'value': None},
+        #                 {'key': ['seats', 'streamId'], 'index': 2, 'value': None},
+        #             ]
+        #         },
+        #     ],
+        # ),
+
+        # ('過年紅包活動，暖場、抽奬', #4629~4634  不同階段進房及抽奬
+        #     [       
+        #         {'user': 'broadcaster011', 'wait': 0, 'action': [
+        #                 ('vc_room:3', 'phx_join', {}, 0), 
+        #                 ('vc_room:3', 'ping', {}, 40),
+        #                 ('vc_room:3', 'ping', {}, 40),
+        #                 ('vc_room:3', 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 10),
+        #                 ('vc_room:3', 'phx_leave', {}, 3),
+        #             ], 'sleep': 7
+        #         }, 
+        #         {'user': 'broadcaster013', 'wait': 1, 'action': [
+        #                 ('vc_room:3', 'phx_join', {}, 1), 
+        #                 ('vc_room:3', 'take_seat', {'seatIndex': 1}, 1),
+        #                 ('vc_room:3', 'ping', {}, 40),
+        #                 ('vc_room:3', 'ping', {}, 40),
+        #                 ('vc_room:3', 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 10),
+        #                 ('vc_room:3', 'phx_leave', {}, 3),
+        #             ], 'sleep': 3
+        #         }, 
+        #         {'user': 'track0011', 'wait': 3, 'action': [
+        #                 ('vc_room:3', 'phx_join', {}, 1), 
+        #                 ('vc_room:3', 'gift', {'giftId': '9e63bbf0-3e86-4019-b3fc-e955c175569b', 'targetUserId': test_parameter['broadcaster011']['id'], 'count': 5}, 1), #8500
+        #                 ('vc_room:3', 'gift', {'giftId': '9024cddc-b9be-40d1-92a3-7e78cb5de592', 'targetUserId': test_parameter['broadcaster013']['id'], 'count': 4}, 7), #1700
+        #                 ('vc_room:3', 'gift', {'giftId': 'e1e828ca-8bcf-4066-8a00-531ea75fdbb2', 'targetUserId': test_parameter['broadcaster011']['id'], 'count': 7}, 7), #100
+        #                 ('vc_room:3', 'ping', {}, 30),
+        #                 ('vc_room:3', 'ping', {}, 30),
+        #                 ('vc_room:3', 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 5),
+        #                 ('vc_room:3', 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 5),
+        #                 ('vc_room:3', 'phx_leave', {}, 3),
+        #             ], 'sleep': 3
+        #         },
+        #         {'user': 'track0012', 'wait': 40, 'action': [
+        #                 ('vc_room:3', 'phx_join', {}, 1), 
+        #                 ('vc_room:3', 'ping', {}, 30),
+        #                 ('vc_room:3', 'ping', {}, 30),
+        #                 ('vc_room:3', 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 10),
+        #                 ('vc_room:3', 'phx_leave', {}, 30),
+        #             ], 'sleep': 3
+        #         },
+        #         {'user': 'track0013', 'wait': 120, 'action': [
+        #                 ('vc_room:3', 'phx_join', {}, 10), 
+        #                 ('vc_room:3', 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 5),
+        #                 ('vc_room:3', 'phx_leave', {}, 3),
+        #             ], 'sleep': 3
+        #         },
+        #         {'user': 'track0014', 'wait': 10, 'action': [
+        #                 ('vc_room:1', 'phx_join', {}, 1), 
+        #                 ('vc_room:1', 'ping', {}, 30),
+        #                 ('vc_room:1', 'ping', {}, 30), 
+        #                 ('vc_room:1', 'phx_leave', {}, 10),
+        #                 ('vc_room:3', 'phx_join', {}, 10), 
+        #                 ('vc_room:3', 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 5),
+        #                 ('vc_room:3', 'phx_leave', {}, 3),
+        #             ], 'sleep': 3
+        #         },
+
+        #     ],  
+        #     [
+        #         {'index': 'track0013', 'event': 'luckymoney_data_changed_bcst', 'position': 0, 'check': [
+        #                 {'key': ['progress'], 'value': 'GATHER'},
+        #                 {'key': ['gatherPoints'],  'value': 50000},
+        #                 {'key': ['targetPoints'], 'value': 100000},
+        #                 {'key': ['displayed'], 'value': True},
+        #                 {'key': ['clicked'], 'value': False},
+        #             ]
+        #         },
+        #         {'index': 'track0012', 'event': 'luckymoney_data_changed_bcst', 'position': 0, 'check': [
+        #                 {'key': ['progress'], 'value': 'GATHER'},
+        #                 {'key': ['gatherPoints'],  'value': 50000},
+        #                 {'key': ['targetPoints'], 'value': 100000},
+        #                 {'key': ['displayed'], 'value': True},
+        #                 {'key': ['clicked'], 'value': False},
+        #             ]
+        #         },
+        #         {'index': 'track0012', 'event': 'luckymoney_data_changed_bcst', 'position': 2, 'check': [
+        #                 {'key': ['progress'], 'value': 'WARM_UP'},
+        #                 {'key': ['gatherPoints'],  'value': 50000},
+        #                 {'key': ['targetPoints'], 'value': 50000},
+        #                 {'key': ['displayed'], 'value': True},
+        #                 {'key': ['clicked'], 'value': False},
+        #             ]
+        #         },
+        #         {'index': 'track0014', 'event': 'luckymoney_data_changed_bcst', 'position': 0, 'check': [
+        #                 {'key': ['progress'], 'value': 'READY'},
+        #                 {'key': ['gatherPoints'],  'value': 50000},
+        #                 {'key': ['targetPoints'], 'value': 50000},
+        #                 {'key': ['displayed'], 'value': True},
+        #                 {'key': ['clicked'], 'value': True},
+        #             ]
+        #         },
+        #         {'index': 'track0014', 'event': 'luckymoney_marquee', 'position': 0, 'check': [
+        #                 {'key': ['level'], 'value': 1},
+        #                 {'key': ['content', 'zh'],  'value': '{targetUser.name} 準備送紅包了~大家快來搶紅包！'},
+        #                 {'key': ['fromUser', 'id'], 'value': test_parameter['track0011']['id']},
+        #                 {'key': ['targetUser', 'id'], 'value': test_parameter['broadcaster011']['id']},
+        #                 {'key': ['url'], 'value': 'xtars://voiceChat/3'},
+        #             ]
+        #         },
+
+        #     ]
+        # ),
+
+        # ('過年紅包活動，暖場、抽奬', #4629~4634  都不抽奬，等30秒抽奬時間過後就回到一般狀態
+        #     [       
+        #         {'user': 'broadcaster011', 'wait': 0, 'action': [
+        #                 ('vc_room:3', 'phx_join', {}, 0), 
+        #                 ('vc_room:3', 'ping', {}, 40),
+        #                 ('vc_room:3', 'ping', {}, 40),
+        #                 ('vc_room:3', 'phx_leave', {}, 3),
+        #             ], 'sleep': 7
+        #         }, 
+        #         {'user': 'broadcaster013', 'wait': 1, 'action': [
+        #                 ('vc_room:3', 'phx_join', {}, 1), 
+        #                 ('vc_room:3', 'take_seat', {'seatIndex': 1}, 1),
+        #                 ('vc_room:3', 'ping', {}, 40),
+        #                 ('vc_room:3', 'ping', {}, 40),
+        #                 ('vc_room:3', 'phx_leave', {}, 3),
+        #             ], 'sleep': 3
+        #         }, 
+        #         {'user': 'track0011', 'wait': 3, 'action': [
+        #                 ('vc_room:3', 'phx_join', {}, 1), 
+        #                 ('vc_room:3', 'gift', {'giftId': '9e63bbf0-3e86-4019-b3fc-e955c175569b', 'targetUserId': test_parameter['broadcaster011']['id'], 'count': 5}, 1), #8500
+        #                 ('vc_room:3', 'gift', {'giftId': '9024cddc-b9be-40d1-92a3-7e78cb5de592', 'targetUserId': test_parameter['broadcaster013']['id'], 'count': 4}, 7), #1700
+        #                 ('vc_room:3', 'gift', {'giftId': 'e1e828ca-8bcf-4066-8a00-531ea75fdbb2', 'targetUserId': test_parameter['broadcaster011']['id'], 'count': 7}, 7), #100
+        #                 ('vc_room:3', 'ping', {}, 30),
+        #                 ('vc_room:3', 'ping', {}, 30),
+        #                 ('vc_room:3', 'phx_leave', {}, 3),
+        #             ], 'sleep': 3
+        #         },
+        #         {'user': 'track0013', 'wait': 120, 'action': [
+        #                 ('vc_room:3', 'phx_join', {}, 10), 
+        #                 ('vc_room:3', 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 5),
+        #                 ('vc_room:3', 'phx_leave', {}, 3),
+        #             ], 'sleep': 3
+        #         },
+
+        #     ],  
+        #     [
+        #         {'index': 'track0013', 'event': 'luckymoney_data_changed_bcst', 'position': 0, 'check': [
+        #                 {'key': ['progress'], 'value': 'GATHER'},
+        #                 {'key': ['gatherPoints'],  'value': 50000},
+        #                 {'key': ['targetPoints'], 'value': 100000},
+        #                 {'key': ['displayed'], 'value': True},
+        #                 {'key': ['clicked'], 'value': False},
+        #             ]
+        #         },
+        #     ]
+        # ),
+
+        # ('過年紅包活動，暖場、抽奬', #4629~4634  聲聊房送完luckymoney_finish_bcst再進房的人不會收到luckymoney_data_changed_bcst
+        #     [       
+        #         {'user': 'broadcaster011', 'wait': 0, 'action': [
+        #                 ('vc_room:3', 'phx_join', {}, 0), 
+        #                 ('vc_room:3', 'ping', {}, 40),
+        #                 ('vc_room:3', 'ping', {}, 40),
+        #                 ('vc_room:3', 'phx_leave', {}, 3),
+        #             ], 'sleep': 7
+        #         }, 
+        #         {'user': 'broadcaster013', 'wait': 1, 'action': [
+        #                 ('vc_room:3', 'phx_join', {}, 1), 
+        #                 ('vc_room:3', 'take_seat', {'seatIndex': 1}, 1),
+        #                 ('vc_room:3', 'ping', {}, 40),
+        #                 ('vc_room:3', 'ping', {}, 40),
+        #                 ('vc_room:3', 'phx_leave', {}, 3),
+        #             ], 'sleep': 3
+        #         }, 
+        #         {'user': 'track0011', 'wait': 3, 'action': [
+        #                 ('vc_room:3', 'phx_join', {}, 1), 
+        #                 ('vc_room:3', 'gift', {'giftId': '9e63bbf0-3e86-4019-b3fc-e955c175569b', 'targetUserId': test_parameter['broadcaster011']['id'], 'count': 5}, 1), #8500
+        #                 ('vc_room:3', 'gift', {'giftId': '9024cddc-b9be-40d1-92a3-7e78cb5de592', 'targetUserId': test_parameter['broadcaster013']['id'], 'count': 4}, 7), #1700
+        #                 ('vc_room:3', 'gift', {'giftId': 'e1e828ca-8bcf-4066-8a00-531ea75fdbb2', 'targetUserId': test_parameter['broadcaster011']['id'], 'count': 7}, 7), #100
+        #                 ('vc_room:3', 'ping', {}, 30),
+        #                 ('vc_room:3', 'ping', {}, 30),
+        #                 ('vc_room:3', 'phx_leave', {}, 3),
+        #             ], 'sleep': 3
+        #         },
+        #         {'user': 'track0013', 'wait': 120, 'action': [
+        #                 ('vc_room:3', 'phx_join', {}, 10), 
+        #                 ('vc_room:3', 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 5),
+        #                 ('vc_room:3', 'phx_leave', {}, 3),
+        #             ], 'sleep': 3
+        #         },
+
+        #     ],  
+        #     [
+        #         {'index': 'track0013', 'event': 'luckymoney_data_changed_bcst', 'position': 0, 'check': [
+        #                 {'key': ['progress'], 'value': 'GATHER'},
+        #                 {'key': ['gatherPoints'],  'value': 50000},
+        #                 {'key': ['targetPoints'], 'value': 100000},
+        #                 {'key': ['displayed'], 'value': True},
+        #                 {'key': ['clicked'], 'value': False},
+        #             ]
+        #         },
+        #     ]
+        # ),
+
+        # ('過年紅包活動，暖場、抽奬', #4629~4634 基本流程
+        #     [       
+        #         {'user': 'broadcaster011', 'wait': 0, 'action': [
+        #                 ('vc_room:3', 'phx_join', {}, 0), 
+        #                 ('vc_room:3', 'ping', {}, 40),
+        #                 ('vc_room:3', 'ping', {}, 40),
+        #                 ('vc_room:3', 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 10),
+        #                 ('vc_room:3', 'phx_leave', {}, 3),
+        #             ], 'sleep': 7
+        #         }, 
+        #         {'user': 'broadcaster013', 'wait': 1, 'action': [
+        #                 ('vc_room:3', 'phx_join', {}, 1), 
+        #                 ('vc_room:3', 'take_seat', {'seatIndex': 1}, 1),
+        #                 ('vc_room:3', 'ping', {}, 40),
+        #                 ('vc_room:3', 'ping', {}, 40),
+        #                 ('vc_room:3', 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 10),
+        #                 ('vc_room:3', 'phx_leave', {}, 3),
+        #             ], 'sleep': 3
+        #         }, 
+        #         {'user': 'track0011', 'wait': 3, 'action': [
+        #                 ('vc_room:3', 'phx_join', {}, 1), 
+        #                 ('vc_room:3', 'gift', {'giftId': '9e63bbf0-3e86-4019-b3fc-e955c175569b', 'targetUserId': test_parameter['broadcaster011']['id'], 'count': 5}, 1), #8500
+        #                 ('vc_room:3', 'gift', {'giftId': '9024cddc-b9be-40d1-92a3-7e78cb5de592', 'targetUserId': test_parameter['broadcaster013']['id'], 'count': 4}, 7), #1700
+        #                 ('vc_room:3', 'gift', {'giftId': 'e1e828ca-8bcf-4066-8a00-531ea75fdbb2', 'targetUserId': test_parameter['broadcaster011']['id'], 'count': 7}, 7), #100
+        #                 ('vc_room:3', 'ping', {}, 30),
+        #                 ('vc_room:3', 'ping', {}, 30),
+        #                 ('vc_room:3', 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 5),
+        #                 ('vc_room:3', 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 5),
+        #                 ('vc_room:3', 'phx_leave', {}, 3),
+        #             ], 'sleep': 3
+        #         },
+        #     ],  
+        #     [
+        #         {'index': 'track0011', 'event': 'luckymoney_marquee', 'position': 0, 'check': [
+        #                 {'key': ['level'], 'value': 1},
+        #                 {'key': ['content', 'zh'],  'value': '{targetUser.name} 準備送紅包了~大家快來搶紅包!'},
+        #                 {'key': ['content', 'ja'],  'value': '{targetUser.name} 赤い封筒を渡す準備ができました〜みんな、赤い封筒を持ってきてください！'},
+        #                 {'key': ['content', 'en'],  'value': '{targetUser.name} Ready to give lucky points~ everyone, come and grab it!'},
+        #                 {'key': ['fromUser', 'id'], 'value': test_parameter['track0011']['id']},
+        #                 {'key': ['targetUser', 'id'], 'value': test_parameter['broadcaster011']['id']},
+        #                 {'key': ['url'], 'value': 'xtars://voiceChat/3'},
+        #             ]
+        #         },
+        #         {'index': 'track0011', 'event': 'luckymoney_data_changed_bcst', 'position': 0, 'check': [
+        #                 {'key': ['progress'], 'value': 'WARM_UP'},
+        #                 {'key': ['gatherPoints'],  'value': 50000},
+        #                 {'key': ['targetPoints'], 'value': 100000},
+        #                 {'key': ['displayed'], 'value': True},
+        #                 {'key': ['clicked'], 'value': False},
+        #             ]
+        #         },
+        #         {'index': 'track0011', 'event': 'luckymoney_data_changed_bcst', 'position': 1, 'check': [
+        #                 {'key': ['progress'], 'value': 'GATHER'},
+        #                 {'key': ['gatherPoints'],  'value': 49300},
+        #                 {'key': ['targetPoints'], 'value': 50000},
+        #                 {'key': ['displayed'], 'value': True},
+        #                 {'key': ['clicked'], 'value': False},
+        #             ]
+        #         },
+        #         {'index': 'track0011', 'event': 'luckymoney_data_changed_bcst', 'position': 2, 'check': [
+        #                 {'key': ['progress'], 'value': 'GATHER'},
+        #                 {'key': ['gatherPoints'],  'value': 42500},
+        #                 {'key': ['targetPoints'], 'value': 50000},
+        #                 {'key': ['displayed'], 'value': True},
+        #                 {'key': ['clicked'], 'value': False},
+        #             ]
+        #         },
+        #         {'index': 'track0011', 'event': 'luckymoney_data_changed_bcst', 'position': 3, 'check': [
+        #                 {'key': ['progress'], 'value': 'GATHER'},
+        #                 {'key': ['gatherPoints'],  'value': 0},
+        #                 {'key': ['targetPoints'], 'value': 50000},
+        #                 {'key': ['displayed'], 'value': True},
+        #                 {'key': ['clicked'], 'value': False},
+        #             ]
+        #         },
+        #         {'index': 'track0011', 'event': 'luckymoney_lottery', 'position': 0, 'check': [
+        #                 {'key': ['displayed'], 'value': True},
+        #                 {'key': ['clicked'],  'value': False},
+        #             ]
+        #         },
+        #         {'index': 'track0011', 'event': 'phx_reply', 'position': 0, 'check': [
+        #                 {'key': ['response', 'err'], 'value': 'LUCKYMONEY_GAINED'},
+        #             ]
+        #         },
+        #         {'index': 'broadcaster011', 'event': 'luckymoney_ready_bcst', 'position': 0, 'check': [
+        #                 {'key': ['displayed'], 'value': True},
+        #                 {'key': ['clicked'],  'value': True},
+        #             ]
+        #         },
+        #         {'index': 'broadcaster011', 'event': 'luckymoney_warm_up_bcst', 'position': 0, 'check': [
+        #                 {'key': ['displayed'], 'value': True},
+        #                 {'key': ['clicked'],  'value': False},
+        #             ]
+        #         },
+
+        #     ]
+        # ),
+
+        # ('過年紅包活動，暖場、抽奬', #4629~4634 第一輸已抽過的，第二輪應可參加
+        #     [       
+        #         {'user': 'broadcaster011', 'wait': 0, 'action': [
+        #                 ('vc_room:3', 'phx_join', {}, 0), 
+        #                 ('vc_room:3', 'ping', {}, 40),
+        #                 ('vc_room:3', 'ping', {}, 40),
+        #                 ('vc_room:3', 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 10),
+        #                 ('vc_room:3', 'phx_leave', {}, 3),
+        #             ], 'sleep': 7
+        #         }, 
+        #         {'user': 'broadcaster013', 'wait': 1, 'action': [
+        #                 ('vc_room:3', 'phx_join', {}, 1), 
+        #                 ('vc_room:3', 'take_seat', {'seatIndex': 1}, 1),
+        #                 ('vc_room:3', 'ping', {}, 40),
+        #                 ('vc_room:3', 'ping', {}, 40),
+        #                 ('vc_room:3', 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 10),
+        #                 ('vc_room:3', 'phx_leave', {}, 3),
+        #             ], 'sleep': 3
+        #         }, 
+        #         {'user': 'track0011', 'wait': 3, 'action': [
+        #                 ('vc_room:3', 'phx_join', {}, 1), 
+        #                 ('vc_room:3', 'gift', {'giftId': '9e63bbf0-3e86-4019-b3fc-e955c175569b', 'targetUserId': test_parameter['broadcaster011']['id'], 'count': 5}, 1), #8500
+        #                 ('vc_room:3', 'gift', {'giftId': '9024cddc-b9be-40d1-92a3-7e78cb5de592', 'targetUserId': test_parameter['broadcaster013']['id'], 'count': 4}, 7), #1700
+        #                 ('vc_room:3', 'gift', {'giftId': 'e1e828ca-8bcf-4066-8a00-531ea75fdbb2', 'targetUserId': test_parameter['broadcaster011']['id'], 'count': 7}, 7), #100
+        #                 ('vc_room:3', 'ping', {}, 30),
+        #                 ('vc_room:3', 'ping', {}, 30),
+        #                 ('vc_room:3', 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 15),
+        #                 ('vc_room:3', 'ping', {}, 40),
+        #                 ('vc_room:3', 'ping', {}, 40),
+        #                 ('vc_room:3', 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 20),
+        #                 ('vc_room:3', 'ping', {}, 40),
+        #                 ('vc_room:3', 'ping', {}, 40),
+        #                 ('vc_room:3', 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 20),
+        #                 ('vc_room:3', 'ping', {}, 40),
+        #                 ('vc_room:3', 'ping', {}, 40),
+        #                 ('vc_room:3', 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 20),
+        #                 ('vc_room:3', 'phx_leave', {}, 20),
+        #             ], 'sleep': 3
+        #         },
+        #         {'user': 'track0013', 'wait': 120, 'action': [
+        #                 ('vc_room:3', 'phx_join', {}, 5), 
+        #                 ('vc_room:3', 'gift', {'giftId': '49853090-e4cd-47da-826e-1131388bd6c4', 'targetUserId': test_parameter['broadcaster011']['id'], 'count': 5}, 1), #50000
+        #                 ('vc_room:3', 'ping', {}, 30),
+        #                 ('vc_room:3', 'ping', {}, 40),
+        #                 ('vc_room:3', 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 10),
+        #                 ('vc_room:3', 'ping', {}, 40),
+        #                 ('vc_room:3', 'ping', {}, 40),
+        #                 ('vc_room:3', 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 10),
+        #                 ('vc_room:3', 'ping', {}, 40),
+        #                 ('vc_room:3', 'ping', {}, 40),
+        #                 ('vc_room:3', 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 10),
+        #                 ('vc_room:3', 'phx_leave', {}, 3),
+        #             ], 'sleep': 3
+        #         },
+        #     ],  
+        #     [
+        #         {'index': 'track0011', 'event': 'luckymoney_marquee', 'position': 0, 'check': [
+        #                 {'key': ['level'], 'value': 1},
+        #                 {'key': ['content', 'zh'],  'value': '{targetUser.name} 準備送紅包了~大家快來搶紅包!'},
+        #                 {'key': ['content', 'ja'],  'value': '{targetUser.name} 赤い封筒を渡す準備ができました〜みんな、赤い封筒を持ってきてください！'},
+        #                 {'key': ['content', 'en'],  'value': '{targetUser.name} Ready to give lucky points~ everyone, come and grab it!'},
+        #                 {'key': ['fromUser', 'id'], 'value': test_parameter['track0013']['id']},
+        #                 {'key': ['targetUser', 'id'], 'value': test_parameter['broadcaster011']['id']},
+        #                 {'key': ['url'], 'value': 'xtars://voiceChat/3'},
+        #             ]
+        #         },
+        #         {'index': 'track0011', 'event': 'luckymoney_data_changed_bcst', 'position': 0, 'check': [
+        #                 {'key': ['progress'], 'value': 'WARM_UP'},
+        #                 {'key': ['gatherPoints'],  'value': 100000},
+        #                 {'key': ['targetPoints'], 'value': 100000},
+        #                 {'key': ['displayed'], 'value': True},
+        #                 {'key': ['clicked'], 'value': False},
+        #             ]
+        #         },
+        #         {'index': 'track0011', 'event': 'luckymoney_lottery', 'position': 0, 'check': [
+        #                 {'key': ['displayed'], 'value': True},
+        #                 {'key': ['clicked'],  'value': False},
+        #             ]
+        #         },
+        #         {'index': 'track0011', 'event': 'luckymoney_lottery', 'position': 1, 'check': [
+        #                 {'key': ['displayed'], 'value': True},
+        #                 {'key': ['clicked'],  'value': False},
+        #             ]
+        #         },
+        #         {'index': 'track0013', 'event': 'luckymoney_lottery', 'position': 0, 'check': [
+        #                 {'key': ['displayed'], 'value': True},
+        #                 {'key': ['clicked'],  'value': False},
+        #             ]
+        #         },
+
+        #     ]
+        # ),
 
     ]   
     return testData

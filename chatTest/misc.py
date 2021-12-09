@@ -294,3 +294,14 @@ def apiFunction(prefix, head, apiName, way, body):
     pprint('status code = %d'%res1.status_code)
     pprint(json.loads(res1.text))
     return res1 
+
+def getDicKeys(dd, keyList):  
+    for keys, values in dd.items():
+        keyList.append(keys)
+        if type(values) == dict:
+            getDicKeys(values, keyList)
+        elif all([type(values) == list, values]):
+            if type(values[0]) == dict:getDicKeys(values[0], keyList)
+        else:
+            continue          
+    return 

@@ -140,7 +140,7 @@ class TestVoiceScoket():
     @pytest.mark.parametrize("scenario, data, verifyInfo", testingCase.getTestData(test_parameter))
     def testVoice(self, scenario, data, verifyInfo):   
         threadList = []
-        checkKeys = []
+        misc.clearVoiceLuckyMoney(env)
         self.wsDic.clear()
         for i in range(len(data)):
             threadList.append(threading.Thread(target = self.wsJob, args = (data[i], i, )))
