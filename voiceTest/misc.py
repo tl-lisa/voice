@@ -63,11 +63,16 @@ def getTrueLoveId(tureLoveId):
     return hashids.encode(tureLoveId)
 
 def clearVoiceLuckyMoney(env):
+    import datetime
     apiList = ['/api/v3/task/resetVoiceChatHistory', '/api/v3/task/resetVoiceChatLuckyMoney']
     if env == 'QA':
         url = 'http://35.234.17.150'
         hostAddress = '35.234.17.150'
-    # clearCache(hostAddress, 'redis-cli -n 5 DEL vc_room:luckmoney_data;')
+    for i in range(0,6):
+        keyName = 'vc_room:luckmoney_data:%s:3:%d-remainPoints'%(str(datetime.date.today()), (i+1))
+        clearCache(hostAddress, 'redis-cli -n 5 DEL %s;'%keyName)
+        keyName = 'vc_room:luckmoney_data:%s:3:%d-UserPoints'%(str(datetime.date.today()), (i+1))
+        clearCache(hostAddress, 'redis-cli -n 5 DEL %s;'%keyName)
     header = {'Connection': 'application/json'}
     body = {"token" : "123"}    
     for i in apiList:
