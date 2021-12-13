@@ -7,12 +7,12 @@ from hashids import Hashids
 from pprint import pprint
 from . import dbConnect
 
-def clearCache(hostAddr):
+def clearCache(hostAddr, cmd):
     keyfile = './lisakey'  
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     ssh.connect(hostAddr, username='lisa', key_filename=keyfile)
-    cmd = 'redis-cli flushdb;'
+    # cmd = 'redis-cli flushdb;'
     ssh.exec_command(cmd)
     ssh.close()
 
@@ -66,6 +66,8 @@ def clearVoiceLuckyMoney(env):
     apiList = ['/api/v3/task/resetVoiceChatHistory', '/api/v3/task/resetVoiceChatLuckyMoney']
     if env == 'QA':
         url = 'http://35.234.17.150'
+        hostAddress = '35.234.17.150'
+    # clearCache(hostAddress, 'redis-cli -n 5 DEL vc_room:luckmoney_data;')
     header = {'Connection': 'application/json'}
     body = {"token" : "123"}    
     for i in apiList:

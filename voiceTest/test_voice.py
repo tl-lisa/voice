@@ -1,9 +1,9 @@
 import time
 import pytest
 import threading
+import json
 from pprint import pprint
 from . import voicelib
-from . import dbConnect
 from . import misc
 from . import testingCase
 
@@ -148,6 +148,10 @@ class TestVoiceScoket():
         for i in reversed(threadList):
             i.join()
         pprint(self.wsDic)   
+        # path = 'log.txt'
+        # f = open(path, 'w')
+        # f.write(json.dumps(self.wsDic))
+        # f.close()
         for k in verifyInfo:
             if self.wsDic[k['index']]:
                 print('check: ', k['index'])
