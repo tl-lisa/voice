@@ -78,7 +78,7 @@ def clearVoiceLuckyMoney(env):
     for i in apiList:
         apiName = url+i
         res = requests.post(apiName, headers=header, json=body)
-        print(json.loads(res.text))
+        # print(json.loads(res.text))
 
 def get_test_data(env, test_parameter, masterPrefix):    
     if env == 'QA':
