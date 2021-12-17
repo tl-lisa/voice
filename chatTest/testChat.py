@@ -70,13 +70,12 @@ class TestChatScoket():
         else:
             assert not isGetEvent, "should not get check data, but get event(%s) at position(%d)"%(i['event'], position)
         if isGetEvent:
-            pprint(event)
             for j in verifyInfo['check']:
+                print('check key: %s'%str(j['key']))
                 if event['event'] in ('room_closed', 'phx_reply'):
                     kk = event['payload']
                 else:
                     kk = event['payload']['data']
-                    pprint(kk)
                     isFound = False
                     findKey = j['key']
                     # print('find key is ', findKey)
@@ -113,7 +112,7 @@ class TestChatScoket():
                     assert isFound, "should not get check key(%s) at event(%s)"%(itemName, i['event'])            
 
                         
-    @pytest.mark.parametrize("scenario, data, verifyInfo", chatCase.getTestData(test_parameter))
+    @pytest.mark.parametrize("scenario, data, verifyInfo", chatCase.getTestData(test_parameter, 'master11'))
     def testChat(self, scenario, data, verifyInfo):   
         threadList = []
         self.wsDic.clear()
@@ -125,7 +124,7 @@ class TestChatScoket():
         pprint(self.wsDic)   
         for k in verifyInfo:
             if self.wsDic[k['index']]:
-                #print('check: ', k['index'])
+                print('check: ', k['index'])
                 self.verifyResult(self.wsDic[k['index']], k) 
             else:
                 print('無資料比對')

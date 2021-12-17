@@ -17,16 +17,16 @@ def getRoomId(prefix, token, nonce, nickname, pwd):
     roomNo = result['data']['roomId']
     return roomNo
 
-def getTestData(test_parameter):
+def getTestData(test_parameter, masterId):
     pwd = ''
-    roomNo = getRoomId(test_parameter['prefix'], test_parameter['master10']['token'], 
-                        test_parameter['master10']['nonce'], test_parameter['master10']['nickname'], pwd)
+    roomNo = getRoomId(test_parameter['prefix'], test_parameter[masterId]['token'], 
+                        test_parameter[masterId]['nonce'], test_parameter[masterId]['nickname'], pwd)
     #check中的資料先以第一層為主，之後再看下層資料
     testData = [
         # (
         #     '驗證密碼房，官方場控、一般場控及user',
         #     [
-        #         {'user': 'master10', 'wait': 0, 'action': [
+        #         {'user': masterId, 'wait': 0, 'action': [
         #                 ('live_room:' + str(roomNo), 'phx_join', {'code': pwd}, 0),                        
         #                 ('live_room:' + str(roomNo), 'pickup_admin', {'xtarsId': test_parameter['track0012']['trueloveId']}, 1),
         #                 ('live_room:' + str(roomNo), 'ping', {}, 5),
@@ -60,7 +60,7 @@ def getTestData(test_parameter):
         #     ],
         #     [
         #         {
-        #             'index': 'master10', 
+        #             'index': masterId, 
         #             'event': 'room_in_bcst', 
         #             'position': 3,
         #             'check': 
@@ -74,7 +74,7 @@ def getTestData(test_parameter):
         #             'check': 
         #             [
         #                 {'key': ['fromUser', 'id'], 'value': test_parameter['track0011']['id']}, 
-        #                 {'key': ['targetUser', 'id'], 'value': test_parameter['master10']['id']}, 
+        #                 {'key': ['targetUser', 'id'], 'value': test_parameter[masterId]['id']}, 
         #             ]
         #         },
         #         {
@@ -84,7 +84,7 @@ def getTestData(test_parameter):
         #             'check': 
         #             [
         #                 {'key': ['fromUser', 'id'], 'value': test_parameter['lv000']['id']}, 
-        #                 {'key': ['targetUser', 'id'], 'value': test_parameter['master10']['id']}, 
+        #                 {'key': ['targetUser', 'id'], 'value': test_parameter[masterId]['id']}, 
         #             ]
         #         },
         #     ]
@@ -93,7 +93,7 @@ def getTestData(test_parameter):
         # (
         #     '驗證基本入房，發訊息及離房', #3365
         #     [
-        #         {'user': 'master10', 'wait': 0, 'action': [
+        #         {'user': masterId, 'wait': 0, 'action': [
         #                 ('live_room:' + str(roomNo), 'phx_join', {'code': pwd}, 0),
         #                 ('live_room:' + str(roomNo), 'ping', {'code': ''}, 30),
         #                 ('live_room:' + str(roomNo), 'close_room', {'roomId': roomNo}, 10),
@@ -109,7 +109,7 @@ def getTestData(test_parameter):
         #         },
         #         {'user': 'track0012', 'wait': 2, 'action': [
         #                 ('live_room:' + str(roomNo), 'phx_join', {'code': pwd}, 1),
-        #                 ('live_room:' + str(roomNo), 'gift', {'targetUserId': test_parameter['master10']['id'],
+        #                 ('live_room:' + str(roomNo), 'gift', {'targetUserId': test_parameter[masterId]['id'],
         #                     'giftId': 'cf0fc6ba-9fae-4c6a-9f34-7a17207e3d60', 'count': 2}, 2),
         #                 ('live_room:' + str(roomNo), 'phx_leave', {}, 3),
         #             ], 'sleep': 1
@@ -138,26 +138,26 @@ def getTestData(test_parameter):
         #     ],
         #     [
         #         {
-        #             'index': 'master10', 
+        #             'index': masterId, 
         #             'event': 'barrage_bcst', 
         #             'position': 0,
         #             'check': 
         #             [
-        #                 {'key': ['room', 'totalGiftPoints'], 'value': test_parameter['master10']['dailyPoints'] + 119}, 
+        #                 {'key': ['room', 'totalGiftPoints'], 'value': test_parameter[masterId]['dailyPoints'] + 119}, 
         #                 {'key': ['room', 'liveRanking'], 'value': 1}, 
-        #                 {'key': ['room', 'liveRankingPoints'], 'value': test_parameter['master10']['dailyPoints'] + 119}, 
+        #                 {'key': ['room', 'liveRankingPoints'], 'value': test_parameter[masterId]['dailyPoints'] + 119}, 
         #                 {'key': ['barrage', 'id'], 'value': 1}, 
         #                 {'key': ['barrage', 'type'], 'value': 'general'},
         #                 {'key': ['barrage', 'points'], 'value': 119}, 
         #                 {'key': ['content'], 'value': '我是barrage的訊息'}, 
         #                 {'key': ['fromUser', 'id'], 'value': test_parameter['track0011']['id']}, 
         #                 {'key': ['fromUser', 'name'], 'value': test_parameter['track0011']['nickname']},  
-        #                 {'key': ['targetUser', 'id'], 'value': test_parameter['master10']['id']}, 
-        #                 {'key': ['targetUser', 'name'], 'value': test_parameter['master10']['nickname']},  
+        #                 {'key': ['targetUser', 'id'], 'value': test_parameter[masterId]['id']}, 
+        #                 {'key': ['targetUser', 'name'], 'value': test_parameter[masterId]['nickname']},  
         #             ]
         #         },
         #         {
-        #             'index': 'master10', 
+        #             'index': masterId, 
         #             'event': 'message_bcst', 
         #             'position': 0,
         #             'check': 
@@ -167,8 +167,8 @@ def getTestData(test_parameter):
         #                 {'key': ['content', 'zh'], 'value': '{fromUser.name} 一般訊息欄位輸入的訊息'},
         #                 {'key': ['fromUser', 'id'], 'value': test_parameter['track0011']['id']},
         #                 {'key': ['fromUser', 'name'], 'value': test_parameter['track0011']['nickname']},
-        #                 {'key': ['targetUser', 'id'], 'value': test_parameter['master10']['id']},
-        #                 {'key': ['targetUser', 'name'], 'value': test_parameter['master10']['nickname']},
+        #                 {'key': ['targetUser', 'id'], 'value': test_parameter[masterId]['id']},
+        #                 {'key': ['targetUser', 'name'], 'value': test_parameter[masterId]['nickname']},
         #             ]
         #         },             
         #         {
@@ -177,17 +177,17 @@ def getTestData(test_parameter):
         #             'position': 0,
         #             'check': 
         #             [
-        #                 {'key': ['room', 'totalGiftPoints'], 'value': test_parameter['master10']['dailyPoints'] + 119}, 
+        #                 {'key': ['room', 'totalGiftPoints'], 'value': test_parameter[masterId]['dailyPoints'] + 119}, 
         #                 {'key': ['room', 'liveRanking'], 'value': 1}, 
-        #                 {'key': ['room', 'liveRankingPoints'], 'value': test_parameter['master10']['dailyPoints'] + 119}, 
+        #                 {'key': ['room', 'liveRankingPoints'], 'value': test_parameter[masterId]['dailyPoints'] + 119}, 
         #                 {'key': ['barrage', 'id'], 'value': 1}, 
         #                 {'key': ['barrage', 'type'], 'value': 'general'},
         #                 {'key': ['barrage', 'points'], 'value': 119}, 
         #                 {'key': ['content'], 'value': '我是barrage的訊息'}, 
         #                 {'key': ['fromUser', 'id'], 'value': test_parameter['track0011']['id']}, 
-        #                 {'key': ['fromUser', 'name'], 'value': test_parameter['master10']['nickname']},  
+        #                 {'key': ['fromUser', 'name'], 'value': test_parameter[masterId]['nickname']},  
         #                 {'key': ['targetUser', 'id'], 'value': test_parameter['track0011']['id']}, 
-        #                 {'key': ['targetUser', 'name'], 'value': test_parameter['master10']['nickname']},  
+        #                 {'key': ['targetUser', 'name'], 'value': test_parameter[masterId]['nickname']},  
         #             ]
         #         },
         #         {
@@ -197,178 +197,178 @@ def getTestData(test_parameter):
         #             'check': 
         #             [
         #                 {'key': ['fromUser', 'id'], 'value': test_parameter['track0012']['id']}, 
-        #                 {'key': ['targetUser', 'id'], 'value': test_parameter['master10']['id']}, 
+        #                 {'key': ['targetUser', 'id'], 'value': test_parameter[masterId]['id']}, 
         #                 {'key': ['room', 'totalCount'], 'value': 2}, 
-        #                 {'key': ['room', 'totalGiftPoints'], 'value': test_parameter['master10']['dailyPoints'] + 119}, 
+        #                 {'key': ['room', 'totalGiftPoints'], 'value': test_parameter[masterId]['dailyPoints'] + 119}, 
         #                 {'key': ['room', 'liveRanking'], 'value': 1}, 
-        #                 {'key': ['room', 'liveRankingPoints'], 'value': test_parameter['master10']['dailyPoints'] + 119}, 
+        #                 {'key': ['room', 'liveRankingPoints'], 'value': test_parameter[masterId]['dailyPoints'] + 119}, 
         #             ]
         #         },
         #     ]
         # ),
 
-        (
-            '驗證nickname或發彈幕的訊息內容有禁詞,直播主及發送本人應可看到：', #3764
-            [
-                {'user': 'master10', 'wait': 0, 'action': [
-                        ('live_room:' + str(roomNo), 'phx_join', {'code': ''}, 0),
-                        ('live_room:' + str(roomNo), 'ping', {'code': ''}, 10),
-                        ('live_room:' + str(roomNo), 'close_room', {'roomId': roomNo}, 4),
-                    ], 'sleep': 2
-                },
-                {'user': 'track0011', 'wait': 1, 'action': [
-                        ('live_room:' + str(roomNo), 'phx_join', {'code': ''}, 0),
-                        ('live_room:' + str(roomNo), 'message', {'content': '輸入的訊息有詐騙'}, 1),
-                        ('live_room:' + str(roomNo), 'barrage', {'barrageId': 1, 'content': 'barrage的訊息有欺騙'}, 1),
-                        ('live_room:' + str(roomNo), 'phx_leave', {}, 5),
-                    ], 'sleep': 1 
-                },
-                {'user': 'track0020', 'wait': 3, 'action': [
-                        ('live_room:' + str(roomNo), 'phx_join', {'code': ''}, 1),
-                        ('live_room:' + str(roomNo), 'message', {'content': 'nickname有forbidden一般訊息'}, 1),
-                        ('live_room:' + str(roomNo), 'barrage', {'barrageId': 1, 'content': 'nickname有forbidden的barrage'}, 1),
-                        ('live_room:' + str(roomNo), 'phx_leave', {}, 2),
-                    ], 'sleep': 1
-                },
-                {'user': 'track0014', 'wait': 8, 'action': [
-                        ('live_room:' + str(roomNo), 'phx_join', {'code': ''}, 1),
-                        ('live_room:' + str(roomNo), 'ping', {'code': ''}, 3),
-                        ('live_room:' + str(roomNo), 'phx_leave', {}, 2),
-                    ], 'sleep': 1
-                },
-            ],
-            [ 
-                {
-                    'index': 'master10', 
-                    'event': 'room_in_bcst', 
-                    'position': 0,
-                    'check': 
-                    [
-                        {'key': ['fromUser', 'id'], 'value': test_parameter['track0014']['id']},
-                        {'key': ['fromUser', 'name'], 'value': test_parameter['track0014']['nickname']},
-                    ]
-                },             
-                {
-                    'index': 'track0014', 
-                    'event': 'room_in', 
-                    'position': 0,
-                    'check': 
-                    [
-                        {'key': ['fromUser', 'id'], 'value': test_parameter['track0014']['id']},
-                        {'key': ['fromUser', 'name'], 'value': test_parameter['track0014']['nickname']},
-                        {'key': ['room', 'description'], 'value': 'master10開播，歡迎入群'},
-                        {'key': ['room', 'liveRanking'], 'value': 1},
-                    ]
-                },             
-                {
-                    'index': 'master10', 
-                    'event': 'room_in_bcst', 
-                    'position': 0,
-                    'check': 
-                    [
-                        {'key': ['fromUser', 'id'], 'value': test_parameter['track0014']['id']},
-                        {'key': ['fromUser', 'name'], 'value': test_parameter['track0014']['nickname']},
-                    ]
-                },             
-                {
-                    'index': 'track0011', 
-                    'event': 'barrage', 
-                    'position': 0,
-                    'check': 
-                    [
-                        {'key': ['barrage', 'id'], 'value': 1},
-                        {'key': ['barrage', 'points'], 'value': 119},
-                        {'key': ['barrage', 'type'], 'value': 'general'},
-                        {'key': ['content'], 'value': 'barrage的訊息有欺騙'},
-                        {'key': ['fromUser', 'id'], 'value': test_parameter['track0011']['id']},
-                        {'key': ['fromUser', 'name'], 'value': test_parameter['track0011']['nickname']},
-                        {'key': ['targetUser', 'id'], 'value': test_parameter['master10']['id']},
-                        {'key': ['targetUser', 'name'], 'value': test_parameter['master10']['nickname']},
-                        {'key': ['room', 'liveRanking'], 'value': 1},
-                    ]
-                },             
-                {
-                    'index': 'track0020', 
-                    'event': 'message', 
-                    'position': 0,
-                    'check': 
-                    [
-                        {'key': ['content', 'en'], 'value': '{fromUser.name} nickname有forbidden一般訊息'},
-                        {'key': ['content', 'ja'], 'value': '{fromUser.name} nickname有forbidden一般訊息'},
-                        {'key': ['content', 'zh'], 'value': '{fromUser.name} nickname有forbidden一般訊息'},
-                        {'key': ['fromUser', 'id'], 'value': test_parameter['track0020']['id']},
-                        {'key': ['fromUser', 'name'], 'value': test_parameter['track0020']['nickname']},
-                        {'key': ['targetUser', 'id'], 'value': test_parameter['master10']['id']},
-                        {'key': ['targetUser', 'name'], 'value': test_parameter['master10']['nickname']},
-                    ]
-                },             
-                {
-                    'index': 'master10', 
-                    'event': 'message_bcst', 
-                    'position': 0,
-                    'check': 
-                    [
-                    ]
-                },
+        # (
+        #     '驗證nickname或發彈幕的訊息內容有禁詞,直播主及發送本人應可看到：', #3764
+        #     [
+        #         {'user': masterId, 'wait': 0, 'action': [
+        #                 ('live_room:' + str(roomNo), 'phx_join', {'code': ''}, 0),
+        #                 ('live_room:' + str(roomNo), 'ping', {'code': ''}, 10),
+        #                 ('live_room:' + str(roomNo), 'close_room', {'roomId': roomNo}, 4),
+        #             ], 'sleep': 2
+        #         },
+        #         {'user': 'track0011', 'wait': 1, 'action': [
+        #                 ('live_room:' + str(roomNo), 'phx_join', {'code': ''}, 0),
+        #                 ('live_room:' + str(roomNo), 'message', {'content': '輸入的訊息有詐騙'}, 1),
+        #                 ('live_room:' + str(roomNo), 'barrage', {'barrageId': 1, 'content': 'barrage的訊息有欺騙'}, 1),
+        #                 ('live_room:' + str(roomNo), 'phx_leave', {}, 5),
+        #             ], 'sleep': 1 
+        #         },
+        #         {'user': 'track0020', 'wait': 3, 'action': [
+        #                 ('live_room:' + str(roomNo), 'phx_join', {'code': ''}, 1),
+        #                 ('live_room:' + str(roomNo), 'message', {'content': 'nickname有forbidden一般訊息'}, 1),
+        #                 ('live_room:' + str(roomNo), 'barrage', {'barrageId': 1, 'content': 'nickname有forbidden的barrage'}, 1),
+        #                 ('live_room:' + str(roomNo), 'phx_leave', {}, 2),
+        #             ], 'sleep': 1
+        #         },
+        #         {'user': 'track0014', 'wait': 8, 'action': [
+        #                 ('live_room:' + str(roomNo), 'phx_join', {'code': ''}, 1),
+        #                 ('live_room:' + str(roomNo), 'ping', {'code': ''}, 3),
+        #                 ('live_room:' + str(roomNo), 'phx_leave', {}, 2),
+        #             ], 'sleep': 1
+        #         },
+        #     ],
+        #     [ 
+        #         {
+        #             'index': masterId, 
+        #             'event': 'room_in_bcst', 
+        #             'position': 0,
+        #             'check': 
+        #             [
+        #                 {'key': ['fromUser', 'id'], 'value': test_parameter['track0014']['id']},
+        #                 {'key': ['fromUser', 'name'], 'value': test_parameter['track0014']['nickname']},
+        #             ]
+        #         },             
+        #         {
+        #             'index': 'track0014', 
+        #             'event': 'room_in', 
+        #             'position': 0,
+        #             'check': 
+        #             [
+        #                 {'key': ['fromUser', 'id'], 'value': test_parameter['track0014']['id']},
+        #                 {'key': ['fromUser', 'name'], 'value': test_parameter['track0014']['nickname']},
+        #                 {'key': ['room', 'description'], 'value': 'master10開播，歡迎入群'},
+        #                 {'key': ['room', 'liveRanking'], 'value': 1},
+        #             ]
+        #         },             
+        #         {
+        #             'index': masterId, 
+        #             'event': 'room_in_bcst', 
+        #             'position': 0,
+        #             'check': 
+        #             [
+        #                 {'key': ['fromUser', 'id'], 'value': test_parameter['track0014']['id']},
+        #                 {'key': ['fromUser', 'name'], 'value': test_parameter['track0014']['nickname']},
+        #             ]
+        #         },             
+        #         {
+        #             'index': 'track0011', 
+        #             'event': 'barrage', 
+        #             'position': 0,
+        #             'check': 
+        #             [
+        #                 {'key': ['barrage', 'id'], 'value': 1},
+        #                 {'key': ['barrage', 'points'], 'value': 119},
+        #                 {'key': ['barrage', 'type'], 'value': 'general'},
+        #                 {'key': ['content'], 'value': 'barrage的訊息有欺騙'},
+        #                 {'key': ['fromUser', 'id'], 'value': test_parameter['track0011']['id']},
+        #                 {'key': ['fromUser', 'name'], 'value': test_parameter['track0011']['nickname']},
+        #                 {'key': ['targetUser', 'id'], 'value': test_parameter[masterId]['id']},
+        #                 {'key': ['targetUser', 'name'], 'value': test_parameter[masterId]['nickname']},
+        #                 {'key': ['room', 'liveRanking'], 'value': 1},
+        #             ]
+        #         },             
+        #         {
+        #             'index': 'track0020', 
+        #             'event': 'message', 
+        #             'position': 0,
+        #             'check': 
+        #             [
+        #                 {'key': ['content', 'en'], 'value': '{fromUser.name} nickname有forbidden一般訊息'},
+        #                 {'key': ['content', 'ja'], 'value': '{fromUser.name} nickname有forbidden一般訊息'},
+        #                 {'key': ['content', 'zh'], 'value': '{fromUser.name} nickname有forbidden一般訊息'},
+        #                 {'key': ['fromUser', 'id'], 'value': test_parameter['track0020']['id']},
+        #                 {'key': ['fromUser', 'name'], 'value': test_parameter['track0020']['nickname']},
+        #                 {'key': ['targetUser', 'id'], 'value': test_parameter[masterId]['id']},
+        #                 {'key': ['targetUser', 'name'], 'value': test_parameter[masterId]['nickname']},
+        #             ]
+        #         },             
+        #         {
+        #             'index': masterId, 
+        #             'event': 'message_bcst', 
+        #             'position': 0,
+        #             'check': 
+        #             [
+        #             ]
+        #         },
 
-                {
-                    'index': 'master10', 
-                    'event': 'barrage', 
-                    'position': 0,
-                    'check': 
-                    [
-                        {'key': ['barrage', 'id'], 'value': 1},
-                        {'key': ['barrage', 'points'], 'value': 119},
-                        {'key': ['barrage', 'type'], 'value': 'general'},
-                        {'key': ['content'], 'value': 'nickname有forbidden的barrage'},
-                        {'key': ['fromUser', 'id'], 'value': test_parameter['track0020']['id']},
-                        {'key': ['fromUser', 'name'], 'value': test_parameter['track0020']['nickname']},
-                        {'key': ['targetUser', 'id'], 'value': test_parameter['master10']['id']},
-                        {'key': ['targetUser', 'name'], 'value': test_parameter['master10']['nickname']},
-                        {'key': ['room', 'liveRanking'], 'value': 1},
-                    ]
-                },             
-                {
-                    'index': 'master10', 
-                    'event': 'barrage', 
-                    'position': 1,
-                    'check': 
-                    [
-                        {'key': ['barrage', 'id'], 'value': 1},
-                        {'key': ['barrage', 'points'], 'value': 119},
-                        {'key': ['barrage', 'type'], 'value': 'general'},
-                        {'key': ['content'], 'value': 'barrage的訊息有欺騙'},
-                        {'key': ['fromUser', 'id'], 'value': test_parameter['track0011']['id']},
-                        {'key': ['fromUser', 'name'], 'value': test_parameter['track0011']['nickname']},
-                        {'key': ['targetUser', 'id'], 'value': test_parameter['master10']['id']},
-                        {'key': ['targetUser', 'name'], 'value': test_parameter['master10']['nickname']},
-                        {'key': ['room', 'liveRanking'], 'value': 1},
-                    ]
-                },             
+        #         {
+        #             'index': masterId, 
+        #             'event': 'barrage', 
+        #             'position': 0,
+        #             'check': 
+        #             [
+        #                 {'key': ['barrage', 'id'], 'value': 1},
+        #                 {'key': ['barrage', 'points'], 'value': 119},
+        #                 {'key': ['barrage', 'type'], 'value': 'general'},
+        #                 {'key': ['content'], 'value': 'nickname有forbidden的barrage'},
+        #                 {'key': ['fromUser', 'id'], 'value': test_parameter['track0020']['id']},
+        #                 {'key': ['fromUser', 'name'], 'value': test_parameter['track0020']['nickname']},
+        #                 {'key': ['targetUser', 'id'], 'value': test_parameter[masterId]['id']},
+        #                 {'key': ['targetUser', 'name'], 'value': test_parameter[masterId]['nickname']},
+        #                 {'key': ['room', 'liveRanking'], 'value': 1},
+        #             ]
+        #         },             
+        #         {
+        #             'index': masterId, 
+        #             'event': 'barrage', 
+        #             'position': 1,
+        #             'check': 
+        #             [
+        #                 {'key': ['barrage', 'id'], 'value': 1},
+        #                 {'key': ['barrage', 'points'], 'value': 119},
+        #                 {'key': ['barrage', 'type'], 'value': 'general'},
+        #                 {'key': ['content'], 'value': 'barrage的訊息有欺騙'},
+        #                 {'key': ['fromUser', 'id'], 'value': test_parameter['track0011']['id']},
+        #                 {'key': ['fromUser', 'name'], 'value': test_parameter['track0011']['nickname']},
+        #                 {'key': ['targetUser', 'id'], 'value': test_parameter[masterId]['id']},
+        #                 {'key': ['targetUser', 'name'], 'value': test_parameter[masterId]['nickname']},
+        #                 {'key': ['room', 'liveRanking'], 'value': 1},
+        #             ]
+        #         },             
 
-                {
-                    'index': 'master10', 
-                    'event': 'barrage_bcst', 
-                    'position': 0,
-                    'check': 
-                    [
-                    ]
-                },             
-                {
-                    'index': 'master10', 
-                    'event': 'room_in_bcst', 
-                    'position': 2,
-                    'check': 
-                    [
-                    ]
-                },
-            ]
-        ),
+        #         {
+        #             'index': masterId, 
+        #             'event': 'barrage_bcst', 
+        #             'position': 0,
+        #             'check': 
+        #             [
+        #             ]
+        #         },             
+        #         {
+        #             'index': masterId, 
+        #             'event': 'room_in_bcst', 
+        #             'position': 2,
+        #             'check': 
+        #             [
+        #             ]
+        #         },
+        #     ]
+        # ),
 
         # (
         #     '驗證基本入房, rconnect, 離房', #4383
         #     [
-        #         {'user': 'master10', 'wait': 0, 'action': [
+        #         {'user': masterId, 'wait': 0, 'action': [
         #                 ('live_room:' + str(roomNo), 'phx_join', {'code': pwd}, 0),
         #                 ('live_room:' + str(roomNo), 'ping', {'code': ''}, 30),
         #                 ('live_room:' + str(roomNo), 'close_room', {'roomId': roomNo}, 10),
@@ -410,7 +410,7 @@ def getTestData(test_parameter):
         #             'check': 
         #             [
         #                 {'key': ['fromUser', 'id'], 'value': test_parameter['track0014']['id']}, 
-        #                 {'key': ['targetUser', 'id'], 'value': test_parameter['master10']['id']}, 
+        #                 {'key': ['targetUser', 'id'], 'value': test_parameter[masterId]['id']}, 
         #                 {'key': ['room', 'totalCount'], 'value': 4}, 
         #             ]
         #         },
@@ -420,7 +420,7 @@ def getTestData(test_parameter):
 
         # ('新增,移除場控及場控列表',
         #     [
-        #         {'user': 'master10', 'wait': 0, 'action': [
+        #         {'user': masterId, 'wait': 0, 'action': [
         #                 ('live_room:' + str(roomNo), 'phx_join', {'code': ''}, 0),
         #                 ('live_room:' + str(roomNo), 'pickup_admin', {'xtarsId': test_parameter['track0012']['trueloveId']}, 1),
         #                 ('live_room:' + str(roomNo), 'get_admins', {}, 1),
@@ -432,7 +432,7 @@ def getTestData(test_parameter):
         #     ],
         #     [
         #         {
-        #             'index': 'master10', 
+        #             'index': masterId, 
         #             'event': 'admins_got', 
         #             'position': 0,
         #             'check': 
@@ -441,7 +441,7 @@ def getTestData(test_parameter):
         #             ]
         #         },             
         #         {
-        #             'index': 'master10', 
+        #             'index': masterId, 
         #             'event': 'admins_got', 
         #             'position': 1,
         #             'check': 
@@ -450,7 +450,7 @@ def getTestData(test_parameter):
         #             ]
         #         },             
         #         {
-        #             'index': 'master10', 
+        #             'index': masterId, 
         #             'event': 'admin_pickedup_bcst', 
         #             'position': 0,
         #             'check': 
@@ -461,7 +461,7 @@ def getTestData(test_parameter):
         #             ]
         #         },             
         #         {
-        #             'index': 'master10', 
+        #             'index': masterId, 
         #             'event': 'admin_kickedout_bcst', 
         #             'position': 0,
         #             'check': 
@@ -476,7 +476,7 @@ def getTestData(test_parameter):
 
         # ('在禁言名單內message不會廣播但barrage要可正常播放', #3517 #3797 #3703
         #     [
-        #         {'user': 'master10', 'wait': 0, 'action': [
+        #         {'user': masterId, 'wait': 0, 'action': [
         #                 ('live_room:' + str(roomNo), 'phx_join', {'code': ''}, 0),
         #                 ('live_room:' + str(roomNo), 'mute_audience', {'targetUserId': test_parameter['track0013']['id']}, 0),
         #                 ('live_room:' + str(roomNo), 'ping', {}, 7),
@@ -505,15 +505,15 @@ def getTestData(test_parameter):
         #                 {'key': ['content'], 'value': 'barrage cannot broadcast since I am mute'},
         #                 {'key': ['fromUser', 'id'], 'value': test_parameter['track0013']['id']},
         #                 {'key': ['fromUser', 'name'], 'value': test_parameter['track0013']['nickname']},
-        #                 {'key': ['targetUser', 'id'], 'value': test_parameter['master10']['id']},
-        #                 {'key': ['targetUser', 'name'], 'value': test_parameter['master10']['nickname']},
+        #                 {'key': ['targetUser', 'id'], 'value': test_parameter[masterId]['id']},
+        #                 {'key': ['targetUser', 'name'], 'value': test_parameter[masterId]['nickname']},
         #                 {'key': ['room', 'liveRanking'], 'value': 1},
         #                 {'key': ['room', 'liveRankingPoints'], 'value': 119},
         #                 {'key': ['room', 'totalGiftPoints'], 'value': 119},
         #             ]
         #         },             
         #         {
-        #             'index': 'master10', 
+        #             'index': masterId, 
         #             'event': 'audience_muted_bcst', 
         #             'position': 0,
         #             'check': 
@@ -525,7 +525,7 @@ def getTestData(test_parameter):
         #             ]
         #         },             
         #         {
-        #             'index': 'master10', 
+        #             'index': masterId, 
         #             'event': 'audience_unmute_bcst', 
         #             'position': 0,
         #             'check': 
@@ -534,14 +534,14 @@ def getTestData(test_parameter):
         #             ]
         #         },             
         #         {
-        #             'index': 'master10', 
+        #             'index': masterId, 
         #             'event': 'message_bcst', 
         #             'position': 0,
         #             'check': 
         #             []
         #         },            
         #         {
-        #             'index': 'master10', 
+        #             'index': masterId, 
         #             'event': 'barrage_bcst', 
         #             'position': 0,
         #             'check': 
@@ -552,8 +552,8 @@ def getTestData(test_parameter):
         #                 {'key': ['content'], 'value': 'barrage cannot broadcast since I am mute'},
         #                 {'key': ['fromUser', 'id'], 'value': test_parameter['track0013']['id']},
         #                 {'key': ['fromUser', 'name'], 'value': test_parameter['track0013']['nickname']},
-        #                 {'key': ['targetUser', 'id'], 'value': test_parameter['master10']['id']},
-        #                 {'key': ['targetUser', 'name'], 'value': test_parameter['master10']['nickname']},
+        #                 {'key': ['targetUser', 'id'], 'value': test_parameter[masterId]['id']},
+        #                 {'key': ['targetUser', 'name'], 'value': test_parameter[masterId]['nickname']},
         #                 {'key': ['room', 'liveRanking'], 'value': 1},
         #                 {'key': ['room', 'liveRankingPoints'], 'value': 119},
         #                 {'key': ['room', 'totalGiftPoints'], 'value': 119},
@@ -565,7 +565,7 @@ def getTestData(test_parameter):
 
         # ('禁言,官方場控不可被禁言，一般場控被禁言後可以自己解除禁言',
         #     [
-        #         {'user': 'master10', 'wait': 0, 'action': [
+        #         {'user': masterId, 'wait': 0, 'action': [
         #                 ('live_room:' + str(roomNo), 'phx_join', {'code': ''}, 0),
         #                 # ('live_room:' + str(roomNo), 'pickup_admin', {'xtarsId': test_parameter['track0011']['trueloveId']}, 0),
         #                 # ('live_room:' + str(roomNo), 'pickup_admin', {'xtarsId': test_parameter['track0012']['trueloveId']}, 0),
@@ -602,7 +602,7 @@ def getTestData(test_parameter):
         #     ],
         #     [
         #         {
-        #             'index': 'master10', 
+        #             'index': masterId, 
         #             'event': 'audience_muted_bcst', 
         #             'position': 0,
         #             'check': 
@@ -611,7 +611,7 @@ def getTestData(test_parameter):
         #             ]
         #         },             
         #         {
-        #             'index': 'master10', 
+        #             'index': masterId, 
         #             'event': 'audience_muted_bcst', 
         #             'position': 1,
         #             'check': 
@@ -623,7 +623,7 @@ def getTestData(test_parameter):
         #             ]
         #         },             
         #         {
-        #             'index': 'master10', 
+        #             'index': masterId, 
         #             'event': 'audience_unmute_bcst', 
         #             'position': 0,
         #             'check': 
@@ -631,7 +631,7 @@ def getTestData(test_parameter):
         #                 {'key': ['muteAudiences'], 'value': []},                    ]
         #         },            
         #         {
-        #             'index': 'master10', 
+        #             'index': masterId, 
         #             'event': 'message_bcst', 
         #             'position': 0,
         #             'check': 
@@ -648,7 +648,7 @@ def getTestData(test_parameter):
 
         # ('Ban踢出；一般場控可以ban user',
         #     [
-        #         {'user': 'master10', 'wait': 0, 'action': [
+        #         {'user': masterId, 'wait': 0, 'action': [
         #                 ('live_room:' + str(roomNo), 'phx_join', {'code': ''}, 0),
         #                 ('live_room:' + str(roomNo), 'pickup_admin', {'xtarsId': test_parameter['track0012']['trueloveId']}, 0),
         #                 ('live_room:' + str(roomNo), 'close_room', {'roomId': roomNo}, 10),
@@ -666,7 +666,7 @@ def getTestData(test_parameter):
         #                 ('live_room:' + str(roomNo), 'phx_join', {'code': ''}, 0),
         #                 ('live_room:' + str(roomNo), 'ping', {}, 5),
         #                 ('live_room:' + str(roomNo), 'phx_join', {'action': 'reconnect'}, 3),
-        #                 ('live_room:' + str(roomNo), 'gift', {'targetUserId': test_parameter['master10']['id'],
+        #                 ('live_room:' + str(roomNo), 'gift', {'targetUserId': test_parameter[masterId]['id'],
         #                     'giftId': 'cf0fc6ba-9fae-4c6a-9f34-7a17207e3d60', 'count': 2}, 2),
         #                 ('live_room:' + str(roomNo), 'phx_leave', {}, 3),
         #             ], 'sleep': 1
@@ -714,7 +714,7 @@ def getTestData(test_parameter):
 
         # ('Ban踢出；無法踢出官方場控及房主，被踢出後的user無法再進入該直播主所有開播的聊天室',
         #     [
-        #         {'user': 'master10', 'wait': 0, 'action': [
+        #         {'user': masterId, 'wait': 0, 'action': [
         #                 ('live_room:' + str(roomNo), 'phx_join', {'code': ''}, 0),
         #                 ('live_room:' + str(roomNo), 'ban_audience', {'targetUserId': test_parameter['track0012']['id'], 'reasonId': 8}, 2),
         #                 ('live_room:' + str(roomNo), 'ban_audience', {'targetUserId': test_parameter['lv000']['id'], 'reasonId': 8}, 1),
@@ -735,7 +735,7 @@ def getTestData(test_parameter):
         #         },
         #         {'user': 'lv000', 'wait': 1, 'action': [
         #                 ('live_room:' + str(roomNo), 'phx_join', {'code': ''}, 0),
-        #                 ('live_room:' + str(roomNo), 'ban_audience', {'targetUserId': test_parameter['master10']['id'], 'reasonId': 8}, 0),
+        #                 ('live_room:' + str(roomNo), 'ban_audience', {'targetUserId': test_parameter[masterId]['id'], 'reasonId': 8}, 0),
         #                 ('live_room:' + str(roomNo), 'ban_audience', {'targetUserId': test_parameter['track0011']['id'], 'reasonId': 8}, 2),
         #                 ('live_room:' + str(roomNo), 'unban_audience', {'targetUserId': test_parameter['track0011']['id'], 'reasonId': 8}, 2),
         #                 ('live_room:' + str(roomNo), 'unban_audience', {'targetUserId': test_parameter['track0012']['id'], 'reasonId': 8}, 3),
@@ -745,7 +745,7 @@ def getTestData(test_parameter):
         #     ],
         #     [
         #         {
-        #             'index': 'master10', 
+        #             'index': masterId, 
         #             'event': 'violation_got', 
         #             'position': 0,
         #             'check': 
@@ -756,7 +756,7 @@ def getTestData(test_parameter):
         #             ]
         #         },            
         #         {
-        #             'index': 'master10', 
+        #             'index': masterId, 
         #             'event': 'audience_banned_bcst', 
         #             'position': 0,
         #             'check': 
@@ -771,7 +771,7 @@ def getTestData(test_parameter):
         #             ]
         #         },             
         #         {
-        #             'index': 'master10', 
+        #             'index': masterId, 
         #             'event': 'audience_banned_bcst', 
         #             'position': 1,
         #             'check': 
@@ -780,13 +780,13 @@ def getTestData(test_parameter):
         #                 {'key': ['content', 'en'], 'value': '{targetUser.name} Successfully kicked out'},
         #                 {'key': ['content', 'zh'], 'value': '{targetUser.name} 被踢出成功'},
         #                 {'key': ['content', 'ja'], 'value': '{targetUser.name} 成功裏に追い出された'},
-        #                 {'key': ['fromUser', 'id'], 'value': test_parameter['master10']['id']},
+        #                 {'key': ['fromUser', 'id'], 'value': test_parameter[masterId]['id']},
         #                 {'key': ['targetUser', 'id'], 'value': test_parameter['track0012']['id']},
         #                 {'key': ['banAudiences'], 'value': [test_parameter['track0012']['id']]},
         #             ]
         #         },             
         #         {
-        #             'index': 'master10', 
+        #             'index': masterId, 
         #             'event': 'audience_unbanned_bcst', 
         #             'position': 0,
         #             'check': 
@@ -796,7 +796,7 @@ def getTestData(test_parameter):
         #             ]
         #         },             
         #         {
-        #             'index': 'master10', 
+        #             'index': masterId, 
         #             'event': 'room_in_bcst', 
         #             'position': 0,
         #             'check': 
@@ -814,7 +814,7 @@ def getTestData(test_parameter):
 
         # ('送禮、熱度及marquee',
         #     [
-        #         {'user': 'master10', 'wait': 0, 'action': [
+        #         {'user': masterId, 'wait': 0, 'action': [
         #                 ('live_room:' + str(roomNo), 'phx_join', {'code': ''}, 0),
         #                 ('live_room:' + str(roomNo), 'ping', {}, 15),
         #                 ('live_room:' + str(roomNo), 'close_room', {'roomId': roomNo}, 10),
@@ -822,10 +822,10 @@ def getTestData(test_parameter):
         #         },
         #         {'user': 'track0011', 'wait': 1, 'action': [
         #                 ('live_room:' + str(roomNo), 'phx_join', {'code': ''}, 1),
-        #                 ('live_room:' + str(roomNo), 'gift', {'targetUserId': test_parameter['master10']['id'],
+        #                 ('live_room:' + str(roomNo), 'gift', {'targetUserId': test_parameter[masterId]['id'],
         #                     'giftId': '55f0ac47-9979-441f-8c49-23d5db7c2898', 'count': 40}, 1),
         #                 ('live_room:' + str(roomNo), 'ping', {}, 3),
-        #                 ('live_room:' + str(roomNo), 'gift', {'targetUserId': test_parameter['master10']['id'],
+        #                 ('live_room:' + str(roomNo), 'gift', {'targetUserId': test_parameter[masterId]['id'],
         #                     'giftId': 'cf0fc6ba-9fae-4c6a-9f34-7a17207e3d60', 'count': 2}, 0),
         #                 ('live_room:' + str(roomNo), 'phx_leave', {}, 1),
         #                 ('live_room:' + str(roomNo), 'phx_join', {'code': ''}, 0),
@@ -834,7 +834,7 @@ def getTestData(test_parameter):
         #         },
         #         {'user': 'track0012', 'wait': 1, 'action': [
         #                 ('live_room:' + str(roomNo), 'phx_join', {'code': ''}, 1),
-        #                 ('live_room:' + str(roomNo), 'gift', {'targetUserId': test_parameter['master10']['id'],
+        #                 ('live_room:' + str(roomNo), 'gift', {'targetUserId': test_parameter[masterId]['id'],
         #                     'giftId': 'dd14a8e4-e8f0-4e9f-8f6b-1aebe43ddf53', 'count': 10}, 2),
         #                 ('live_room:' + str(roomNo), 'ping', {}, 10),
         #                 ('live_room:' + str(roomNo), 'phx_leave', {'code': ''}, 2),
@@ -843,7 +843,7 @@ def getTestData(test_parameter):
         #     ],
         #     [
         #         {
-        #             'index': 'master10', 
+        #             'index': masterId, 
         #             'event': 'gift_bcst', 
         #             'position': 0,
         #             'check': 
@@ -857,58 +857,58 @@ def getTestData(test_parameter):
         #                 {'key': ['gift', 'multiple'], 'value': False},
         #                 {'key': ['gift', 'points'], 'value': 300000},
         #                 {'key': ['fromUser', 'id'], 'value': test_parameter['track0011']['id']},
-        #                 {'key': ['targetUser', 'id'], 'value': test_parameter['master10']['id']},
+        #                 {'key': ['targetUser', 'id'], 'value': test_parameter[masterId]['id']},
         #             ]
         #         },             
         #         {
-        #             'index': 'master10', 
+        #             'index': masterId, 
         #             'event': 'marquee', 
         #             'position': 0,
         #             'check': [
-        #                 {'key': ['content'], 'value': '恭喜' +  test_parameter['master10']['nickname'] +'今日已突破 50 萬熱度，真是太厲害了！'},
-        #                 {'key': ['content2', 'en'], 'value': '恭喜' +  test_parameter['master10']['nickname'] +'今日已突破 50 萬熱度，真是太厲害了！'},
-        #                 {'key': ['content2', 'zh'], 'value': '恭喜' +  test_parameter['master10']['nickname'] +'今日已突破 50 萬熱度，真是太厲害了！'},
-        #                 {'key': ['content2', 'ja'], 'value': '恭喜' +  test_parameter['master10']['nickname'] +'今日已突破 50 萬熱度，真是太厲害了！'},
+        #                 {'key': ['content'], 'value': '恭喜' +  test_parameter[masterId]['nickname'] +'今日已突破 50 萬熱度，真是太厲害了！'},
+        #                 {'key': ['content2', 'en'], 'value': '恭喜' +  test_parameter[masterId]['nickname'] +'今日已突破 50 萬熱度，真是太厲害了！'},
+        #                 {'key': ['content2', 'zh'], 'value': '恭喜' +  test_parameter[masterId]['nickname'] +'今日已突破 50 萬熱度，真是太厲害了！'},
+        #                 {'key': ['content2', 'ja'], 'value': '恭喜' +  test_parameter[masterId]['nickname'] +'今日已突破 50 萬熱度，真是太厲害了！'},
         #                 {'key': ['count'], 'value': 3},
         #                 {'key': ['level'], 'value': 3},
         #             ]
         #         },             
         #         {
-        #             'index': 'master10', 
+        #             'index': masterId, 
         #             'event': 'marquee', 
         #             'position': 1,
         #             'check': [
-        #                 {'key': ['content'], 'value': '恭喜' +  test_parameter['master10']['nickname'] + ' 收到 ' + test_parameter['track0011']['nickname'] + ' 的 幸福燃點'},
-        #                 {'key': ['content2', 'en'], 'value': '恭喜' +  test_parameter['master10']['nickname'] + ' 收到 ' + test_parameter['track0011']['nickname'] + ' 的 幸福燃點'},
-        #                 {'key': ['content2', 'zh'], 'value': '恭喜' +  test_parameter['master10']['nickname'] + ' 收到 ' + test_parameter['track0011']['nickname'] + ' 的 幸福燃點'},
-        #                 {'key': ['content2', 'ja'], 'value': '恭喜' +  test_parameter['master10']['nickname'] + ' 收到 ' + test_parameter['track0011']['nickname'] + ' 的 幸福燃點'},
+        #                 {'key': ['content'], 'value': '恭喜' +  test_parameter[masterId]['nickname'] + ' 收到 ' + test_parameter['track0011']['nickname'] + ' 的 幸福燃點'},
+        #                 {'key': ['content2', 'en'], 'value': '恭喜' +  test_parameter[masterId]['nickname'] + ' 收到 ' + test_parameter['track0011']['nickname'] + ' 的 幸福燃點'},
+        #                 {'key': ['content2', 'zh'], 'value': '恭喜' +  test_parameter[masterId]['nickname'] + ' 收到 ' + test_parameter['track0011']['nickname'] + ' 的 幸福燃點'},
+        #                 {'key': ['content2', 'ja'], 'value': '恭喜' +  test_parameter[masterId]['nickname'] + ' 收到 ' + test_parameter['track0011']['nickname'] + ' 的 幸福燃點'},
         #                 {'key': ['count'], 'value': 3},
         #                 {'key': ['level'], 'value': 2},
 
         #             ]
         #         },             
         #         {
-        #             'index': 'master10', 
+        #             'index': masterId, 
         #             'event': 'marquee', 
         #             'position': 2,
         #             'check': [
-        #                 {'key': ['content'], 'value': '恭喜' +  test_parameter['master10']['nickname'] +'今日已突破 20 萬熱度，真是太厲害了！'},
-        #                 {'key': ['content2', 'en'], 'value': '恭喜' +  test_parameter['master10']['nickname'] +'今日已突破 20 萬熱度，真是太厲害了！'},
-        #                 {'key': ['content2', 'zh'], 'value': '恭喜' +  test_parameter['master10']['nickname'] +'今日已突破 20 萬熱度，真是太厲害了！'},
-        #                 {'key': ['content2', 'ja'], 'value': '恭喜' +  test_parameter['master10']['nickname'] +'今日已突破 20 萬熱度，真是太厲害了！'},
+        #                 {'key': ['content'], 'value': '恭喜' +  test_parameter[masterId]['nickname'] +'今日已突破 20 萬熱度，真是太厲害了！'},
+        #                 {'key': ['content2', 'en'], 'value': '恭喜' +  test_parameter[masterId]['nickname'] +'今日已突破 20 萬熱度，真是太厲害了！'},
+        #                 {'key': ['content2', 'zh'], 'value': '恭喜' +  test_parameter[masterId]['nickname'] +'今日已突破 20 萬熱度，真是太厲害了！'},
+        #                 {'key': ['content2', 'ja'], 'value': '恭喜' +  test_parameter[masterId]['nickname'] +'今日已突破 20 萬熱度，真是太厲害了！'},
         #                 {'key': ['count'], 'value': 3},
         #                 {'key': ['level'], 'value': 3},
         #             ]
         #         },             
         #         {
-        #             'index': 'master10', 
+        #             'index': masterId, 
         #             'event': 'marquee', 
         #             'position': 3,
         #             'check': [
-        #                 {'key': ['content'], 'value': '恭喜' +  test_parameter['master10']['nickname'] + ' 收到 ' + test_parameter['track0012']['nickname'] + ' 的 對妳動心'},
-        #                 {'key': ['content2', 'en'], 'value': '恭喜' +  test_parameter['master10']['nickname'] + ' 收到 ' + test_parameter['track0012']['nickname'] + ' 的 對妳動心'},
-        #                 {'key': ['content2', 'zh'], 'value': '恭喜' +  test_parameter['master10']['nickname'] + ' 收到 ' + test_parameter['track0012']['nickname'] + ' 的 對妳動心'},
-        #                 {'key': ['content2', 'ja'], 'value': '恭喜' +  test_parameter['master10']['nickname'] + ' 收到 ' + test_parameter['track0012']['nickname'] + ' 的 對妳動心'},
+        #                 {'key': ['content'], 'value': '恭喜' +  test_parameter[masterId]['nickname'] + ' 收到 ' + test_parameter['track0012']['nickname'] + ' 的 對妳動心'},
+        #                 {'key': ['content2', 'en'], 'value': '恭喜' +  test_parameter[masterId]['nickname'] + ' 收到 ' + test_parameter['track0012']['nickname'] + ' 的 對妳動心'},
+        #                 {'key': ['content2', 'zh'], 'value': '恭喜' +  test_parameter[masterId]['nickname'] + ' 收到 ' + test_parameter['track0012']['nickname'] + ' 的 對妳動心'},
+        #                 {'key': ['content2', 'ja'], 'value': '恭喜' +  test_parameter[masterId]['nickname'] + ' 收到 ' + test_parameter['track0012']['nickname'] + ' 的 對妳動心'},
         #                 {'key': ['count'], 'value': 3},
         #                 {'key': ['level'], 'value': 1},
 
@@ -919,7 +919,7 @@ def getTestData(test_parameter):
         #             'event': 'room_in', 
         #             'position': 0,
         #             'check': [
-        #                 {'key': ['room', 'liveRankingPoints'], 'value': test_parameter['master10']['dailyPoints'] + 550000},
+        #                 {'key': ['room', 'liveRankingPoints'], 'value': test_parameter[masterId]['dailyPoints'] + 550000},
         #                 {'key': ['room', 'totalGiftPoints'], 'value': 550000},
         #                 {'key': ['room', 'userGiftPoints'], 'value': 400000},
 
@@ -932,7 +932,7 @@ def getTestData(test_parameter):
 
         # ('用戶分享直播間訊息deep link #3668 #3768 #3779',
         #     [
-        #         {'user': 'master10', 'wait': 0, 'action': [
+        #         {'user': masterId, 'wait': 0, 'action': [
         #                 ('live_room:' + str(roomNo), 'phx_join', {'code': ''}, 0),
         #                 ('live_room:' + str(roomNo), 'ping', {}, 10),
         #                 ('live_room:' + str(roomNo), 'close_room', {'roomId': roomNo}, 12),
@@ -968,7 +968,7 @@ def getTestData(test_parameter):
         #                 {'key': ['content', 'zh'], 'value': '{fromUser.name} 分享了 {targetUser.name} 的直播間，提升了直播間熱度！'},
         #                 {'key': ['content', 'ja'], 'value': '{fromUser.name} 分享了 {targetUser.name} 的直播間，提升了直播間熱度！'},
         #                 {'key': ['fromUser', 'id'], 'value': test_parameter['track0011']['id']},
-        #                 {'key': ['targetUser', 'id'], 'value': test_parameter['master10']['id']},
+        #                 {'key': ['targetUser', 'id'], 'value': test_parameter[masterId]['id']},
         #             ]
         #         },             
         #         {
@@ -980,7 +980,7 @@ def getTestData(test_parameter):
         #                 {'key': ['content', 'zh'], 'value': '{fromUser.name} 分享了 {targetUser.name} 的直播間，提升了直播間熱度！'},
         #                 {'key': ['content', 'ja'], 'value': '{fromUser.name} 分享了 {targetUser.name} 的直播間，提升了直播間熱度！'},
         #                 {'key': ['fromUser', 'id'], 'value': test_parameter['track0012']['id']},
-        #                 {'key': ['targetUser', 'id'], 'value': test_parameter['master10']['id']},
+        #                 {'key': ['targetUser', 'id'], 'value': test_parameter[masterId]['id']},
         #             ]
         #         },             
         #         {
@@ -992,11 +992,11 @@ def getTestData(test_parameter):
         #                 {'key': ['content', 'zh'], 'value': '{fromUser.name} 分享了 {targetUser.name} 的直播間！'},
         #                 {'key': ['content', 'ja'], 'value': '{fromUser.name} 分享了 {targetUser.name} 的直播間！'},
         #                 {'key': ['fromUser', 'id'], 'value': test_parameter['track0012']['id']},
-        #                 {'key': ['targetUser', 'id'], 'value': test_parameter['master10']['id']},
+        #                 {'key': ['targetUser', 'id'], 'value': test_parameter[masterId]['id']},
         #             ]
         #         },             
         #         {
-        #             'index': 'master10', 
+        #             'index': masterId, 
         #             'event': 'shared_bcst', 
         #             'position': 0,
         #             'check': [
@@ -1004,7 +1004,7 @@ def getTestData(test_parameter):
         #                 {'key': ['content', 'zh'], 'value': '{fromUser.name} 分享了 {targetUser.name} 的直播間！'},
         #                 {'key': ['content', 'ja'], 'value': '{fromUser.name} 分享了 {targetUser.name} 的直播間！'},
         #                 {'key': ['fromUser', 'id'], 'value': test_parameter['track0012']['id']},
-        #                 {'key': ['targetUser', 'id'], 'value': test_parameter['master10']['id']},
+        #                 {'key': ['targetUser', 'id'], 'value': test_parameter[masterId]['id']},
         #             ]
         #         },             
         #         {
@@ -1016,7 +1016,7 @@ def getTestData(test_parameter):
         #                 {'key': ['content', 'zh'], 'value': '{fromUser.name} 分享了 {targetUser.name} 的直播間，提升了直播間熱度！'},
         #                 {'key': ['content', 'ja'], 'value': '{fromUser.name} 分享了 {targetUser.name} 的直播間，提升了直播間熱度！'},
         #                 {'key': ['fromUser', 'id'], 'value': test_parameter['track0020']['id']},
-        #                 {'key': ['targetUser', 'id'], 'value': test_parameter['master10']['id']},
+        #                 {'key': ['targetUser', 'id'], 'value': test_parameter[masterId]['id']},
         #             ]
         #         },             
         #     ]
@@ -1025,7 +1025,7 @@ def getTestData(test_parameter):
 
         # ('直播主timeout應主動將user請出直播間並關閉該房 #3669',
         #     [
-        #         {'user': 'master10', 'wait': 0, 'action': [
+        #         {'user': masterId, 'wait': 0, 'action': [
         #                 ('live_room:' + str(roomNo), 'phx_join', {'code': ''}, 0),
         #                 ('live_room:' + str(roomNo), 'ping', {}, 4),
         #             ], 'sleep': 2
@@ -1058,7 +1058,7 @@ def getTestData(test_parameter):
 
         # ('暱稱中含有禁詞，送禮時直播主應收到通知，但其他用戶不會看到.一併驗證全域跑馬燈及熱度 #3808',
         #     [
-        #         {'user': 'master10', 'wait': 0, 'action': [
+        #         {'user': masterId, 'wait': 0, 'action': [
         #                 ('live_room:' + str(roomNo), 'phx_join', {'code': ''}, 0),
         #                 ('live_room:' + str(roomNo), 'ping', {}, 15),
         #                 ('live_room:' + str(roomNo), 'close_room', {'roomId': roomNo}, 1),
@@ -1072,7 +1072,7 @@ def getTestData(test_parameter):
         #         },
         #         {'user': 'track0020', 'wait': 1, 'action': [
         #                 ('live_room:' + str(roomNo), 'phx_join', {'code': ''}, 1),
-        #                 ('live_room:' + str(roomNo), 'gift', {'targetUserId': test_parameter['master10']['id'],
+        #                 ('live_room:' + str(roomNo), 'gift', {'targetUserId': test_parameter[masterId]['id'],
         #                     'giftId': 'cf0fc6ba-9fae-4c6a-9f34-7a17207e3d60', 'count': 2}, 2),
         #                 ('live_room:' + str(roomNo), 'ping', {}, 5),
         #                 ('live_room:' + str(roomNo), 'phx_leave', {'code': ''}, 2),
@@ -1081,7 +1081,7 @@ def getTestData(test_parameter):
         #     ],
         #     [
         #         {
-        #             'index': 'master10', 
+        #             'index': masterId, 
         #             'event': 'gift', 
         #             'position': 0,
         #             'check': 
@@ -1095,7 +1095,7 @@ def getTestData(test_parameter):
         #                 {'key': ['gift', 'multiple'], 'value': False},
         #                 {'key': ['gift', 'points'], 'value': 300000},
         #                 {'key': ['fromUser', 'id'], 'value': test_parameter['track0020']['id']},
-        #                 {'key': ['targetUser', 'id'], 'value': test_parameter['master10']['id']},
+        #                 {'key': ['targetUser', 'id'], 'value': test_parameter[masterId]['id']},
         #             ]
         #         },             
         #         {
@@ -1113,24 +1113,24 @@ def getTestData(test_parameter):
         #                 {'key': ['gift', 'multiple'], 'value': False},
         #                 {'key': ['gift', 'points'], 'value': 300000},
         #                 {'key': ['fromUser', 'id'], 'value': test_parameter['track0020']['id']},
-        #                 {'key': ['targetUser', 'id'], 'value': test_parameter['master10']['id']},
+        #                 {'key': ['targetUser', 'id'], 'value': test_parameter[masterId]['id']},
         #             ]
         #         },             
         #         {
-        #             'index': 'master10', 
+        #             'index': masterId, 
         #             'event': 'marquee', 
         #             'position': 1,
         #             'check': []
         #         },             
         #         {
-        #             'index': 'master10', 
+        #             'index': masterId, 
         #             'event': 'marquee', 
         #             'position': 0,
         #             'check': [
-        #                 {'key': ['content'], 'value': '恭喜' +  test_parameter['master10']['nickname'] +'今日已突破 20 萬熱度，真是太厲害了！'},
-        #                 {'key': ['content2', 'en'], 'value': '恭喜' +  test_parameter['master10']['nickname'] +'今日已突破 20 萬熱度，真是太厲害了！'},
-        #                 {'key': ['content2', 'zh'], 'value': '恭喜' +  test_parameter['master10']['nickname'] +'今日已突破 20 萬熱度，真是太厲害了！'},
-        #                 {'key': ['content2', 'ja'], 'value': '恭喜' +  test_parameter['master10']['nickname'] +'今日已突破 20 萬熱度，真是太厲害了！'},
+        #                 {'key': ['content'], 'value': '恭喜' +  test_parameter[masterId]['nickname'] +'今日已突破 20 萬熱度，真是太厲害了！'},
+        #                 {'key': ['content2', 'en'], 'value': '恭喜' +  test_parameter[masterId]['nickname'] +'今日已突破 20 萬熱度，真是太厲害了！'},
+        #                 {'key': ['content2', 'zh'], 'value': '恭喜' +  test_parameter[masterId]['nickname'] +'今日已突破 20 萬熱度，真是太厲害了！'},
+        #                 {'key': ['content2', 'ja'], 'value': '恭喜' +  test_parameter[masterId]['nickname'] +'今日已突破 20 萬熱度，真是太厲害了！'},
         #                 {'key': ['count'], 'value': 3},
         #                 {'key': ['level'], 'value': 3},
         #             ]
@@ -1146,7 +1146,7 @@ def getTestData(test_parameter):
 
         # ('追蹤&Block封鎖；無法封鎖官方場控，被封鎖後的user無法再進入該直播主所有開播的聊天室',
         #     [
-        #         {'user': 'master10', 'wait': 0, 'action': [
+        #         {'user': masterId, 'wait': 0, 'action': [
         #                 ('live_room:' + str(roomNo), 'phx_join', {'code': ''}, 0),
         #                 ('live_room:' + str(roomNo), 'block_audience', {'targetUserId': test_parameter['lv000']['id']}, 1),
         #                 ('live_room:' + str(roomNo), 'block_audience', {'targetUserId': test_parameter['track0012']['id']}, 5),
@@ -1156,7 +1156,7 @@ def getTestData(test_parameter):
         #         },
         #         {'user': 'track0012', 'wait': 1, 'action': [
         #                 ('live_room:' + str(roomNo), 'phx_join', {'code': ''}, 0),
-        #                 ('live_room:' + str(roomNo), 'track', {'targetUserId': test_parameter['master10']['id']}, 1),
+        #                 ('live_room:' + str(roomNo), 'track', {'targetUserId': test_parameter[masterId]['id']}, 1),
         #                 ('live_room:' + str(roomNo), 'ping', {}, 6),
         #             ], 'sleep': 5
         #         },
@@ -1168,7 +1168,7 @@ def getTestData(test_parameter):
         #         },
         #         {'user': 'track0020', 'wait': 2, 'action': [
         #                 ('live_room:' + str(roomNo), 'phx_join', {'code': ''}, 0),
-        #                 ('live_room:' + str(roomNo), 'track', {'targetUserId': test_parameter['master10']['id']}, 1),
+        #                 ('live_room:' + str(roomNo), 'track', {'targetUserId': test_parameter[masterId]['id']}, 1),
         #                 ('live_room:' + str(roomNo), 'ping', {}, 10),
         #                 ('live_room:' + str(roomNo), 'phx_leave', {}, 3),
         #             ], 'sleep': 5
@@ -1182,7 +1182,7 @@ def getTestData(test_parameter):
         #     ],
         #     [
         #         {
-        #             'index': 'master10', 
+        #             'index': masterId, 
         #             'event': 'phx_reply', 
         #             'position': 0,
         #             'check': 
@@ -1192,7 +1192,7 @@ def getTestData(test_parameter):
         #         },             
 
         #         {
-        #             'index': 'master10', 
+        #             'index': masterId, 
         #             'event': 'audience_blocked_bcst', 
         #             'position': 0,
         #             'check': 
@@ -1201,7 +1201,7 @@ def getTestData(test_parameter):
         #                 {'key': ['content', 'en'], 'value': '{targetUser.name} 已被 {fromUser.name}封鎖成功'},
         #                 {'key': ['content', 'zh'], 'value': '{targetUser.name} 已被 {fromUser.name}封鎖成功'},
         #                 {'key': ['content', 'ja'], 'value': '{targetUser.name} 已被 {fromUser.name}封鎖成功'},
-        #                 {'key': ['fromUser', 'id'], 'value': test_parameter['master10']['id']},
+        #                 {'key': ['fromUser', 'id'], 'value': test_parameter[masterId]['id']},
         #                 {'key': ['targetUser', 'id'], 'value': test_parameter['track0012']['id']},
         #             ]
         #         },             
@@ -1215,7 +1215,7 @@ def getTestData(test_parameter):
         #                 {'key': ['content', 'en'], 'value': '{targetUser.name} 已被 {fromUser.name}封鎖成功'},
         #                 {'key': ['content', 'zh'], 'value': '{targetUser.name} 已被 {fromUser.name}封鎖成功'},
         #                 {'key': ['content', 'ja'], 'value': '{targetUser.name} 已被 {fromUser.name}封鎖成功'},
-        #                 {'key': ['fromUser', 'id'], 'value': test_parameter['master10']['id']},
+        #                 {'key': ['fromUser', 'id'], 'value': test_parameter[masterId]['id']},
         #                 {'key': ['targetUser', 'id'], 'value': test_parameter['track0012']['id']},
         #             ]
         #         },             
@@ -1230,7 +1230,7 @@ def getTestData(test_parameter):
         #                 {'key': ['content', 'zh'], 'value': '{fromUser.name} 追蹤了 {targetUser.name}！'},
         #                 {'key': ['content', 'ja'], 'value': '{fromUser.name} 追蹤了 {targetUser.name}！'},
         #                 {'key': ['fromUser', 'id'], 'value': test_parameter['track0012']['id']},
-        #                 {'key': ['targetUser', 'id'], 'value': test_parameter['master10']['id']},
+        #                 {'key': ['targetUser', 'id'], 'value': test_parameter[masterId]['id']},
         #             ]
         #         },             
         #         {
@@ -1243,12 +1243,12 @@ def getTestData(test_parameter):
         #                 {'key': ['content', 'en'], 'value': 'Violated the rules and was kicked out of the room'},
         #                 {'key': ['content', 'zh'], 'value': '違反規定，被踢出房間'},
         #                 {'key': ['content', 'ja'], 'value': 'ルールに違反し、部屋から追い出された'},
-        #                 {'key': ['fromUser', 'id'], 'value': test_parameter['master10']['id']},
+        #                 {'key': ['fromUser', 'id'], 'value': test_parameter[masterId]['id']},
         #                 {'key': ['targetUser', 'id'], 'value': test_parameter['track0012']['id']},
         #             ]
         #         },             
         #         {
-        #             'index': 'master10', 
+        #             'index': masterId, 
         #             'event': 'room_in_bcst', 
         #             'position': 0,
         #             'check': 
@@ -1266,7 +1266,7 @@ def getTestData(test_parameter):
 
     #     ('message追加不同的message type',  #3602
     #         [
-    #             {'user': 'master10', 'wait': 0, 'action': [
+    #             {'user': masterId, 'wait': 0, 'action': [
     #                     ('live_room:' + str(roomNo), 'phx_join', {'code': ''}, 0),
     #                     ('live_room:' + str(roomNo), 'ping', {}, 30),
     #                     ('live_room:' + str(roomNo), 'close_room', {'roomId': roomNo}, 15),
@@ -1287,7 +1287,7 @@ def getTestData(test_parameter):
     #         ],
     #         [
     #             {
-    #                 'index': 'master10', 
+    #                 'index': masterId, 
     #                 'event': 'message_bcst', 
     #                 'position': 0,
     #                 'check': 
@@ -1333,7 +1333,7 @@ def getTestData(test_parameter):
 
         # ('過年紅包活動，暖場、抽奬', #4619~4615  
         #     [       
-        #         {'user': 'master10', 'wait': 0, 'action': [
+        #         {'user': masterId, 'wait': 0, 'action': [
         #                 ('live_room:%d'%roomNo, 'phx_join', {}, 0), 
         #                 ('live_room:%d'%roomNo, 'ping', {}, 35),
         #                 ('live_room:%d'%roomNo, 'ping', {}, 35),
@@ -1343,8 +1343,8 @@ def getTestData(test_parameter):
         #         }, 
         #         {'user': 'track0011', 'wait': 2, 'action': [
         #                 ('live_room:%d'%roomNo, 'phx_join', {}, 1), 
-        #                 ('live_room:%d'%roomNo, 'gift', {'giftId': 'dd14a8e4-e8f0-4e9f-8f6b-1aebe43ddf53', 'targetUserId': test_parameter['master10']['id'], 'count': 1}, 1),
-        #                 ('live_room:%d'%roomNo, 'gift', {'giftId': 'dd14a8e4-e8f0-4e9f-8f6b-1aebe43ddf53', 'targetUserId': test_parameter['master10']['id'], 'count': 1}, 3),
+        #                 ('live_room:%d'%roomNo, 'gift', {'giftId': 'dd14a8e4-e8f0-4e9f-8f6b-1aebe43ddf53', 'targetUserId': test_parameter[masterId]['id'], 'count': 1}, 1),
+        #                 ('live_room:%d'%roomNo, 'gift', {'giftId': 'dd14a8e4-e8f0-4e9f-8f6b-1aebe43ddf53', 'targetUserId': test_parameter[masterId]['id'], 'count': 1}, 3),
         #                 ('live_room:%d'%roomNo, 'ping', {}, 30),
         #                 ('live_room:%d'%roomNo, 'ping', {}, 30),
         #                 ('live_room:%d'%roomNo, 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 5),
@@ -1413,7 +1413,7 @@ def getTestData(test_parameter):
         #                 {'key': ['level'], 'value': 1},
         #                 {'key': ['content', 'zh'],  'value': '{targetUser.name} 準備送紅包了~大家快來搶紅包！'},
         #                 {'key': ['fromUser', 'id'], 'value': test_parameter['track0011']['id']},
-        #                 {'key': ['targetUser', 'id'], 'value': test_parameter['master10']['id']},
+        #                 {'key': ['targetUser', 'id'], 'value': test_parameter[masterId]['id']},
         #                 {'key': ['url'], 'value': 'xtars://voiceChat/3'},
         #             ]
         #         },
@@ -1421,7 +1421,7 @@ def getTestData(test_parameter):
         #                 {'key': ['level'], 'value': 1},
         #                 {'key': ['content', 'zh'],  'value': '{targetUser.name} 準備送紅包了~大家快來搶紅包！'},
         #                 {'key': ['fromUser', 'id'], 'value': test_parameter['track0011']['id']},
-        #                 {'key': ['targetUser', 'id'], 'value': test_parameter['master10']['id']},
+        #                 {'key': ['targetUser', 'id'], 'value': test_parameter[masterId]['id']},
         #                 {'key': ['url'], 'value': 'xtars://voiceChat/3'},
         #             ]
         #         },
@@ -1467,9 +1467,463 @@ def getTestData(test_parameter):
         #     ]
         # ),
 
-        ('過年紅包活動，重新開播重新計算（含結束）', #4621
+        # ('過年紅包活動，重新開播重新計算（含結束）', #4621
+        #     [       
+        #         {'user': masterId, 'wait': 0, 'action': [
+        #                 ('live_room:%d'%roomNo, 'phx_join', {}, 0), 
+        #                 ('live_room:%d'%roomNo, 'ping', {}, 35),
+        #                 ('live_room:%d'%roomNo, 'ping', {}, 35),
+        #                 ('live_room:%d'%roomNo, 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 10),
+        #                 ('live_room:%d'%roomNo, 'phx_leave', {}, 3),
+        #             ], 'sleep': 7
+        #         }, 
+        #         {'user': 'track0011', 'wait': 3, 'action': [
+        #                 ('live_room:%d'%roomNo, 'phx_join', {}, 1), 
+        #                 ('live_room:%d'%roomNo, 'gift', {'giftId': 'dd14a8e4-e8f0-4e9f-8f6b-1aebe43ddf53', 'targetUserId': test_parameter[masterId]['id'], 'count': 2}, 1), #15,000
+        #                 ('live_room:%d'%roomNo, 'ping', {}, 30),
+        #                 ('live_room:%d'%roomNo, 'ping', {}, 30),
+        #                 ('live_room:%d'%roomNo, 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 5),
+        #                 ('live_room:%d'%roomNo, 'phx_leave', {}, 3),
+        #             ], 'sleep': 3
+        #         },
+        #         {'user': 'track0012', 'wait': 30, 'action': [ #進來時在暖場
+        #                 ('live_room:%d'%roomNo, 'phx_join', {}, 1), 
+        #                 ('live_room:' + str(roomNo), 'barrage', {'barrageId': 1, 'content': 'barrage也視同禮物🎁'}, 1),                        
+        #                 ('live_room:%d'%roomNo, 'ping', {}, 35),
+        #                 ('live_room:%d'%roomNo, 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 5),
+        #                 ('live_room:%d'%roomNo, 'phx_leave', {}, 30),
+        #             ], 'sleep': 3
+        #         },
+        #         {'user': 'track0013', 'wait': 100, 'action': [ #抽奬已結束
+        #                 ('live_room:%d'%roomNo, 'phx_join', {}, 1), 
+        #                 ('live_room:%d'%roomNo, 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 5),
+        #                 ('live_room:%d'%roomNo, 'phx_leave', {}, 3),
+        #             ], 'sleep': 3
+        #         },
+        #         {'user': 'track0014', 'wait': 1, 'action': [ #在聲聊房轉進來抽奬
+        #                 ('vc_room:1', 'phx_join', {}, 1), 
+        #                 ('vc_room:1', 'ping', {}, 35), 
+        #                 ('vc_room:1', 'phx_leave', {}, 28),
+        #                 ('live_room:%d'%roomNo, 'phx_join', {}, 5), 
+        #                 ('live_room:%d'%roomNo, 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 5),
+        #                 ('live_room:%d'%roomNo, 'phx_leave', {}, 3),
+        #             ], 'sleep': 3
+        #         },
+
+        #     ],  
+        #     [
+        #         {'index': 'track0013', 'event': 'luckymoney_data_changed_bcst', 'position': 0, 'check': [
+        #                 {'key': ['progress'], 'value': 'GATHER'},
+        #                 {'key': ['gatherPoints'], 'value': 30119},
+        #                 {'key': ['targetPoints'], 'value': 50000},
+        #                 {'key': ['displayed'], 'value': True},
+        #                 {'key': ['clicked'], 'value': False},
+        #             ]
+        #         },
+        #         {'index': 'track0012', 'event': 'luckymoney_data_changed_bcst', 'position': 3, 'check': [
+        #                 {'key': ['progress'], 'value': 'WARM_UP'},
+        #                 {'key': ['gatherPoints'],  'value': 30119},
+        #                 {'key': ['targetPoints'], 'value': 30000},
+        #                 {'key': ['displayed'], 'value': True},
+        #                 {'key': ['clicked'], 'value': False},
+        #             ]
+        #         },
+        #         {'index': 'track0014', 'event': 'luckymoney_data_changed_bcst', 'position': 0, 'check': [
+        #                 {'key': ['progress'], 'value': 'READY'},
+        #                 {'key': ['gatherPoints'],  'value': 30119},
+        #                 {'key': ['targetPoints'], 'value': 30000},
+        #                 {'key': ['displayed'], 'value': True},
+        #                 {'key': ['clicked'], 'value': False},
+        #             ]
+        #         },
+        #         {'index': 'track0014', 'event': 'luckymoney_marquee', 'position': 0, 'check': [
+        #                 {'key': ['level'], 'value': 1},
+        #                 {'key': ['content', 'zh'],  'value': '{targetUser.name} 準備送紅包了~大家快來搶紅包！'},
+        #                 {'key': ['fromUser', 'id'], 'value': test_parameter['track0011']['id']},
+        #                 {'key': ['targetUser', 'id'], 'value': test_parameter[masterId]['id']},
+        #                 {'key': ['url'], 'value': 'xtars://voiceChat/3'},
+        #             ]
+        #         },
+        #         {'index': 'track0011', 'event': 'luckymoney_marquee', 'position': 0, 'check': [
+        #                 {'key': ['level'], 'value': 1},
+        #                 {'key': ['content', 'zh'],  'value': '{targetUser.name} 準備送紅包了~大家快來搶紅包！'},
+        #                 {'key': ['fromUser', 'id'], 'value': test_parameter['track0011']['id']},
+        #                 {'key': ['targetUser', 'id'], 'value': test_parameter[masterId]['id']},
+        #                 {'key': ['url'], 'value': 'xtars://voiceChat/3'},
+        #             ]
+        #         },
+        #         {'index': 'track0011', 'event': 'luckymoney_data_changed_bcst', 'position': 5, 'check': [
+        #                 {'key': ['progress'], 'value': 'GATHER'},
+        #                 {'key': ['gatherPoints'],  'value': 0},
+        #                 {'key': ['targetPoints'], 'value': 30000},
+        #                 {'key': ['displayed'], 'value': True},
+        #                 {'key': ['clicked'], 'value': False},
+        #             ]
+        #         },
+        #         {'index': 'track0011', 'event': 'luckymoney_lottery', 'position': 0, 'check': [
+        #                 {'key': ['displayed'], 'value': True},
+        #                 {'key': ['clicked'],  'value': False},
+        #             ]
+        #         },
+        #         {'index': 'track0013', 'event': 'phx_reply', 'position': 0, 'check': [
+        #                 {'key': ['response', 'err'], 'value': 'LUCKYMONEY_LOTTERY_UNAVAILABLE'},
+        #             ]
+        #         },
+        #         {'index': masterId, 'event': 'luckymoney_ready_bcst', 'position': 0, 'check': [
+        #                 {'key': ['displayed'], 'value': True},
+        #                 {'key': ['clicked'],  'value': True},
+        #             ]
+        #         },
+        #         {'index': masterId, 'event': 'luckymoney_warm_up_bcst', 'position': 0, 'check': [
+        #                 {'key': ['displayed'], 'value': True},
+        #                 {'key': ['clicked'],  'value': False},
+        #             ]
+        #         },
+        #     ]
+        # ),
+
+        # ('過年紅包活動，暖場、抽奬', #4619~4615  
+        #     [       
+        #         {'user': masterId, 'wait': 0, 'action': [
+        #                 ('live_room:%d'%roomNo, 'phx_join', {}, 0), 
+        #                 ('live_room:%d'%roomNo, 'ping', {}, 35),
+        #                 ('live_room:%d'%roomNo, 'ping', {}, 35),
+        #                 ('live_room:%d'%roomNo, 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 10),
+        #                 ('live_room:%d'%roomNo, 'phx_leave', {}, 3),
+        #             ], 'sleep': 7
+        #         }, 
+        #         {'user': 'track0011', 'wait': 2, 'action': [
+        #                 ('live_room:%d'%roomNo, 'phx_join', {}, 1), 
+        #                 ('live_room:%d'%roomNo, 'gift', {'giftId': 'dd14a8e4-e8f0-4e9f-8f6b-1aebe43ddf53', 'targetUserId': test_parameter[masterId]['id'], 'count': 1}, 1),
+        #                 ('live_room:%d'%roomNo, 'gift', {'giftId': 'dd14a8e4-e8f0-4e9f-8f6b-1aebe43ddf53', 'targetUserId': test_parameter[masterId]['id'], 'count': 1}, 3),
+        #                 ('live_room:%d'%roomNo, 'ping', {}, 30),
+        #                 ('live_room:%d'%roomNo, 'ping', {}, 30),
+        #                 ('live_room:%d'%roomNo, 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 5),
+        #                 ('live_room:%d'%roomNo, 'phx_leave', {}, 3),
+        #             ], 'sleep': 3
+        #         },
+        #         {'user': 'track0012', 'wait': 30, 'action': [ #進來時在暖場
+        #                 ('live_room:%d'%roomNo, 'phx_join', {}, 1), 
+        #                 ('live_room:%d'%roomNo, 'ping', {}, 30),
+        #                 ('live_room:%d'%roomNo, 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 5),
+        #                 ('live_room:%d'%roomNo, 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 0),
+        #                 ('live_room:%d'%roomNo, 'phx_leave', {}, 30),
+        #             ], 'sleep': 3
+        #         },
+        #         {'user': 'track0013', 'wait': 100, 'action': [ #抽奬已結束
+        #                 ('live_room:%d'%roomNo, 'phx_join', {}, 5), 
+        #                 ('live_room:%d'%roomNo, 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 5),
+        #                 ('live_room:%d'%roomNo, 'phx_leave', {}, 3),
+        #             ], 'sleep': 3
+        #         },
+        #         {'user': 'track0014', 'wait': 3, 'action': [ #在聲聊房轉進來抽奬
+        #                 ('vc_room:1', 'phx_join', {}, 1), 
+        #                 ('vc_room:1', 'pin', {}, 40), 
+        #                 ('vc_room:1', 'phx_leave', {}, 20),
+        #                 ('live_room:%d'%roomNo, 'phx_join', {}, 5), 
+        #                 ('live_room:%d'%roomNo, 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 5),
+        #                 ('live_room:%d'%roomNo, 'phx_leave', {}, 3),
+        #             ], 'sleep': 3
+        #         },
+
+        #     ],  
+        #     [
+        #         {'index': 'track0013', 'event': 'luckymoney_data_changed_bcst', 'position': 0, 'check': [
+        #                 {'key': ['progress'], 'value': 'GATHER'},
+        #                 {'key': ['gatherPoints'], 'value': 30000},
+        #                 {'key': ['targetPoints'], 'value': 50000},
+        #                 {'key': ['displayed'], 'value': True},
+        #                 {'key': ['clicked'], 'value': False},
+        #             ]
+        #         },
+        #         {'index': 'track0012', 'event': 'luckymoney_data_changed_bcst', 'position': 0, 'check': [
+        #                 {'key': ['progress'], 'value': 'GATHER'},
+        #                 {'key': ['gatherPoints'], 'value': 30000},
+        #                 {'key': ['targetPoints'], 'value': 50000},
+        #                 {'key': ['displayed'], 'value': True},
+        #                 {'key': ['clicked'], 'value': False},
+        #             ]
+        #         },
+        #         {'index': 'track0012', 'event': 'luckymoney_data_changed_bcst', 'position': 1, 'check': [
+        #                 {'key': ['progress'], 'value': 'WARM_UP'},
+        #                 {'key': ['gatherPoints'],  'value': 30000},
+        #                 {'key': ['targetPoints'], 'value': 30000},
+        #                 {'key': ['displayed'], 'value': True},
+        #                 {'key': ['clicked'], 'value': False},
+        #             ]
+        #         },
+        #         {'index': 'track0014', 'event': 'luckymoney_data_changed_bcst', 'position': 0, 'check': [
+        #                 {'key': ['progress'], 'value': 'READY'},
+        #                 {'key': ['gatherPoints'],  'value': 30000},
+        #                 {'key': ['targetPoints'], 'value': 30000},
+        #                 {'key': ['displayed'], 'value': True},
+        #                 {'key': ['clicked'], 'value': True},
+        #             ]
+        #         },
+        #         {'index': 'track0014', 'event': 'luckymoney_marquee', 'position': 0, 'check': [
+        #                 {'key': ['level'], 'value': 1},
+        #                 {'key': ['content', 'zh'],  'value': '{targetUser.name} 準備送紅包了~大家快來搶紅包！'},
+        #                 {'key': ['fromUser', 'id'], 'value': test_parameter['track0011']['id']},
+        #                 {'key': ['targetUser', 'id'], 'value': test_parameter[masterId]['id']},
+        #                 {'key': ['url'], 'value': 'xtars://voiceChat/3'},
+        #             ]
+        #         },
+        #         {'index': 'track0011', 'event': 'luckymoney_marquee', 'position': 0, 'check': [
+        #                 {'key': ['level'], 'value': 1},
+        #                 {'key': ['content', 'zh'],  'value': '{targetUser.name} 準備送紅包了~大家快來搶紅包！'},
+        #                 {'key': ['fromUser', 'id'], 'value': test_parameter['track0011']['id']},
+        #                 {'key': ['targetUser', 'id'], 'value': test_parameter[masterId]['id']},
+        #                 {'key': ['url'], 'value': 'xtars://voiceChat/3'},
+        #             ]
+        #         },
+        #         {'index': 'track0011', 'event': 'luckymoney_data_changed_bcst', 'position': 4, 'check': [
+        #                 {'key': ['progress'], 'value': 'GATHER'},
+        #                 {'key': ['gatherPoints'],  'value': 0},
+        #                 {'key': ['targetPoints'], 'value': 30000},
+        #                 {'key': ['displayed'], 'value': True},
+        #                 {'key': ['clicked'], 'value': False},
+        #             ]
+        #         },
+        #         {'index': 'track0011', 'event': 'luckymoney_data_changed_bcst', 'position': 3, 'check': [
+        #                 {'key': ['progress'], 'value': 'GATHER'},
+        #                 {'key': ['gatherPoints'],  'value': 15000},
+        #                 {'key': ['targetPoints'], 'value': 30000},
+        #                 {'key': ['displayed'], 'value': True},
+        #                 {'key': ['clicked'], 'value': False},
+        #             ]
+        #         },
+        #         {'index': 'track0011', 'event': 'luckymoney_lottery', 'position': 0, 'check': [
+        #                 {'key': ['displayed'], 'value': True},
+        #                 {'key': ['clicked'],  'value': False},
+        #             ]
+        #         },
+        #         {'index': 'track0013', 'event': 'phx_reply', 'position': 0, 'check': [
+        #                 {'key': ['response', 'err'], 'value': 'LUCKYMONEY_LOTTERY_UNAVAILABLE'},
+        #             ]
+        #         },
+        #         {'index': 'track0012', 'event': 'phx_reply', 'position': 0, 'check': [
+        #                 {'key': ['response', 'err'], 'value': 'LUCKYMONEY_GAINED'},
+        #             ]
+        #         },
+        #         {'index': masterId, 'event': 'luckymoney_ready_bcst', 'position': 0, 'check': [
+        #                 {'key': ['displayed'], 'value': True},
+        #                 {'key': ['clicked'],  'value': True},
+        #             ]
+        #         },
+        #         {'index': masterId, 'event': 'luckymoney_warmup_bcst', 'position': 0, 'check': [
+        #                 {'key': ['displayed'], 'value': True},
+        #                 {'key': ['clicked'],  'value': False},
+        #             ]
+        #         },
+        #     ]
+        # ),
+
+        # ('過年紅包活動，重新開播重新計算（含結束）', #4621; 新秀主播
+        #     [       
+        #         {'user': masterId, 'wait': 0, 'action': [
+        #                 ('live_room:%d'%roomNo, 'phx_join', {}, 0), 
+        #                 ('live_room:%d'%roomNo, 'ping', {}, 35),
+        #                 ('live_room:%d'%roomNo, 'ping', {}, 35),
+        #                 ('live_room:%d'%roomNo, 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 10),
+        #                 ('live_room:%d'%roomNo, 'ping', {}, 40),
+        #                 ('live_room:%d'%roomNo, 'ping', {}, 40),
+        #                 ('live_room:%d'%roomNo, 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 20),
+        #                 ('live_room:%d'%roomNo, 'ping', {}, 40),
+        #                 ('live_room:%d'%roomNo, 'ping', {}, 40),
+        #                 ('live_room:%d'%roomNo, 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 20),
+        #                 ('live_room:%d'%roomNo, 'ping', {}, 40),
+        #                 ('live_room:%d'%roomNo, 'ping', {}, 40),
+        #                 ('live_room:%d'%roomNo, 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 20),
+        #                 ('live_room:%d'%roomNo, 'ping', {}, 40),
+        #                 ('live_room:%d'%roomNo, 'ping', {}, 40),
+        #                 ('live_room:%d'%roomNo, 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 20),
+        #                 ('live_room:%d'%roomNo, 'phx_leave', {}, 30),
+        #             ], 'sleep': 7
+        #         }, 
+        #         {'user': 'track0011', 'wait': 3, 'action': [
+        #                 ('live_room:%d'%roomNo, 'phx_join', {}, 1), 
+        #                 ('live_room:%d'%roomNo, 'gift', {'giftId': 'cf0fc6ba-9fae-4c6a-9f34-7a17207e3d60', 'targetUserId': test_parameter[masterId]['id'], 'count': 2}, 1), #150,000
+        #                 ('live_room:%d'%roomNo, 'ping', {}, 30),
+        #                 ('live_room:%d'%roomNo, 'ping', {}, 30),
+        #                 ('live_room:%d'%roomNo, 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 5),
+        #                 ('live_room:%d'%roomNo, 'ping', {}, 40),
+        #                 ('live_room:%d'%roomNo, 'ping', {}, 40),
+        #                 ('live_room:%d'%roomNo, 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 20),
+        #                 ('live_room:%d'%roomNo, 'ping', {}, 40),
+        #                 ('live_room:%d'%roomNo, 'ping', {}, 40),
+        #                 ('live_room:%d'%roomNo, 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 20),
+        #                 ('live_room:%d'%roomNo, 'ping', {}, 40),
+        #                 ('live_room:%d'%roomNo, 'ping', {}, 40),
+        #                 ('live_room:%d'%roomNo, 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 20),
+        #                 ('live_room:%d'%roomNo, 'ping', {}, 40),
+        #                 ('live_room:%d'%roomNo, 'ping', {}, 40),
+        #                 ('live_room:%d'%roomNo, 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 20),
+        #                 ('live_room:%d'%roomNo, 'phx_leave', {}, 30),
+        #             ], 'sleep': 3
+        #         },
+        #         {'user': 'track0012', 'wait': 30, 'action': [ #進來時在暖場
+        #                 ('live_room:%d'%roomNo, 'phx_join', {}, 1), 
+        #                 ('live_room:' + str(roomNo), 'barrage', {'barrageId': 1, 'content': 'barrage也視同禮物🎁'}, 1),                        
+        #                 ('live_room:%d'%roomNo, 'ping', {}, 35),
+        #                 ('live_room:%d'%roomNo, 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 5),
+        #                 ('live_room:%d'%roomNo, 'ping', {}, 40),
+        #                 ('live_room:%d'%roomNo, 'ping', {}, 40),
+        #                 ('live_room:%d'%roomNo, 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 20),
+        #                 ('live_room:%d'%roomNo, 'ping', {}, 40),
+        #                 ('live_room:%d'%roomNo, 'ping', {}, 40),
+        #                 ('live_room:%d'%roomNo, 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 20),
+        #                 ('live_room:%d'%roomNo, 'ping', {}, 40),
+        #                 ('live_room:%d'%roomNo, 'ping', {}, 40),
+        #                 ('live_room:%d'%roomNo, 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 20),
+        #                 ('live_room:%d'%roomNo, 'ping', {}, 40),
+        #                 ('live_room:%d'%roomNo, 'ping', {}, 40),
+        #                 ('live_room:%d'%roomNo, 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 20),
+        #                 ('live_room:%d'%roomNo, 'phx_leave', {}, 30),
+        #             ], 'sleep': 3
+        #         },
+        #         {'user': 'track0013', 'wait': 100, 'action': [ #抽奬已結束
+        #                 ('live_room:%d'%roomNo, 'phx_join', {}, 1), 
+        #                 ('live_room:%d'%roomNo, 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 5),
+        #                 ('live_room:%d'%roomNo, 'ping', {}, 30),
+        #                 ('live_room:%d'%roomNo, 'ping', {}, 30),
+        #                 ('live_room:%d'%roomNo, 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 20),
+        #                 ('live_room:%d'%roomNo, 'ping', {}, 30),
+        #                 ('live_room:%d'%roomNo, 'ping', {}, 30),
+        #                 ('live_room:%d'%roomNo, 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 20),
+        #                 ('live_room:%d'%roomNo, 'ping', {}, 30),
+        #                 ('live_room:%d'%roomNo, 'ping', {}, 30),
+        #                 ('live_room:%d'%roomNo, 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 20),
+        #                 ('live_room:%d'%roomNo, 'ping', {}, 30),
+        #                 ('live_room:%d'%roomNo, 'ping', {}, 30),
+        #                 ('live_room:%d'%roomNo, 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 20),
+        #                 ('live_room:%d'%roomNo, 'phx_leave', {}, 30),
+        #             ], 'sleep': 3
+        #         },
+        #         {'user': 'track0014', 'wait': 1, 'action': [ #在聲聊房轉進來抽奬
+        #                 ('vc_room:1', 'phx_join', {}, 1), 
+        #                 ('vc_room:1', 'ping', {}, 35), 
+        #                 ('vc_room:1', 'ping', {}, 35), 
+        #                 ('vc_room:1', 'ping', {}, 35), 
+        #                 ('vc_room:1', 'ping', {}, 35), 
+        #                 ('vc_room:1', 'ping', {}, 35), 
+        #                 ('vc_room:1', 'ping', {}, 35), 
+        #                 ('vc_room:1', 'ping', {}, 35), 
+        #                 ('vc_room:1', 'ping', {}, 35), 
+        #                 ('vc_room:1', 'ping', {}, 35), 
+        #                 ('vc_room:1', 'ping', {}, 35), 
+        #                 ('vc_room:1', 'ping', {}, 35), 
+        #                 ('vc_room:1', 'ping', {}, 35), 
+        #                 ('vc_room:1', 'phx_leave', {}, 25),
+        #                 ('live_room:%d'%roomNo, 'phx_join', {}, 5), 
+        #                 ('live_room:%d'%roomNo, 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 10),
+        #                 ('live_room:%d'%roomNo, 'phx_leave', {}, 30),
+        #             ], 'sleep': 3
+        #         },
+        #         {'user': 'track0015', 'wait': 540, 'action': [ #抽奬已全部結束
+        #                 ('live_room:%d'%roomNo, 'phx_join', {}, 1), 
+        #                 ('live_room:%d'%roomNo, 'phx_leave', {}, 5),
+        #             ], 'sleep': 3
+        #         },
+
+        #     ],  
+        #     [
+        #         {'index': 'track0014', 'event': 'luckymoney_data_changed_bcst', 'position': 1, 'check': [
+        #                 {'key': ['progress'], 'value': 'READY'},
+        #                 {'key': ['gatherPoints'],  'value': 300119},
+        #                 {'key': ['targetPoints'], 'value': 300000},
+        #                 {'key': ['displayed'], 'value': True},
+        #                 {'key': ['clicked'], 'value': True},
+        #             ]
+        #         },
+        #         {
+        #             'index': 'track0015', 'event': 'luckymoney_data_changed_bcst', 'position': 1, 'check': []
+        #         },
+        #         {'index': 'track0014', 'event': 'luckymoney_marquee', 'position': 0, 'check': [
+        #                 {'key': ['level'], 'value': 1},
+        #                 {'key': ['content', 'zh'],  'value': '{targetUser.name} 準備送紅包了~大家快來搶紅包!'},
+        #                 {'key': ['fromUser', 'id'], 'value': test_parameter['track0011']['id']},
+        #                 {'key': ['targetUser', 'id'], 'value': test_parameter[masterId]['id']},
+        #                 {'key': ['url'], 'value': 'xtars://room/%d'%roomNo},
+        #             ]
+        #         },
+        #         {'index': 'track0014', 'event': 'luckymoney_marquee', 'position': 1, 'check': [
+        #                 {'key': ['level'], 'value': 1},
+        #                 {'key': ['content', 'zh'],  'value': '{targetUser.name} 準備送紅包了~大家快來搶紅包!'},
+        #                 {'key': ['fromUser', 'id'], 'value': test_parameter['track0011']['id']},
+        #                 {'key': ['targetUser', 'id'], 'value': test_parameter[masterId]['id']},
+        #                 {'key': ['url'], 'value': 'xtars://room/%d'%roomNo},
+        #             ]
+        #         },
+        #         {'index': 'track0014', 'event': 'luckymoney_marquee', 'position': 2, 'check': [
+        #                 {'key': ['level'], 'value': 1},
+        #                 {'key': ['content', 'zh'],  'value': '{targetUser.name} 準備送紅包了~大家快來搶紅包!'},
+        #                 {'key': ['fromUser', 'id'], 'value': test_parameter['track0011']['id']},
+        #                 {'key': ['targetUser', 'id'], 'value': test_parameter[masterId]['id']},
+        #                 {'key': ['url'], 'value': 'xtars://room/%d'%roomNo},
+        #             ]
+        #         },
+        #         {'index': 'track0014', 'event': 'luckymoney_marquee', 'position': 3, 'check': [
+        #                 {'key': ['level'], 'value': 1},
+        #                 {'key': ['content', 'zh'],  'value': '{targetUser.name} 準備送紅包了~大家快來搶紅包!'},
+        #                 {'key': ['fromUser', 'id'], 'value': test_parameter['track0011']['id']},
+        #                 {'key': ['targetUser', 'id'], 'value': test_parameter[masterId]['id']},
+        #                 {'key': ['url'], 'value': 'xtars://room/%d'%roomNo},
+        #             ]
+        #         },
+        #         {'index': 'track0014', 'event': 'luckymoney_marquee', 'position': 4, 'check': [
+        #                 {'key': ['level'], 'value': 1},
+        #                 {'key': ['content', 'zh'],  'value': '{targetUser.name} 準備送紅包了~大家快來搶紅包!'},
+        #                 {'key': ['fromUser', 'id'], 'value': test_parameter['track0011']['id']},
+        #                 {'key': ['targetUser', 'id'], 'value': test_parameter[masterId]['id']},
+        #                 {'key': ['url'], 'value': 'xtars://room/%d'%roomNo},
+        #             ]
+        #         },
+        #         {'index': 'track0011', 'event': 'luckymoney_marquee', 'position': 0, 'check': [
+        #                 {'key': ['level'], 'value': 1},
+        #                 {'key': ['content', 'zh'],  'value': '{targetUser.name} 準備送紅包了~大家快來搶紅包!'},
+        #                 {'key': ['fromUser', 'id'], 'value': test_parameter['track0011']['id']},
+        #                 {'key': ['targetUser', 'id'], 'value': test_parameter[masterId]['id']},
+        #                 {'key': ['url'], 'value': 'xtars://room/%d'%roomNo},
+        #             ]
+        #         },
+        #         {'index': 'track0011', 'event': 'luckymoney_data_changed_bcst', 'position': 5, 'check': [
+        #                 {'key': ['progress'], 'value': 'GATHER'},
+        #                 {'key': ['gatherPoints'],  'value': 0},
+        #                 {'key': ['targetPoints'], 'value': 30000},
+        #                 {'key': ['displayed'], 'value': True},
+        #                 {'key': ['clicked'], 'value': False},
+        #             ]
+        #         },
+        #         {'index': 'track0011', 'event': 'luckymoney_lottery', 'position': 0, 'check': [
+        #                 {'key': ['displayed'], 'value': True},
+        #                 {'key': ['clicked'],  'value': False},
+        #             ]
+        #         },
+        #         {'index': 'track0013', 'event': 'phx_reply', 'position': 0, 'check': [
+        #                 {'key': ['response', 'err'], 'value': 'LUCKYMONEY_LOTTERY_UNAVAILABLE'},
+        #             ]
+        #         },
+        #         {'index': 'track0013', 'event': 'luckymoney_finish_bcst', 'position': 0, 'check': [
+        #                 {'key': ['displayed'], 'value': False},
+        #                 {'key': ['displayed'], 'value': False},
+        #             ]
+        #         },
+        #         {'index': masterId, 'event': 'luckymoney_ready_bcst', 'position': 0, 'check': [
+        #                 {'key': ['displayed'], 'value': True},
+        #                 {'key': ['clicked'],  'value': True},
+        #             ]
+        #         },
+        #         {'index': masterId, 'event': 'luckymoney_warmup_bcst', 'position': 0, 'check': [
+        #                 {'key': ['displayed'], 'value': True},
+        #                 {'key': ['clicked'],  'value': False},
+        #             ]
+        #         },
+        #     ]
+        # ),
+ 
+        ('過年紅包活動，暖場、抽奬', #4619~4615， 女神等級與新秀不同
             [       
-                {'user': 'master10', 'wait': 0, 'action': [
+                {'user': masterId, 'wait': 0, 'action': [
                         ('live_room:%d'%roomNo, 'phx_join', {}, 0), 
                         ('live_room:%d'%roomNo, 'ping', {}, 35),
                         ('live_room:%d'%roomNo, 'ping', {}, 35),
@@ -1477,92 +1931,60 @@ def getTestData(test_parameter):
                         ('live_room:%d'%roomNo, 'phx_leave', {}, 3),
                     ], 'sleep': 7
                 }, 
-                {'user': 'track0011', 'wait': 3, 'action': [
+                {'user': 'track0011', 'wait': 2, 'action': [
                         ('live_room:%d'%roomNo, 'phx_join', {}, 1), 
-                        ('live_room:%d'%roomNo, 'gift', {'giftId': 'cf0fc6ba-9fae-4c6a-9f34-7a17207e3d60', 'targetUserId': test_parameter['master10']['id'], 'count': 2}, 1),
+                        ('live_room:%d'%roomNo, 'gift', {'giftId': 'dd14a8e4-e8f0-4e9f-8f6b-1aebe43ddf53', 'targetUserId': test_parameter[masterId]['id'], 'count': 3}, 1),
+                        ('live_room:%d'%roomNo, 'gift', {'giftId': 'dd14a8e4-e8f0-4e9f-8f6b-1aebe43ddf53', 'targetUserId': test_parameter[masterId]['id'], 'count': 1}, 3),
                         ('live_room:%d'%roomNo, 'ping', {}, 30),
                         ('live_room:%d'%roomNo, 'ping', {}, 30),
                         ('live_room:%d'%roomNo, 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 5),
-                        ('live_room:%d'%roomNo, 'phx_leave', {}, 3),
-                    ], 'sleep': 3
-                },
-                {'user': 'track0012', 'wait': 30, 'action': [ #進來時在暖場
-                        ('live_room:%d'%roomNo, 'phx_join', {}, 1), 
-                        ('live_room:%d'%roomNo, 'ping', {}, 30),
-                        ('live_room:%d'%roomNo, 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 5),
-                        ('live_room:%d'%roomNo, 'phx_leave', {}, 10),
-                    ], 'sleep': 3
-                },
-                {'user': 'track0013', 'wait': 100, 'action': [ #抽奬已結束
-                        ('live_room:%d'%roomNo, 'phx_join', {}, 1), 
-                        ('live_room:%d'%roomNo, 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 5),
-                        ('live_room:%d'%roomNo, 'phx_leave', {}, 3),
+                        ('live_room:%d'%roomNo, 'phx_leave', {}, 30),
                     ], 'sleep': 3
                 },
                 {'user': 'track0014', 'wait': 1, 'action': [ #在聲聊房轉進來抽奬
                         ('vc_room:1', 'phx_join', {}, 1), 
                         ('vc_room:1', 'pin', {}, 40), 
                         ('vc_room:1', 'phx_leave', {}, 20),
-                        ('live_room:%d'%roomNo, 'phx_join', {}, 5), 
-                        ('live_room:%d'%roomNo, 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 5),
-                        ('live_room:%d'%roomNo, 'phx_leave', {}, 3),
                     ], 'sleep': 3
                 },
-
             ],  
             [
-                {'index': 'track0013', 'event': 'luckymoney_data_changed_bcst', 'position': 0, 'check': [
-                        {'key': ['progress'], 'value': 'GATHER'},
-                        {'key': ['gatherPoints'], 'value': 30000},
-                        {'key': ['targetPoints'], 'value': 50000},
-                        {'key': ['displayed'], 'value': True},
-                        {'key': ['clicked'], 'value': False},
-                    ]
-                },
-                {'index': 'track0012', 'event': 'luckymoney_data_changed_bcst', 'position': 0, 'check': [
-                        {'key': ['progress'], 'value': 'GATHER'},
-                        {'key': ['gatherPoints'], 'value': 30000},
-                        {'key': ['targetPoints'], 'value': 50000},
-                        {'key': ['displayed'], 'value': True},
-                        {'key': ['clicked'], 'value': False},
-                    ]
-                },
-                {'index': 'track0012', 'event': 'luckymoney_data_changed_bcst', 'position': 1, 'check': [
-                        {'key': ['progress'], 'value': 'WARM_UP'},
-                        {'key': ['gatherPoints'],  'value': 30000},
-                        {'key': ['targetPoints'], 'value': 30000},
-                        {'key': ['displayed'], 'value': True},
-                        {'key': ['clicked'], 'value': False},
-                    ]
-                },
-                {'index': 'track0014', 'event': 'luckymoney_data_changed_bcst', 'position': 0, 'check': [
-                        {'key': ['progress'], 'value': 'READY'},
-                        {'key': ['gatherPoints'],  'value': 30000},
-                        {'key': ['targetPoints'], 'value': 30000},
-                        {'key': ['displayed'], 'value': True},
-                        {'key': ['clicked'], 'value': True},
-                    ]
-                },
                 {'index': 'track0014', 'event': 'luckymoney_marquee', 'position': 0, 'check': [
                         {'key': ['level'], 'value': 1},
-                        {'key': ['content', 'zh'],  'value': '{targetUser.name} 準備送紅包了~大家快來搶紅包！'},
+                        {'key': ['content', 'zh'],  'value': '{targetUser.name} 準備送紅包了~大家快來搶紅包!'},
                         {'key': ['fromUser', 'id'], 'value': test_parameter['track0011']['id']},
-                        {'key': ['targetUser', 'id'], 'value': test_parameter['master10']['id']},
-                        {'key': ['url'], 'value': 'xtars://voiceChat/3'},
+                        {'key': ['targetUser', 'id'], 'value': test_parameter[masterId]['id']},
+                        {'key': ['url'], 'value': 'xtars://room/%d'%roomNo},
                     ]
                 },
-                {'index': 'track0011', 'event': 'luckymoney_marquee', 'position': 0, 'check': [
-                        {'key': ['level'], 'value': 1},
-                        {'key': ['content', 'zh'],  'value': '{targetUser.name} 準備送紅包了~大家快來搶紅包！'},
-                        {'key': ['fromUser', 'id'], 'value': test_parameter['track0011']['id']},
-                        {'key': ['targetUser', 'id'], 'value': test_parameter['master10']['id']},
-                        {'key': ['url'], 'value': 'xtars://voiceChat/3'},
+                {'index': 'track0011', 'event': 'luckymoney_data_changed_bcst', 'position': 3, 'check': [
+                        {'key': ['progress'], 'value': 'GATHER'},
+                        {'key': ['gatherPoints'],  'value': 0},
+                        {'key': ['targetPoints'], 'value': 50000},
+                        {'key': ['displayed'], 'value': True},
+                        {'key': ['clicked'], 'value': False},
+                    ]
+                },
+                {'index': 'track0011', 'event': 'luckymoney_data_changed_bcst', 'position': 2, 'check': [
+                        {'key': ['progress'], 'value': 'GATHER'},
+                        {'key': ['gatherPoints'],  'value': 45000},
+                        {'key': ['targetPoints'], 'value': 50000},
+                        {'key': ['displayed'], 'value': True},
+                        {'key': ['clicked'], 'value': False},
+                    ]
+                },
+                {'index': 'track0011', 'event': 'luckymoney_data_changed_bcst', 'position': 1, 'check': [
+                        {'key': ['progress'], 'value': 'GATHER'},
+                        {'key': ['gatherPoints'],  'value': 60000},
+                        {'key': ['targetPoints'], 'value': 50000},
+                        {'key': ['displayed'], 'value': True},
+                        {'key': ['clicked'], 'value': False},
                     ]
                 },
                 {'index': 'track0011', 'event': 'luckymoney_data_changed_bcst', 'position': 0, 'check': [
                         {'key': ['progress'], 'value': 'GATHER'},
-                        {'key': ['gatherPoints'],  'value': 0},
-                        {'key': ['targetPoints'], 'value': 30000},
+                        {'key': ['gatherPoints'],  'value': 60000},
+                        {'key': ['targetPoints'], 'value': 100000},
                         {'key': ['displayed'], 'value': True},
                         {'key': ['clicked'], 'value': False},
                     ]
@@ -1572,22 +1994,98 @@ def getTestData(test_parameter):
                         {'key': ['clicked'],  'value': False},
                     ]
                 },
-                {'index': 'track0013', 'event': 'phx_reply', 'position': 0, 'check': [
-                        {'key': ['response', 'err'], 'value': 'LUCKYMONEY_LOTTERY_UNAVAILABLE'},
-                    ]
-                },
-                {'index': 'broadcaster011', 'event': 'luckymoney_ready_bcst', 'position': 0, 'check': [
+                {'index': masterId, 'event': 'luckymoney_ready_bcst', 'position': 0, 'check': [
                         {'key': ['displayed'], 'value': True},
                         {'key': ['clicked'],  'value': True},
                     ]
                 },
-                {'index': 'broadcaster011', 'event': 'luckymoney_warm_up_bcst', 'position': 0, 'check': [
+                {'index': masterId, 'event': 'luckymoney_warmup_bcst', 'position': 0, 'check': [
                         {'key': ['displayed'], 'value': True},
                         {'key': ['clicked'],  'value': False},
                     ]
                 },
             ]
         ),
+
+        # ('過年紅包活動，暖場、抽奬', #4619~4615， 女神等級與新秀不同
+        #     [       
+        #         {'user': masterId, 'wait': 0, 'action': [
+        #                 ('live_room:%d'%roomNo, 'phx_join', {}, 0), 
+        #                 ('live_room:%d'%roomNo, 'ping', {}, 35),
+        #                 ('live_room:%d'%roomNo, 'ping', {}, 35),
+        #                 ('live_room:%d'%roomNo, 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 10),
+        #                 ('live_room:%d'%roomNo, 'phx_leave', {}, 3),
+        #             ], 'sleep': 7
+        #         }, 
+        #         {'user': 'track0011', 'wait': 2, 'action': [
+        #                 ('live_room:%d'%roomNo, 'phx_join', {}, 1), 
+        #                 ('live_room:%d'%roomNo, 'gift', {'giftId': 'dd14a8e4-e8f0-4e9f-8f6b-1aebe43ddf53', 'targetUserId': test_parameter[masterId]['id'], 'count': 1}, 1),
+        #                 ('live_room:%d'%roomNo, 'gift', {'giftId': 'dd14a8e4-e8f0-4e9f-8f6b-1aebe43ddf53', 'targetUserId': test_parameter[masterId]['id'], 'count': 1}, 3),
+        #                 ('live_room:%d'%roomNo, 'ping', {}, 30),
+        #                 ('live_room:%d'%roomNo, 'ping', {}, 30),
+        #                 ('live_room:%d'%roomNo, 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 5),
+        #                 ('live_room:%d'%roomNo, 'phx_leave', {}, 3),
+        #             ], 'sleep': 3
+        #         },
+        #     ],  
+        #     [
+        #         {'index': 'track0011', 'event': 'luckymoney_marquee', 'position': 0, 'check': [
+        #                 {'key': ['level'], 'value': 1},
+        #                 {'key': ['content', 'zh'],  'value': '{targetUser.name} 準備送紅包了~大家快來搶紅包!'},
+        #                 {'key': ['fromUser', 'id'], 'value': test_parameter['track0011']['id']},
+        #                 {'key': ['targetUser', 'id'], 'value': test_parameter[masterId]['id']},
+        #                 {'key': ['url'], 'value': 'xtars://room/%d'%roomNo},
+        #             ]
+        #         },
+        #         {'index': 'track0011', 'event': 'luckymoney_data_changed_bcst', 'position': 3, 'check': [
+        #                 {'key': ['progress'], 'value': 'GATHER'},
+        #                 {'key': ['gatherPoints'],  'value': 0},
+        #                 {'key': ['targetPoints'], 'value': 30000},
+        #                 {'key': ['displayed'], 'value': True},
+        #                 {'key': ['clicked'], 'value': False},
+        #             ]
+        #         },
+        #         {'index': 'track0011', 'event': 'luckymoney_data_changed_bcst', 'position': 2, 'check': [
+        #                 {'key': ['progress'], 'value': 'GATHER'},
+        #                 {'key': ['gatherPoints'],  'value': 15000},
+        #                 {'key': ['targetPoints'], 'value': 30000},
+        #                 {'key': ['displayed'], 'value': True},
+        #                 {'key': ['clicked'], 'value': False},
+        #             ]
+        #         },
+        #         {'index': 'track0011', 'event': 'luckymoney_data_changed_bcst', 'position': 1, 'check': [
+        #                 {'key': ['progress'], 'value': 'GATHER'},
+        #                 {'key': ['gatherPoints'],  'value': 30000},
+        #                 {'key': ['targetPoints'], 'value': 30000},
+        #                 {'key': ['displayed'], 'value': True},
+        #                 {'key': ['clicked'], 'value': False},
+        #             ]
+        #         },
+        #         {'index': 'track0011', 'event': 'luckymoney_data_changed_bcst', 'position': 0, 'check': [
+        #                 {'key': ['progress'], 'value': 'GATHER'},
+        #                 {'key': ['gatherPoints'],  'value': 30000},
+        #                 {'key': ['targetPoints'], 'value': 50000},
+        #                 {'key': ['displayed'], 'value': True},
+        #                 {'key': ['clicked'], 'value': False},
+        #             ]
+        #         },
+        #         {'index': 'track0011', 'event': 'luckymoney_lottery', 'position': 0, 'check': [
+        #                 {'key': ['displayed'], 'value': True},
+        #                 {'key': ['clicked'],  'value': False},
+        #             ]
+        #         },
+        #         {'index': 'master11', 'event': 'luckymoney_ready_bcst', 'position': 0, 'check': [
+        #                 {'key': ['displayed'], 'value': True},
+        #                 {'key': ['clicked'],  'value': True},
+        #             ]
+        #         },
+        #         {'index': 'master11', 'event': 'luckymoney_warm_up_bcst', 'position': 0, 'check': [
+        #                 {'key': ['displayed'], 'value': True},
+        #                 {'key': ['clicked'],  'value': False},
+        #             ]
+        #         },
+        #     ]
+        # ),
 
     ]   
 

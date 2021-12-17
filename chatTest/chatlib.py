@@ -25,7 +25,6 @@ class chatUser():
         self.ws.run_forever()     
 
     def __del__(self):
-        print('call del fun')
         self.messageList = None
         self.actionList = None
 
