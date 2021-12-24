@@ -4,14 +4,22 @@ import time
 import random
 import requests
 import paramiko
+import dbConnect
+import orjson
 from pprint import pprint
 
 asyncio.set_event_loop(asyncio.new_event_loop())
 loop = asyncio.get_event_loop()
 
-async def botJob(num):
-    roomType = {'room': 'live_room:', 'voiceChat': 'vc_room:'}
-    currentTopic = 'vc_room:%d'%(random.randint(1, 3))
+async def botJob(num, rType, roomList):
+    roomType = {
+        'room': 'live_room', 
+        'voiceChat': 'vc_room'
+    }
+    if rType == 'room':
+        currentTopic = '%s:%d'%(roomType[rType],roomList[random.randint(0, len(roomList)-1)])
+    else:
+        currentTopic = '%s:%d'%(roomType[rType],random.randint(1, 3))
     token = 'guest' + str(1999+num) 
     nonce = 'guest' + str(1999+num)
     ref = int(time.time()*1000)
@@ -21,14 +29,17 @@ async def botJob(num):
     await bot.sendMsg('phx_join', currentTopic, {})
     while True:
         msg = await bot.recvMsg()
-        staySec = int(time.time()) - (ref / 1000)
-        if msg['event'] in ('luckymoney_lottery', 'phx_reply'):
-            pprint(msg)
+        if msg['event'] == 'luckymoney_lottery':
+            bot.isChanged = True
+        elif msg['event'] == 'luckymoney_data_changed_bcst':
+            bot.isChanged = True if msg['payload']['data']['progress'] == 'GATHER' else False
+            # print('%s change is %s'%(token, str(bot.isChanged)))
         elif msg['event'] == 'luckymoney_marquee':
             urlList = []
             url = msg['payload']['data']['url']
             urlList = url.split('/')
-            newTopic = roomType[urlList[2]] + urlList[3]
+            newTopic = '%s:%s'%(roomType[urlList[2]], urlList[3])
+            # print('%s receive marquee from %s and changed(%s)'%(token, newTopic, str(bot.isChanged)))
             if bot.isChanged:
                 if newTopic != currentTopic:
                     await bot.sendMsg('phx_leave', currentTopic, {})
@@ -39,21 +50,35 @@ async def botJob(num):
         elif msg['event'] == 'luckymoney_warm_up_bcst':
             bot.isChanged = False
         elif msg['event'] == 'luckymoney_ready_bcst':
-            await asyncio.sleep(random.randint(1, 3))
-            await bot.sendMsg('luckymoney_lottery', currentTopic, {"type": "2022CN.Lottery"}) 
+            await asyncio.sleep(random.randint(0, 3))
             bot.isChanged = True
-        elif int(time.time()) - (ref / 1000) > 900: 
+            await bot.sendMsg('luckymoney_lottery', currentTopic, {"type": "2022CN.Lottery"}) 
+        elif msg['event'] == 'close_room':
+            newTopic = '%s:%d'%(roomType['voiceChat'],random.randint(1, 3))
+            await bot.sendMsg('phx_leave', currentTopic, {})
+            await asyncio.sleep(random.randint(3, 10))
+            await bot.sendMsg('phx_join', newTopic, {})
+            currentTopic = newTopic
+        elif all([int(time.time()) - (ref / 1000) > 300, bot.isChanged]) : 
             break
-        elif random.randint(1,100) > 95:
-            await bot.sendMsg('message', currentTopic, {'content': '%s已經待了%d秒'%(token, staySec)})
     await bot.sendMsg('message', currentTopic, {'content': '%s走囉～'%token})
     await bot.sendMsg('phx_leave', currentTopic, {})
     await bot.ws.close()
-    
-def roomBot():
+
+def getOnline(hostAddress):
+    roomList = []
+    sqlStr = 'select id from live_room where status = 1 and password is NULL'
+    dbResult = dbConnect.dbQuery(hostAddress, sqlStr)
+    for i in dbResult:
+        roomList.append(i[0])
+    return roomList
+
+def roomBot(hostAddress):
     taskList = []    
+    roomList = getOnline(hostAddress)
     for i in range(10, 20):
-        task = loop.create_task(botJob(i))
+        roomType = 'room' if all([i % 2 == 0, roomList]) else 'voiceChat'
+        task = loop.create_task(botJob(i, roomType, roomList))
         taskList.append(task)
     try:
         loop.run_until_complete(asyncio.wait(taskList))
@@ -67,28 +92,24 @@ def clearCache(hostAddr, cmd):
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     ssh.connect(hostAddr, username='lisa', key_filename=keyfile)
-    # cmd = 'redis-cli flushdb;'
     ssh.exec_command(cmd)
     ssh.close()
 
-def clearVoiceLuckyMoney():
+def clearVoiceLuckyMoney(hostAddress):
     import datetime
     apiList = ['/api/v3/task/resetVoiceChatHistory', '/api/v3/task/resetVoiceChatLuckyMoney']
-    url = 'http://testing-api.truelovelive.com.tw'
-    hostAddress = 'testing-api.truelovelive.com.tw'
-    for i in range(1,6):
-        for j in range(1, 3):
-            keyName = 'vc_room:luckmoney_data:%s:%d:%d-remainPoints'%(str(datetime.date.today()), j, i)
+    for round in range(1,6):
+        for roomId in range(1, 3):
+            keyName = 'vc_room:luckmoney_data:%s:%d:%d-remainPoints'%(str(datetime.date.today()), roomId, round)
             clearCache(hostAddress, 'redis-cli -n 5 DEL %s;'%keyName)
-            keyName = 'vc_room:luckmoney_data:%s:%d:%d-UserPoints'%(str(datetime.date.today()), j, i)
+            keyName = 'vc_room:luckmoney_data:%s:%d:%d-UserPoints'%(str(datetime.date.today()), roomId, round)
             clearCache(hostAddress, 'redis-cli -n 5 DEL %s;'%keyName)
-    header = {'Connection': 'application/json'}
-    body = {"token" : "123"}    
     for i in apiList:
-        apiName = url+i
-        requests.post(apiName, headers=header, json=body)
+        apiName = 'https://%s%s'%(hostAddress,i)
+        res = requests.post(apiName, headers={'Connection': 'application/json'}, json={"token" : "b603a650825c440d89c5f45a6703d5f8"})
 
-if __name__ == '__main__':
-    clearVoiceLuckyMoney()
-    roomBot()
+if __name__ == '__main__': 
+    host = 'testing-api.xtars.com'
+    clearVoiceLuckyMoney(host)
+    roomBot(host)
     print('process finish')

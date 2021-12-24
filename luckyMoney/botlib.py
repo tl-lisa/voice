@@ -15,6 +15,7 @@ class botUser():
 
     async def recvMsg(self): 
         data = orjson.loads(await self.ws.recv())
+        # pprint(data)
         return data
 
     async def sendMsg(self, action, topic, body):
@@ -25,7 +26,7 @@ class botUser():
             'event': action,
             'payload': body
         }
-        pprint(actStr)
+        # pprint(actStr)
         await self.ws.send(orjson.dumps(actStr)) 
 
 

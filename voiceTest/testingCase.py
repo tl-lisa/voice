@@ -2170,7 +2170,7 @@ def getTestData(test_parameter):
                 {'index': 'track0011', 'event': 'luckymoney_marquee', 'position': 0, 'check': [
                         {'key': ['level'], 'value': 1},
                         {'key': ['content', 'zh'],  'value': '{targetUser.name} 準備送紅包了~大家快來搶紅包!'},
-                        {'key': ['content', 'ja'],  'value': '{targetUser.name} 赤い封筒を渡す準備ができました〜みんな、赤い封筒を持ってきてください！'},
+                        {'key': ['content', 'ja'],  'value': '{targetUser.name} 赤い封筒を渡す準備ができました〜みんな、赤い封筒を持ってきてください!'},
                         {'key': ['content', 'en'],  'value': '{targetUser.name} Ready to give lucky points~ everyone, come and grab it!'},
                         {'key': ['fromUser', 'id'], 'value': test_parameter['track0013']['id']},
                         {'key': ['targetUser', 'id'], 'value': test_parameter['broadcaster011']['id']},
@@ -2180,7 +2180,7 @@ def getTestData(test_parameter):
                 {'index': 'track0011', 'event': 'luckymoney_marquee', 'position': 1, 'check': [
                         {'key': ['level'], 'value': 1},
                         {'key': ['content', 'zh'],  'value': '{targetUser.name} 準備送紅包了~大家快來搶紅包!'},
-                        {'key': ['content', 'ja'],  'value': '{targetUser.name} 赤い封筒を渡す準備ができました〜みんな、赤い封筒を持ってきてください！'},
+                        {'key': ['content', 'ja'],  'value': '{targetUser.name} 赤い封筒を渡す準備ができました〜みんな、赤い封筒を持ってきてください!'},
                         {'key': ['content', 'en'],  'value': '{targetUser.name} Ready to give lucky points~ everyone, come and grab it!'},
                         {'key': ['fromUser', 'id'], 'value': test_parameter['track0013']['id']},
                         {'key': ['targetUser', 'id'], 'value': test_parameter['broadcaster011']['id']},
@@ -2190,7 +2190,7 @@ def getTestData(test_parameter):
                 {'index': 'track0011', 'event': 'luckymoney_marquee', 'position': 2, 'check': [
                         {'key': ['level'], 'value': 1},
                         {'key': ['content', 'zh'],  'value': '{targetUser.name} 準備送紅包了~大家快來搶紅包!'},
-                        {'key': ['content', 'ja'],  'value': '{targetUser.name} 赤い封筒を渡す準備ができました〜みんな、赤い封筒を持ってきてください！'},
+                        {'key': ['content', 'ja'],  'value': '{targetUser.name} 赤い封筒を渡す準備ができました〜みんな、赤い封筒を持ってきてください!'},
                         {'key': ['content', 'en'],  'value': '{targetUser.name} Ready to give lucky points~ everyone, come and grab it!'},
                         {'key': ['fromUser', 'id'], 'value': test_parameter['track0013']['id']},
                         {'key': ['targetUser', 'id'], 'value': test_parameter['broadcaster011']['id']},
@@ -2200,7 +2200,7 @@ def getTestData(test_parameter):
                 {'index': 'track0011', 'event': 'luckymoney_marquee', 'position': 3, 'check': [
                         {'key': ['level'], 'value': 1},
                         {'key': ['content', 'zh'],  'value': '{targetUser.name} 準備送紅包了~大家快來搶紅包!'},
-                        {'key': ['content', 'ja'],  'value': '{targetUser.name} 赤い封筒を渡す準備ができました〜みんな、赤い封筒を持ってきてください！'},
+                        {'key': ['content', 'ja'],  'value': '{targetUser.name} 赤い封筒を渡す準備ができました〜みんな、赤い封筒を持ってきてください!'},
                         {'key': ['content', 'en'],  'value': '{targetUser.name} Ready to give lucky points~ everyone, come and grab it!'},
                         {'key': ['fromUser', 'id'], 'value': test_parameter['track0011']['id']},
                         {'key': ['targetUser', 'id'], 'value': test_parameter['broadcaster011']['id']},
