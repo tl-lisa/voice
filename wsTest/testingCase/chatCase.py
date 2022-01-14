@@ -1,4 +1,5 @@
 from . import misc
+from pprint import pprint
 import json
 
 def getRoomId(prefix, token, nonce, nickname, pwd):
@@ -19,6 +20,8 @@ def getRoomId(prefix, token, nonce, nickname, pwd):
 
 def getTestData(test_parameter, masterId):
     pwd = ''
+    misc.get_test_data('QA', test_parameter, 'master', 5, 10, 30, 2)  
+    pprint(test_parameter)    
     roomNo = getRoomId(test_parameter['prefix'], test_parameter[masterId]['token'], 
                         test_parameter[masterId]['nonce'], test_parameter[masterId]['nickname'], pwd)
     #check中的資料先以第一層為主，之後再看下層資料

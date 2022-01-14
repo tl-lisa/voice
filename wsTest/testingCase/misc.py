@@ -79,9 +79,9 @@ def get_test_data(env, test_parameter, masterPrefix, masterCount, beg, end, fill
         account = 'track' + str(i).zfill(4)
         sqlStr += account + "', '" if i < (end - 1) else account + "')"
         if masterCount > 0:
-            masterCount -= 1
             account = masterPrefix + str(i).zfill(fillzero)
             sqlStr += account + "', '"
+            masterCount -= 1
     result = dbConnect.dbQuery(test_parameter['db'], sqlStr)
     for i in result:
         if all([i[2], i[3]]):

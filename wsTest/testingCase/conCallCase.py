@@ -1,5 +1,5 @@
-from . import misc
-from . import dbConnect
+from .. import misc
+from .. import dbConnect
 import json
 
 def clearDBInfo(dbAddress):

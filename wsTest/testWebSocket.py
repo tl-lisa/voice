@@ -3,13 +3,13 @@ import pytest
 import threading
 from pprint import pprint
 from . import chatlib
-from . import voiceCase
+from .testingCase import chatCase
 
 env = 'QA'
 DB = '35.234.17.150'
 test_parameter = {}
 header = {'Connection': 'Keep-alive', 'X-Auth-Token': '', 'X-Auth-Nonce': ''}
-
+ 
 
 class TestChatScoket(): 
     wsDic = {}
@@ -105,7 +105,7 @@ class TestChatScoket():
             self.checkKeys(event['payload'], keyList)
 
                         
-    @pytest.mark.parametrize("scenario, data, verifyInfo", voiceCase.getTestData(test_parameter))
+    @pytest.mark.parametrize("scenario, data, verifyInfo", chatCase.getTestData(test_parameter, 'master10'))
     def testChat(self, scenario, data, verifyInfo):   
         threadList = []
         self.wsDic.clear()

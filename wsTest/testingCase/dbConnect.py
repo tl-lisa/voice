@@ -1,6 +1,4 @@
 import pymysql
-import os
-import time
 import sshtunnel
 from sshtunnel import SSHTunnelForwarder
 from pprint import pprint
