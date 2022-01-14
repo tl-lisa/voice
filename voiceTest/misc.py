@@ -64,7 +64,7 @@ def getTrueLoveId(tureLoveId):
 
 def clearVoiceLuckyMoney(env):
     import datetime
-    apiList = ['/api/v3/task/resetVoiceChatHistory', '/api/v3/task/resetVoiceChatLuckyMoney']
+    apiList = ['/api/v3/task/resetVoiceChatLuckyMoney', '/api/v3/task/resetVoiceChatHistory']
     if env == 'QA':
         url = 'http://35.234.17.150'
         hostAddress = '35.234.17.150'
@@ -78,7 +78,7 @@ def clearVoiceLuckyMoney(env):
     for i in apiList:
         apiName = url+i
         res = requests.post(apiName, headers=header, json=body)
-        # print(json.loads(res.text))
+        print(json.loads(res.text))
 
 def get_test_data(env, test_parameter, masterPrefix):    
     if env == 'QA':
@@ -109,7 +109,7 @@ def get_test_data(env, test_parameter, masterPrefix):
     sqlStr  = "INSERT INTO remain_points(remain_points, ratio, identity_id) VALUES ("
     sqlStr += "200000, 4, '" + test_parameter['track0020']['id'] + "') ON DUPLICATE KEY "
     sqlStr += "UPDATE remain_points = 5000000, ratio = 4"
-    sqlStr1  = "UPDATE remain_points SET remain_points = 100000 WHERE identity_id = "
+    sqlStr1  = "UPDATE remain_points SET remain_points = 1000000 WHERE identity_id = "
     sqlStr1 += "'" + test_parameter['track0019']['id'] + "'"
     sqlStr2 = "TRUNCATE TABLE user_blocks"
     sqlStr3 = "TRUNCATE TABLE user_banned"

@@ -80,8 +80,11 @@ def get_test_data(env, test_parameter, masterPrefix):
         }
     #pprint(test_parameter)
     sqlStr  = "INSERT INTO remain_points(remain_points, ratio, identity_id) VALUES ("
-    sqlStr += "20000000, 4, '" + test_parameter['track0020']['id'] + "') ON DUPLICATE KEY "
+    sqlStr += "20000000, 4, '" + test_parameter['track0019']['id'] + "') ON DUPLICATE KEY "
     sqlStr += "UPDATE remain_points = 20000000, ratio = 4"
+    sqlStr6  = "INSERT INTO remain_points(remain_points, ratio, identity_id) VALUES ("
+    sqlStr6 += "20000000, 4, '" + test_parameter['track0018']['id'] + "') ON DUPLICATE KEY "
+    sqlStr6 += "UPDATE remain_points = 20000000, ratio = 4"
     sqlStr1  = "INSERT INTO remain_points(remain_points, ratio, identity_id) VALUES ("
     sqlStr1 += "20000000, 4, '" + test_parameter['track0011']['id'] + "') ON DUPLICATE KEY "
     sqlStr1 += "UPDATE remain_points = 20000000, ratio = 4"    
@@ -90,7 +93,7 @@ def get_test_data(env, test_parameter, masterPrefix):
     sqlStr4 = "TRUNCATE TABLE fans"
     # sqlStr5 = "Delete from live_master_date_points where live_master_id = '" 
     # sqlStr5 += test_parameter['master10']['id'] + "'"
-    dbConnect.dbSetting(test_parameter['db'], [sqlStr, sqlStr1, sqlStr2,  sqlStr4])
+    dbConnect.dbSetting(test_parameter['db'], [sqlStr, sqlStr1, sqlStr2, sqlStr4, sqlStr6])
     clearCache(test_parameter['db'])
     return
 

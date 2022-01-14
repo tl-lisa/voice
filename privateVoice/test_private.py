@@ -9,7 +9,7 @@ from pprint import pprint
 from . import voicelib
 from . import dbConnect
 from . import misc
-from . import testingCase
+from . import privateCase
 
 env = 'QA'
 DB = '35.234.17.150'
@@ -128,7 +128,7 @@ class TestVoiceScoket():
             for i in verifyInfo['keyList']:
                 assert i in keyList , "not found key(%s) in keyList(%s)"%(i, str(keyList))
 
-    @pytest.mark.parametrize("scenario, data, verifyInfo", testingCase.getTestData(test_parameter))
+    @pytest.mark.parametrize("scenario, data, verifyInfo", privateCase.getTestData(test_parameter))
     def testPrivate(self, scenario, data, verifyInfo):   
         threadList = []
         self.wsDic.clear()

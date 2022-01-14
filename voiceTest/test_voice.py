@@ -5,7 +5,7 @@ import json
 from pprint import pprint
 from . import voicelib
 from . import misc
-from . import testingCase
+from ..wsTest import voiceCase
 
 env = 'QA'
 DB = '35.234.17.150'
@@ -67,7 +67,8 @@ class TestVoiceScoket():
             }
             eventList.append(body)
         account = data['user']
-        info  = 'ws://'+test_parameter['db']+'/socket/websocket?token='+test_parameter[account]['token'] + '&nonce=' + test_parameter[account]['nonce']
+        # info  = 'ws://'+test_parameter['db']+'/socket/websocket?token='+test_parameter[account]['token'] + '&nonce=' + test_parameter[account]['nonce']
+        info  = 'ws://%s/socket/websocket?token=%s&nonce=%s'%(test_parameter['db'],test_parameter[account]['token'],test_parameter[account]['nonce'])
         voice = voicelib.voiceUser(info, eventList, data['sleep'], data['wait'], id)
         try:
             self.wsDic[account] = voice.messageList
@@ -137,7 +138,7 @@ class TestVoiceScoket():
                             break
                     assert isFound, "should not get check key(%s) at event(%s)"%(itemName, i['event'])            
 
-    @pytest.mark.parametrize("scenario, data, verifyInfo", testingCase.getTestData(test_parameter))
+    @pytest.mark.parametrize("scenario, data, verifyInfo", voiceCase.getTestData(test_parameter))
     def testVoice(self, scenario, data, verifyInfo):   
         threadList = []
         misc.clearVoiceLuckyMoney(env)

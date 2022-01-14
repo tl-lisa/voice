@@ -66,7 +66,7 @@ async def getRoomInfo():
                                 }
                             )
         except ClientError as err:
-                    logging.error(err, exc_info=True)
+            logging.error(err, exc_info=True)
     return roomInfo
 
 async def createConnection(token, nonce, actionType):

@@ -1,4 +1,7 @@
+from . import misc
+
 def getTestData(test_parameter):
+    misc.get_test_data('QA', test_parameter, 'broadcaster', 15, 10, 30, 3)      
     #check中的資料先以第一層為主，之後再看下層資料
     testData = [
         # ('2位玩家先後進出聲聊房，在房中的人會收到系統廣播，而進房的人會收到管理者清單', 
@@ -2093,13 +2096,13 @@ def getTestData(test_parameter):
                         ('vc_room:3', 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 10),
                         ('vc_room:3', 'ping', {}, 40),
                         ('vc_room:3', 'ping', {}, 40),
-                        ('vc_room:3', 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 20),
+                        ('vc_room:3', 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 15),
                         ('vc_room:3', 'ping', {}, 40),
                         ('vc_room:3', 'ping', {}, 40),
-                        ('vc_room:3', 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 20),
-                        ('vc_room:3', 'ping', {}, 40),
-                        ('vc_room:3', 'ping', {}, 40),
-                        ('vc_room:3', 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 20),
+                        ('vc_room:3', 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 15),
+                        # ('vc_room:3', 'ping', {}, 40),
+                        # ('vc_room:3', 'ping', {}, 40),
+                        # ('vc_room:3', 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 15),
                         ('vc_room:3', 'phx_leave', {}, 10),
                     ], 'sleep': 7
                 }, 
@@ -2112,107 +2115,108 @@ def getTestData(test_parameter):
                         ('vc_room:3', 'phx_leave', {}, 15),
                         ('vc_room:3', 'phx_join', {}, 25),
                         ('vc_room:3', 'ping', {}, 40),
-                        ('vc_room:3', 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 20),
+                        ('vc_room:3', 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 15),
                         ('vc_room:3', 'ping', {}, 40),
                         ('vc_room:3', 'ping', {}, 40),
-                        ('vc_room:3', 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 20),
-                        ('vc_room:3', 'ping', {}, 40),
-                        ('vc_room:3', 'ping', {}, 40),
-                        ('vc_room:3', 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 20),
-                        ('vc_room:3', 'phx_leave', {}, 10),
+                        ('vc_room:3', 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 15),
+                        # ('vc_room:3', 'ping', {}, 40),
+                        # ('vc_room:3', 'ping', {}, 40),
+                        # ('vc_room:3', 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 15),
+                        ('vc_room:3', 'phx_leave', {}, 7),
                     ], 'sleep': 3
                 }, 
-                {'user': 'track0011', 'wait': 3, 'action': [
+                {'user': 'track0019', 'wait': 3, 'action': [
                         ('vc_room:3', 'phx_join', {}, 1), 
-                        ('vc_room:3', 'gift', {'giftId': '9e63bbf0-3e86-4019-b3fc-e955c175569b', 'targetUserId': test_parameter['broadcaster011']['id'], 'count': 5}, 1), #8500
-                        ('vc_room:3', 'gift', {'giftId': '9024cddc-b9be-40d1-92a3-7e78cb5de592', 'targetUserId': test_parameter['broadcaster013']['id'], 'count': 4}, 7), #1700
-                        ('vc_room:3', 'gift', {'giftId': 'e1e828ca-8bcf-4066-8a00-531ea75fdbb2', 'targetUserId': test_parameter['broadcaster011']['id'], 'count': 7}, 7), #100
+                        # ('vc_room:3', 'gift', {'giftId': '9e63bbf0-3e86-4019-b3fc-e955c175569b', 'targetUserId': test_parameter['broadcaster011']['id'], 'count': 5}, 1), #8500
+                        # ('vc_room:3', 'gift', {'giftId': '9024cddc-b9be-40d1-92a3-7e78cb5de592', 'targetUserId': test_parameter['broadcaster013']['id'], 'count': 4}, 7), #1700
+                        # ('vc_room:3', 'gift', {'giftId': 'e1e828ca-8bcf-4066-8a00-531ea75fdbb2', 'targetUserId': test_parameter['broadcaster011']['id'], 'count': 7}, 7), #100
+                        ('vc_room:3', 'gift', {'giftId': '49853090-e4cd-47da-826e-1131388bd6c4', 'targetUserId': test_parameter['broadcaster011']['id'], 'count': 5}, 7), #50000
                         ('vc_room:3', 'ping', {}, 30),
                         ('vc_room:3', 'ping', {}, 30),
                         ('vc_room:3', 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 15),
-                        ('vc_room:3', 'ping', {}, 40),
+                        ('vc_room:3', 'ping', {}, 35),
                         ('vc_room:3', 'gift', {'giftId': 'e1e828ca-8bcf-4066-8a00-531ea75fdbb2', 'targetUserId': test_parameter['broadcaster011']['id'], 'count': 1}, 0), #100
                         ('vc_room:3', 'ping', {}, 40),
-                        ('vc_room:3', 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 20),
+                        ('vc_room:3', 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 15),
+                        ('vc_room:3', 'ping', {}, 35),
                         ('vc_room:3', 'ping', {}, 40),
-                        ('vc_room:3', 'ping', {}, 40),
-                        ('vc_room:3', 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 20),
-                        ('vc_room:3', 'ping', {}, 40),
-                        ('vc_room:3', 'gift', {'giftId': 'e1e828ca-8bcf-4066-8a00-531ea75fdbb2', 'targetUserId': test_parameter['broadcaster011']['id'], 'count': 1}, 0), #100
-                        ('vc_room:3', 'ping', {}, 40),
-                        ('vc_room:3', 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 20),
-                        ('vc_room:3', 'phx_leave', {}, 30),
+                        ('vc_room:3', 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 15),
+                        # ('vc_room:3', 'ping', {}, 40),
+                        # ('vc_room:3', 'gift', {'giftId': 'e1e828ca-8bcf-4066-8a00-531ea75fdbb2', 'targetUserId': test_parameter['broadcaster011']['id'], 'count': 1}, 0), #100
+                        # ('vc_room:3', 'ping', {}, 30),
+                        # ('vc_room:3', 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 15),
+                        ('vc_room:3', 'phx_leave', {}, 9),
                     ], 'sleep': 3
                 },
-                {'user': 'track0013', 'wait': 120, 'action': [
-                        ('vc_room:3', 'phx_join', {}, 5), 
-                        ('vc_room:3', 'gift', {'giftId': '49853090-e4cd-47da-826e-1131388bd6c4', 'targetUserId': test_parameter['broadcaster011']['id'], 'count': 5}, 1), #50000
-                        ('vc_room:3', 'ping', {}, 30),
-                        ('vc_room:3', 'ping', {}, 40),
-                        ('vc_room:3', 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 10),
-                        ('vc_room:3', 'ping', {}, 40),
-                        ('vc_room:3', 'ping', {}, 40),
-                        ('vc_room:3', 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 10),
-                        ('vc_room:3', 'ping', {}, 40),
-                        ('vc_room:3', 'ping', {}, 40),
-                        ('vc_room:3', 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 10),
-                        ('vc_room:3', 'phx_leave', {}, 10),
-                    ], 'sleep': 3
-                },
-                {'user': 'track0012', 'wait': 370, 'action': [
-                        ('vc_room:3', 'phx_join', {}, 5), 
-                        ('vc_room:3', 'gift', {'giftId': 'a700b291-362a-42fa-9db4-6d29d4541273', 'targetUserId': test_parameter['broadcaster011']['id'], 'count': 2}, 1), #500000
-                        ('vc_room:3', 'phx_leave', {}, 10),
-                    ], 'sleep': 3
-                },
+                # {'user': 'track0020', 'wait': 120, 'action': [
+                #         ('vc_room:3', 'phx_join', {}, 5), 
+                #         ('vc_room:3', 'gift', {'giftId': '49853090-e4cd-47da-826e-1131388bd6c4', 'targetUserId': test_parameter['broadcaster011']['id'], 'count': 5}, 1), #50000
+                #         ('vc_room:3', 'ping', {}, 40),
+                #         ('vc_room:3', 'ping', {}, 40),
+                #         ('vc_room:3', 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 10),
+                #         ('vc_room:3', 'ping', {}, 40),
+                #         ('vc_room:3', 'ping', {}, 40),
+                #         ('vc_room:3', 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 10),
+                #         ('vc_room:3', 'ping', {}, 40),
+                #         ('vc_room:3', 'ping', {}, 40),
+                #         ('vc_room:3', 'luckymoney_lottery', {"type": "2022CN.Lottery"}, 10),
+                #         ('vc_room:3', 'phx_leave', {}, 10),
+                #     ], 'sleep': 3
+                # },
+                # {'user': 'track0011', 'wait': 370, 'action': [
+                #         ('vc_room:3', 'phx_join', {}, 5), 
+                #         ('vc_room:3', 'gift', {'giftId': 'a700b291-362a-42fa-9db4-6d29d4541273', 'targetUserId': test_parameter['broadcaster011']['id'], 'count': 2}, 1), #500000
+                #         ('vc_room:3', 'phx_leave', {}, 10),
+                #     ], 'sleep': 3
+                # },
             ],  
             [
-                {'index': 'track0011', 'event': 'luckymoney_marquee', 'position': 0, 'check': [
-                        {'key': ['level'], 'value': 1},
-                        {'key': ['content', 'zh'],  'value': '{targetUser.name} 準備送紅包了~大家快來搶紅包!'},
-                        {'key': ['content', 'ja'],  'value': '{targetUser.name} 赤い封筒を渡す準備ができました〜みんな、赤い封筒を持ってきてください!'},
-                        {'key': ['content', 'en'],  'value': '{targetUser.name} Ready to give lucky points~ everyone, come and grab it!'},
-                        {'key': ['fromUser', 'id'], 'value': test_parameter['track0013']['id']},
-                        {'key': ['targetUser', 'id'], 'value': test_parameter['broadcaster011']['id']},
-                        {'key': ['url'], 'value': 'xtars://voiceChat/3'},
+                {'index': 'track0019', 'event': 'luckymoney_marquee', 'position': 0, 'check': [
+                        {'key': ['data', 'level'], 'value': 1},
+                        {'key': ['data', 'content', 'zh'],  'value': '{targetUser.name} 獲得平台紅包禮~大家快來搶紅包!'},
+                        {'key': ['data', 'content', 'ja'],  'value': '{targetUser.name} 赤い封筒を渡す準備ができました〜みんな、赤い封筒を持ってきてください！'},
+                        {'key': ['data', 'content', 'en'],  'value': '{targetUser.name} Ready to give lucky points~ everyone, come and grab it!'},
+                        {'key': ['data', 'fromUser', 'id'], 'value': test_parameter['track0013']['id']},
+                        {'key': ['data', 'targetUser', 'id'], 'value': test_parameter['broadcaster011']['id']},
+                        {'key': ['data', 'url'], 'value': 'xtars://voiceChat/3'},
                     ]
                 },
-                {'index': 'track0011', 'event': 'luckymoney_marquee', 'position': 1, 'check': [
-                        {'key': ['level'], 'value': 1},
-                        {'key': ['content', 'zh'],  'value': '{targetUser.name} 準備送紅包了~大家快來搶紅包!'},
-                        {'key': ['content', 'ja'],  'value': '{targetUser.name} 赤い封筒を渡す準備ができました〜みんな、赤い封筒を持ってきてください!'},
-                        {'key': ['content', 'en'],  'value': '{targetUser.name} Ready to give lucky points~ everyone, come and grab it!'},
-                        {'key': ['fromUser', 'id'], 'value': test_parameter['track0013']['id']},
-                        {'key': ['targetUser', 'id'], 'value': test_parameter['broadcaster011']['id']},
-                        {'key': ['url'], 'value': 'xtars://voiceChat/3'},
+                {'index': 'track0019', 'event': 'luckymoney_marquee', 'position': 1, 'check': [
+                        {'key': ['data', 'level'], 'value': 1},
+                        {'key': ['data', 'content', 'zh'],  'value': '{targetUser.name} 獲得平台紅包禮~大家快來搶紅包!'},
+                        {'key': ['data', 'content', 'ja'],  'value': '{targetUser.name} 赤い封筒を渡す準備ができました〜みんな、赤い封筒を持ってきてください！'},
+                        {'key': ['data', 'content', 'en'],  'value': '{targetUser.name} Ready to give lucky points~ everyone, come and grab it!'},
+                        {'key': ['data', 'fromUser', 'id'], 'value': test_parameter['track0013']['id']},
+                        {'key': ['data', 'targetUser', 'id'], 'value': test_parameter['broadcaster011']['id']},
+                        {'key': ['data', 'url'], 'value': 'xtars://voiceChat/3'},
                     ]
                 },
-                {'index': 'track0011', 'event': 'luckymoney_marquee', 'position': 2, 'check': [
-                        {'key': ['level'], 'value': 1},
-                        {'key': ['content', 'zh'],  'value': '{targetUser.name} 準備送紅包了~大家快來搶紅包!'},
-                        {'key': ['content', 'ja'],  'value': '{targetUser.name} 赤い封筒を渡す準備ができました〜みんな、赤い封筒を持ってきてください!'},
-                        {'key': ['content', 'en'],  'value': '{targetUser.name} Ready to give lucky points~ everyone, come and grab it!'},
-                        {'key': ['fromUser', 'id'], 'value': test_parameter['track0013']['id']},
-                        {'key': ['targetUser', 'id'], 'value': test_parameter['broadcaster011']['id']},
-                        {'key': ['url'], 'value': 'xtars://voiceChat/3'},
+                {'index': 'track0019', 'event': 'luckymoney_marquee', 'position': 2, 'check': [
+                        {'key': ['data', 'level'], 'value': 1},
+                        {'key': ['data', 'content', 'zh'],  'value': '{targetUser.name} 獲得平台紅包禮~大家快來搶紅包!'},
+                        {'key': ['data', 'content', 'ja'],  'value': '{targetUser.name} 赤い封筒を渡す準備ができました〜みんな、赤い封筒を持ってきてください！'},
+                        {'key': ['data', 'content', 'en'],  'value': '{targetUser.name} Ready to give lucky points~ everyone, come and grab it!'},
+                        {'key': ['data', 'fromUser', 'id'], 'value': test_parameter['track0013']['id']},
+                        {'key': ['data', 'targetUser', 'id'], 'value': test_parameter['broadcaster011']['id']},
+                        {'key': ['data', 'url'], 'value': 'xtars://voiceChat/3'},
                     ]
                 },
-                {'index': 'track0011', 'event': 'luckymoney_marquee', 'position': 3, 'check': [
-                        {'key': ['level'], 'value': 1},
-                        {'key': ['content', 'zh'],  'value': '{targetUser.name} 準備送紅包了~大家快來搶紅包!'},
-                        {'key': ['content', 'ja'],  'value': '{targetUser.name} 赤い封筒を渡す準備ができました〜みんな、赤い封筒を持ってきてください!'},
-                        {'key': ['content', 'en'],  'value': '{targetUser.name} Ready to give lucky points~ everyone, come and grab it!'},
-                        {'key': ['fromUser', 'id'], 'value': test_parameter['track0011']['id']},
-                        {'key': ['targetUser', 'id'], 'value': test_parameter['broadcaster011']['id']},
-                        {'key': ['url'], 'value': 'xtars://voiceChat/3'},
+                {'index': 'track0019', 'event': 'luckymoney_marquee', 'position': 3, 'check': [
+                        {'key': ['data', 'level'], 'value': 1},
+                        {'key': ['data', 'content', 'zh'],  'value': '{targetUser.name} 獲得平台紅包禮~大家快來搶紅包!'},
+                        {'key': ['data', 'content', 'ja'],  'value': '{targetUser.name} 赤い封筒を渡す準備ができました〜みんな、赤い封筒を持ってきてください！'},
+                        {'key': ['data', 'content', 'en'],  'value': '{targetUser.name} Ready to give lucky points~ everyone, come and grab it!'},
+                        {'key': ['data', 'fromUser', 'id'], 'value': test_parameter['track0011']['id']},
+                        {'key': ['data', 'targetUser', 'id'], 'value': test_parameter['broadcaster011']['id']},
+                        {'key': ['data', 'url'], 'value': 'xtars://voiceChat/3'},
                     ]
                 },
-                {
-                    'index': 'track0011', 'event': 'luckymoney_marquee', 'position': 4, 'check': []
-                },
-                {
-                    'index': 'track0012', 'event': 'luckymoney_data_changed_bcst', 'position': 0, 'check': []
-                },
+                # {
+                #     'index': 'track0019', 'event': 'luckymoney_marquee', 'position': 4, 'check': []
+                # },
+                # {
+                #     'index': 'track0012', 'event': 'luckymoney_data_changed_bcst', 'position': 0, 'check': []
+                # },
 
 
             ]
