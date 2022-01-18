@@ -3,7 +3,7 @@ import pytest
 import threading
 from pprint import pprint
 from . import chatlib
-from .testingCase import chatCase
+from .testingCase import conCallCase
 
 env = 'QA'
 DB = '35.234.17.150'
@@ -105,7 +105,7 @@ class TestChatScoket():
             self.checkKeys(event['payload'], keyList)
 
                         
-    @pytest.mark.parametrize("scenario, data, verifyInfo", chatCase.getTestData(test_parameter, 'master10'))
+    @pytest.mark.parametrize("scenario, data, verifyInfo", conCallCase.getTestData(test_parameter, ['master10', 'master11', 'master12']))
     def testChat(self, scenario, data, verifyInfo):   
         threadList = []
         self.wsDic.clear()
@@ -115,11 +115,14 @@ class TestChatScoket():
         for i in reversed(threadList):
             i.join()
         pprint(self.wsDic)   
-        for k in verifyInfo:
-            if self.wsDic[k['index']]:
-                print('check: ', k['index'])
-                self.verifyResult(self.wsDic[k['index']], k) 
-            else:
-                print('%s無資料比對'%scenario)
+        if self.wsDic:
+            for k in verifyInfo:
+                if self.wsDic[k['index']]:
+                    print('check: ', k['index'])
+                    self.verifyResult(self.wsDic[k['index']], k) 
+                else:
+                    print('%s無資料比對'%scenario)
+        else:
+            print('無執行資訊')
                 
            

@@ -1,10 +1,10 @@
-from .. import misc
-from .. import dbConnect
+from . import misc
+from . import dbConnect
 import json
 
 def clearDBInfo(dbAddress):
     sqlList = []
-    for i in ['call_out_identity', 'call_out']:
+    for i in ['call_out', 'call_out_identity']:
         sqlList.append('TRUNCATE TABLE %s'%i)
     dbConnect.dbSetting(dbAddress, sqlList)
 
@@ -22,34 +22,35 @@ def getRoomId(test_parameter, masterList):
         }
         res = misc.apiFunction(test_parameter['prefix'], header, apiName, 'post', body)
         result = json.loads(res.text)
-        test_parameter[i]['roomId'] = result['data']['roomId']
+        test_parameter[i]['roomId'] = str(result['data']['roomId'])
     return 
 
 def getTestData(test_parameter, masterList):
+    misc.get_test_data('QA', test_parameter, 'master', 5, 10, 30, 2)  
     clearDBInfo(test_parameter['db'])
     getRoomId(test_parameter, masterList)
     testData = [
         ('受𨘋者正在接受別人的通話邀請中及60秒內無接聽', #4747
             [
                 {'user': masterList[0], 'wait': 0, 'action': [
-                        ('live_room:%d'% test_parameter[masterList[0]]['roomId'], 'phx_join', {'code': ''}, 0),
-                        ('live_room:%d'% test_parameter[masterList[0]]['roomId'], 'call_out', 
+                        ('live_room:%s'% test_parameter[masterList[0]]['roomId'], 'phx_join', {'code': ''}, 0),
+                        ('live_room:%s'% test_parameter[masterList[0]]['roomId'], 'call_out', 
                           {'invitees': [test_parameter[masterList[1]]['id']], 'type': 'CASUAL', 'duration': 300, 'goalPointSetting': 10}, 0),
-                        ('live_room:%d'% test_parameter[masterList[0]]['roomId'], 'ping', {}, 35),
-                        ('live_room:%d'% test_parameter[masterList[0]]['roomId'], 'ping', {}, 35),
-                        ('live_room:%d'% test_parameter[masterList[0]]['roomId'], 'close_room', {'roomId': test_parameter[masterList[0]]['roomId']}, 0),
+                        ('live_room:%s'% test_parameter[masterList[0]]['roomId'], 'ping', {}, 35),
+                        ('live_room:%s'% test_parameter[masterList[0]]['roomId'], 'ping', {}, 35),
+                        ('live_room:%s'% test_parameter[masterList[0]]['roomId'], 'close_room', {'roomId': int(test_parameter[masterList[0]]['roomId'])}, 0),
                     ], 'sleep': 2
                 },
                 {'user': masterList[1], 'wait': 0, 'action': [
-                        ('live_room:' + test_parameter[masterList[1]]['roomId'], 'phx_join', {'code': ''}, 0),
-                        ('live_room:' + test_parameter[masterList[1]]['roomId'], 'close_room', {'roomId': int(test_parameter[masterList[1]]['roomId'])}, 10),
+                        ('live_room:%s'%test_parameter[masterList[1]]['roomId'], 'phx_join', {'code': ''}, 0),
+                        ('live_room:%s'%test_parameter[masterList[1]]['roomId'], 'close_room', {'roomId': int(test_parameter[masterList[1]]['roomId'])}, 10),
                     ], 'sleep': 2
                 },
                 {'user': masterList[2], 'wait': 3, 'action': [
-                        ('live_room:' + test_parameter[masterList[2]]['roomId'], 'phx_join', {'code': ''}, 0),
-                        ('live_room:%d'% test_parameter[masterList[0]]['roomId'], 'call_out', 
+                        ('live_room:%s'%test_parameter[masterList[2]]['roomId'], 'phx_join', {'code': ''}, 0),
+                        ('live_room:%s'%test_parameter[masterList[0]]['roomId'], 'call_out', 
                           {'invitees': [test_parameter[masterList[1]]['id']], 'type': 'CASUAL', 'duration': 300, 'goalPointSetting': 10}, 0),
-                        ('live_room:' + test_parameter[masterList[2]]['roomId'], 'close_room', {'roomId': int(test_parameter[masterList[2]]['roomId'])}, 10),
+                        ('live_room:%s'%test_parameter[masterList[2]]['roomId'], 'close_room', {'roomId': int(test_parameter[masterList[2]]['roomId'])}, 10),
                     ], 'sleep': 2
                 },
             ],
