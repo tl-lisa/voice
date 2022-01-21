@@ -66,6 +66,27 @@ def getTestData(test_parameter, masterList):
         #             ]
         #         },             
         #         {
+        #             'index': 'master11', 
+        #             'event': 'call_out_bcst', 
+        #             'position': 1,
+        #             'check': []
+        #         },             
+        #         {
+        #             'index': 'master11', 
+        #             'event': 'call_out_bcst', 
+        #             'position': 0,
+        #             'check': [
+        #                 {'key': ['data', 'type'], 'value': 'CASUAL'},
+        #                 {'key': ['data', 'status'], 'value': 'CREATED'},
+        #                 {'key': ['data', 'duration'], 'value': 300},
+        #                 {'key': ['data', 'goalPointSetting'], 'value': 10},
+        #                 {'key': ['data', 'inviter', 'id'], 'value':  test_parameter['master10']['id']},
+        #                 {'key': ['data', 'inviter', 'room', 'id'], 'value': int(test_parameter['master10']['roomId'])},
+        #                 {'key': ['data', 'invitees', 'id'], 'value':  test_parameter['master11']['id']},
+        #                 {'key': ['data', 'invitees', 'room', 'id'], 'value': int(test_parameter['master11']['roomId'])},
+        #             ]
+        #         },             
+        #         {
         #             'index': 'master12', 
         #             'event': 'call_out_unavailable_bcst', 
         #             'position': 0,
@@ -105,7 +126,7 @@ def getTestData(test_parameter, masterList):
         #         {
         #             'index': 'master11', 
         #             'event': 'call_out_bcst', 
-        #             'position': 1,
+        #             'position': 0,
         #             'check': 
         #             [
         #                 {'key': ['data', 'type'], 'value': 'CASUAL'},
@@ -135,15 +156,6 @@ def getTestData(test_parameter, masterList):
         #             ]
         #         },             
         #         {
-        #             'index': 'master12', 
-        #             'event': 'call_out_unavailable_bcst', 
-        #             'position': 0,
-        #             'check': 
-        #             [
-        #                 {'key': ['callOutId'], 'value': 2}
-        #             ]
-        #         },             
-        #         {
         #             'index': 'master11', 
         #             'event': 'call_out_pickup_bcst', 
         #             'position': 0,
@@ -155,9 +167,70 @@ def getTestData(test_parameter, masterList):
         #                 'room', 'type', 'id', 'stremId', 'points', 'endBy', 'sendTime'
         #             ]
         #         },
+        #         {
+        #             'index': 'master12', 
+        #             'event': 'call_out_unavailable_bcst', 
+        #             'position': 0,
+        #             'check': 
+        #             [
+        #                 {'key': ['callOutId'], 'value': 2}
+        #             ]
+        #         },             
 
         #     ]
         # ),
+
+        ('受𨘋者已發起𨘋請給其他人；則不會再收到其他人的call_out_bcst', #4746, 4747, 4748
+            [
+                {'user': 'master10', 'wait': 0, 'action': [
+                        ('live_room:%s'% test_parameter['master10']['roomId'], 'phx_join', {'code': ''}, 0),
+                        ('live_room:%s'% test_parameter['master10']['roomId'], 'call_out', 
+                          {'invitees': [test_parameter['master11']['id']], 'type': 'CASUAL', 'duration': 15, 'goalPointSetting': 10}, 3),
+                        ('live_room:%s'% test_parameter['master10']['roomId'], 'close_room', {'roomId': int(test_parameter['master10']['roomId'])}, 20),
+                    ], 'sleep': 2
+                },
+                {'user': 'master11', 'wait': 0, 'action': [
+                        ('live_room:%s'%test_parameter['master11']['roomId'], 'phx_join', {'code': ''}, 0),
+                        ('live_room:%s'%test_parameter['master11']['roomId'], 'close_room', {'roomId': int(test_parameter['master11']['roomId'])}, 20),
+                    ], 'sleep': 2
+                },
+                {'user': 'master12', 'wait': 3, 'action': [
+                        ('live_room:%s'%test_parameter['master12']['roomId'], 'phx_join', {'code': ''}, 0),
+                        ('live_room:%s'%test_parameter['master12']['roomId'], 'call_out', 
+                          {'invitees': [test_parameter['master10']['id']], 'type': 'CASUAL', 'duration': 300, 'goalPointSetting': 10}, 1),
+                        ('live_room:%s'%test_parameter['master12']['roomId'], 'close_room', {'roomId': int(test_parameter['master12']['roomId'])}, 10),
+                    ], 'sleep': 2
+                },
+            ],
+            [
+                {
+                    'index': 'master11', 
+                    'event': 'call_out_bcst', 
+                    'position': 0,
+                    'check': 
+                    [
+                        {'key': ['data', 'type'], 'value': 'CASUAL'},
+                        {'key': ['data', 'status'], 'value': 'CREATED'},
+                        {'key': ['data', 'duration'], 'value': 15},
+                        {'key': ['data', 'goalPointSetting'], 'value': 10},
+                        {'key': ['data', 'inviter', 'id'], 'value':  test_parameter['master10']['id']},
+                        {'key': ['data', 'inviter', 'room', 'id'], 'value': int(test_parameter['master10']['roomId'])},
+                        {'key': ['data', 'invitees', 'id'], 'value':  test_parameter['master11']['id']},
+                        {'key': ['data', 'invitees', 'room', 'id'], 'value': int(test_parameter['master11']['roomId'])},
+                    ]
+                },             
+                {
+                    'index': 'master12', 
+                    'event': 'call_out_unavailable_bcst', 
+                    'position': 0,
+                    'check': 
+                    [
+                        {'key': ['callOutId'], 'value': 2}
+                    ]
+                },             
+
+            ]
+        ),
 
         # ('邀請方放棄等待受𨘋方回應', #4752
         #     [
@@ -289,90 +362,90 @@ def getTestData(test_parameter, masterList):
         #     ]
         # ),
 
-        ('時間到系統自動判定輸鸁，之後再送禮也不會變更點數（挑戰型）', #4750
-            [ 
-                {'user': 'master10', 'wait': 0, 'action': [
-                        ('live_room:%s'%test_parameter['master10']['roomId'], 'phx_join', {'code': ''}, 0),
-                        ('live_room:%s'%test_parameter['master10']['roomId'], 'call_out', 
-                          {'invitees': [test_parameter['master11']['id']], 'type': 'CHALLENGE', 'duration': 5, 'goalPointSetting': 10}, 3),
-                        ('live_room:%s'%test_parameter['master10']['roomId'], 'close_room', {'roomId': int(test_parameter['master10']['roomId'])}, 30),
-                    ], 'sleep': 2
-                },
-                {'user': 'track0011', 'wait': 7, 'action': [
-                        ('live_room:%s'%test_parameter['master10']['roomId'], 'phx_join', {'code': ''}, 0),
-                        ('live_room:%s'%test_parameter['master10']['roomId'], 'phx_leave', {}, 20),
-                    ], 'sleep': 2
-                },
-                {'user': 'track0012', 'wait': 10, 'action': [
-                        ('live_room:%s'%test_parameter['master11']['roomId'], 'phx_join', {'code': ''}, 0),
-                        ('live_room:%s'%test_parameter['master11']['roomId'], 'gift', {'targetUserId': test_parameter['master11']['id'],
-                            'giftId': 'cf0fc6ba-9fae-4c6a-9f34-7a17207e3d60', 'count': 2}, 2),
-                        ('live_room:%s'%test_parameter['master11']['roomId'], 'phx_leave', {}, 10),
-                    ], 'sleep': 2
-                },
-                {'user': 'master11', 'wait': 0, 'action': [
-                        ('live_room:%s'%test_parameter['master11']['roomId'], 'phx_join', {'code': ''}, 0),
-                        ('live_room:%s'%test_parameter['master11']['roomId'], 'call_out_pickup', {'callOutId': 1}, 5),
-                        ('live_room:%s'%test_parameter['master11']['roomId'], 'call_out_dismiss', {'callOutId': 1}, 15),
-                        ('live_room:%s'%test_parameter['master11']['roomId'], 'close_room', {'roomId': int(test_parameter['master11']['roomId'])}, 2),
-                    ], 'sleep': 2
-                },
-            ],
-            [
-                {
-                    'index': 'master10', 
-                    'event': 'call_out_done', 
-                    'position': 0,
-                    'check': 
-                    [
-                        {'key': ['data', 'type'], 'value': 'CHALLENGE'},
-                        {'key': ['data', 'status'], 'value': 'DONE'},
-                        {'key': ['data', 'title'], 'value': '挑戰結束'},
-                        {'key': ['data', 'subTitle'], 'value': '居然是平局！'},
-                        {'key': ['data', 'endBy'], 'value':  None},
-                    ]
-                },             
-                {
-                    'index': 'track0011', 
-                    'event': 'call_out_info', 
-                    'position': 0,
-                    'check': 
-                    [
-                        {'key': ['data', 'type'], 'value': 'CHALLENGE'},
-                        {'key': ['data', 'status'], 'value': 'RUNNING'},
-                        {'key': ['data', 'duration'], 'value': 10},
-                        {'key': ['data', 'goalPointSetting'], 'value': 10},
-                        {'key': ['data', 'inviter', 'id'], 'value':  test_parameter['master10']['id']},
-                        {'key': ['data', 'inviter', 'room', 'id'], 'value': int(test_parameter['master10']['roomId'])},
-                        {'key': ['data', 'invitees', 'id'], 'value':  test_parameter['master11']['id']},
-                        {'key': ['data', 'invitees', 'room', 'id'], 'value': int(test_parameter['master11']['roomId'])},
-                    ]
-                },             
-                {
-                    'index': 'track0011', 
-                    'event': 'call_out_done', 
-                    'position': 0,
-                    'check': 
-                    [
-                        {'key': ['data', 'type'], 'value': 'CHALLENGE'},
-                        {'key': ['data', 'status'], 'value': 'DONE'},
-                        {'key': ['data', 'duration'], 'value': 10},
-                        {'key': ['data', 'goalPointSetting'], 'value': 10},
-                        {'key': ['data', 'inviter', 'id'], 'value':  test_parameter['master10']['id']},
-                        {'key': ['data', 'inviter', 'room', 'id'], 'value': int(test_parameter['master10']['roomId'])},
-                        {'key': ['data', 'invitees', 'id'], 'value':  test_parameter['master11']['id']},
-                        {'key': ['data', 'invitees', 'room', 'id'], 'value': int(test_parameter['master11']['roomId'])},
-                    ]
-                },             
-                {
-                    'index': 'track0012', 
-                    'event': 'call_out_bcst', 
-                    'position': 0,
-                    'check': []
-                },             
+        # ('時間到系統自動判定輸鸁，之後再送禮也不會變更點數（挑戰型）', #4750
+        #     [ 
+        #         {'user': 'master10', 'wait': 0, 'action': [
+        #                 ('live_room:%s'%test_parameter['master10']['roomId'], 'phx_join', {'code': ''}, 0),
+        #                 ('live_room:%s'%test_parameter['master10']['roomId'], 'call_out', 
+        #                   {'invitees': [test_parameter['master11']['id']], 'type': 'CHALLENGE', 'duration': 5, 'goalPointSetting': 10}, 3),
+        #                 ('live_room:%s'%test_parameter['master10']['roomId'], 'close_room', {'roomId': int(test_parameter['master10']['roomId'])}, 30),
+        #             ], 'sleep': 2
+        #         },
+        #         {'user': 'track0011', 'wait': 7, 'action': [
+        #                 ('live_room:%s'%test_parameter['master10']['roomId'], 'phx_join', {'code': ''}, 0),
+        #                 ('live_room:%s'%test_parameter['master10']['roomId'], 'phx_leave', {}, 20),
+        #             ], 'sleep': 2
+        #         },
+        #         {'user': 'track0012', 'wait': 10, 'action': [
+        #                 ('live_room:%s'%test_parameter['master11']['roomId'], 'phx_join', {'code': ''}, 0),
+        #                 ('live_room:%s'%test_parameter['master11']['roomId'], 'gift', {'targetUserId': test_parameter['master11']['id'],
+        #                     'giftId': 'cf0fc6ba-9fae-4c6a-9f34-7a17207e3d60', 'count': 2}, 2),
+        #                 ('live_room:%s'%test_parameter['master11']['roomId'], 'phx_leave', {}, 10),
+        #             ], 'sleep': 2
+        #         },
+        #         {'user': 'master11', 'wait': 0, 'action': [
+        #                 ('live_room:%s'%test_parameter['master11']['roomId'], 'phx_join', {'code': ''}, 0),
+        #                 ('live_room:%s'%test_parameter['master11']['roomId'], 'call_out_pickup', {'callOutId': 1}, 5),
+        #                 ('live_room:%s'%test_parameter['master11']['roomId'], 'call_out_dismiss', {'callOutId': 1}, 15),
+        #                 ('live_room:%s'%test_parameter['master11']['roomId'], 'close_room', {'roomId': int(test_parameter['master11']['roomId'])}, 2),
+        #             ], 'sleep': 2
+        #         },
+        #     ],
+        #     [
+        #         {
+        #             'index': 'master10', 
+        #             'event': 'call_out_done', 
+        #             'position': 0,
+        #             'check': 
+        #             [
+        #                 {'key': ['data', 'type'], 'value': 'CHALLENGE'},
+        #                 {'key': ['data', 'status'], 'value': 'DONE'},
+        #                 {'key': ['data', 'title'], 'value': '挑戰結束'},
+        #                 {'key': ['data', 'subTitle'], 'value': '居然是平局！'},
+        #                 {'key': ['data', 'endBy'], 'value':  None},
+        #             ]
+        #         },             
+        #         {
+        #             'index': 'track0011', 
+        #             'event': 'call_out_info', 
+        #             'position': 0,
+        #             'check': 
+        #             [
+        #                 {'key': ['data', 'type'], 'value': 'CHALLENGE'},
+        #                 {'key': ['data', 'status'], 'value': 'RUNNING'},
+        #                 {'key': ['data', 'duration'], 'value': 10},
+        #                 {'key': ['data', 'goalPointSetting'], 'value': 10},
+        #                 {'key': ['data', 'inviter', 'id'], 'value':  test_parameter['master10']['id']},
+        #                 {'key': ['data', 'inviter', 'room', 'id'], 'value': int(test_parameter['master10']['roomId'])},
+        #                 {'key': ['data', 'invitees', 'id'], 'value':  test_parameter['master11']['id']},
+        #                 {'key': ['data', 'invitees', 'room', 'id'], 'value': int(test_parameter['master11']['roomId'])},
+        #             ]
+        #         },             
+        #         {
+        #             'index': 'track0011', 
+        #             'event': 'call_out_done', 
+        #             'position': 0,
+        #             'check': 
+        #             [
+        #                 {'key': ['data', 'type'], 'value': 'CHALLENGE'},
+        #                 {'key': ['data', 'status'], 'value': 'DONE'},
+        #                 {'key': ['data', 'duration'], 'value': 10},
+        #                 {'key': ['data', 'goalPointSetting'], 'value': 10},
+        #                 {'key': ['data', 'inviter', 'id'], 'value':  test_parameter['master10']['id']},
+        #                 {'key': ['data', 'inviter', 'room', 'id'], 'value': int(test_parameter['master10']['roomId'])},
+        #                 {'key': ['data', 'invitees', 'id'], 'value':  test_parameter['master11']['id']},
+        #                 {'key': ['data', 'invitees', 'room', 'id'], 'value': int(test_parameter['master11']['roomId'])},
+        #             ]
+        #         },             
+        #         {
+        #             'index': 'track0012', 
+        #             'event': 'call_out_bcst', 
+        #             'position': 0,
+        #             'check': []
+        #         },             
    
-            ]
-        ),
+        #     ]
+        # ),
 
         # ('送禮點數到系統自動判定輸鸁，之後再送禮也不會變更點數（挑戰型）', #4750
         #     [ 
