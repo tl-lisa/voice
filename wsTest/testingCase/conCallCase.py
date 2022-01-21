@@ -1,21 +1,12 @@
 from . import misc
 from . import dbConnect
-<<<<<<< HEAD
-=======
-from pprint import pprint
->>>>>>> 85ad4a3 (finish concall case)
 import json
 
 def clearDBInfo(dbAddress):
     sqlList = []
-<<<<<<< HEAD
-    for i in ['call_out', 'call_out_identity']:
-        sqlList.append('TRUNCATE TABLE %s'%i)
-=======
     for i in ['call_out_identity', 'call_out']:
         sqlList.append('delete from %s'%i)
         sqlList.append('alter table %s auto_increment = 1'%i)
->>>>>>> 85ad4a3 (finish concall case)
     dbConnect.dbSetting(dbAddress, sqlList)
 
 def getRoomId(test_parameter, masterList):
@@ -33,10 +24,6 @@ def getRoomId(test_parameter, masterList):
         res = misc.apiFunction(test_parameter['prefix'], header, apiName, 'post', body)
         result = json.loads(res.text)
         test_parameter[i]['roomId'] = str(result['data']['roomId'])
-<<<<<<< HEAD
-=======
-        pprint(test_parameter[i])
->>>>>>> 85ad4a3 (finish concall case)
     return 
 
 def getTestData(test_parameter, masterList):
@@ -44,29 +31,6 @@ def getTestData(test_parameter, masterList):
     clearDBInfo(test_parameter['db'])
     getRoomId(test_parameter, masterList)
     testData = [
-<<<<<<< HEAD
-        ('受𨘋者正在接受別人的通話邀請中及60秒內無接聽', #4747
-            [
-                {'user': masterList[0], 'wait': 0, 'action': [
-                        ('live_room:%s'% test_parameter[masterList[0]]['roomId'], 'phx_join', {'code': ''}, 0),
-                        ('live_room:%s'% test_parameter[masterList[0]]['roomId'], 'call_out', 
-                          {'invitees': [test_parameter[masterList[1]]['id']], 'type': 'CASUAL', 'duration': 300, 'goalPointSetting': 10}, 0),
-                        ('live_room:%s'% test_parameter[masterList[0]]['roomId'], 'ping', {}, 35),
-                        ('live_room:%s'% test_parameter[masterList[0]]['roomId'], 'ping', {}, 35),
-                        ('live_room:%s'% test_parameter[masterList[0]]['roomId'], 'close_room', {'roomId': int(test_parameter[masterList[0]]['roomId'])}, 0),
-                    ], 'sleep': 2
-                },
-                {'user': masterList[1], 'wait': 0, 'action': [
-                        ('live_room:%s'%test_parameter[masterList[1]]['roomId'], 'phx_join', {'code': ''}, 0),
-                        ('live_room:%s'%test_parameter[masterList[1]]['roomId'], 'close_room', {'roomId': int(test_parameter[masterList[1]]['roomId'])}, 10),
-                    ], 'sleep': 2
-                },
-                {'user': masterList[2], 'wait': 3, 'action': [
-                        ('live_room:%s'%test_parameter[masterList[2]]['roomId'], 'phx_join', {'code': ''}, 0),
-                        ('live_room:%s'%test_parameter[masterList[0]]['roomId'], 'call_out', 
-                          {'invitees': [test_parameter[masterList[1]]['id']], 'type': 'CASUAL', 'duration': 300, 'goalPointSetting': 10}, 0),
-                        ('live_room:%s'%test_parameter[masterList[2]]['roomId'], 'close_room', {'roomId': int(test_parameter[masterList[2]]['roomId'])}, 10),
-=======
         # ('受𨘋者正在接受別人的通話邀請中或60秒內無接聽', #4746, 4747, 4748
         #     [
         #         {'user': 'master10', 'wait': 0, 'action': [
@@ -351,7 +315,6 @@ def getTestData(test_parameter, masterList):
                         ('live_room:%s'%test_parameter['master11']['roomId'], 'call_out_pickup', {'callOutId': 1}, 5),
                         ('live_room:%s'%test_parameter['master11']['roomId'], 'call_out_dismiss', {'callOutId': 1}, 15),
                         ('live_room:%s'%test_parameter['master11']['roomId'], 'close_room', {'roomId': int(test_parameter['master11']['roomId'])}, 2),
->>>>>>> 85ad4a3 (finish concall case)
                     ], 'sleep': 2
                 },
             ],
