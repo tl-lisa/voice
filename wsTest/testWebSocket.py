@@ -38,8 +38,9 @@ class TestChatScoket():
             del chat
 
     def getVal(self, dd, keyList, vList):  
+        dd1 = dd[0] if type(dd) == list else dd
         itemName = keyList.pop(0)
-        for key, value in dd.items():
+        for key, value in dd1.items():
             if key == itemName:
                 if len(keyList) > 0:
                     self.getVal(value, keyList, vList) 
@@ -75,9 +76,9 @@ class TestChatScoket():
     def checkKeys(self, resources, expectKeyList):
         keyList = []
         self.getDicKeys(resources, keyList)
-        assert len(keyList) == len(expectKeyList), 'expect get %d keys but actually get %d'%(len(expectKeyList), len(keyList))
         for i in expectKeyList:
             assert i in keyList, 'expect get %s but actually not found(%s)'%(str(i), str(keyList))
+            assert expectKeyList.count(i) == keyList.count(i), '%s數量不一致 return(%s), check(%s)'%(i, str(expectKeyList), str(keyList))
 
     def verifyResult(self, data, verifyInfo):
         isGetEvent = False 
@@ -93,16 +94,18 @@ class TestChatScoket():
                     break
                 else:
                     position += 1
+        print('%s get is %s at %d'%(verifyInfo['event'], str(isGetEvent), verifyInfo['position']))
         if verifyInfo.get('check'):
             if verifyInfo['check']:
+                print('expect isGetEvent is true and actully %s'%str(isGetEvent))
                 assert isGetEvent, "(%s) cannot found event(%s) at expect position(%d)"%(verifyInfo['index'], verifyInfo['event'], verifyInfo['position'])
+                if isGetEvent:
+                    pprint(event)
+                    self.checkValue(event['payload'], verifyInfo['check'])
             else:
+                print('expect isGetEvent is false and actully %s'%str(isGetEvent))
                 assert not isGetEvent, "should not get check data, but get event(%s) at position(%d)"%(i['event'], position)
-            if isGetEvent:
-                pprint(event)
-                self.checkValue(event['payload'], verifyInfo['check'])
-        elif verifyInfo.get('keyList'):
-            self.checkKeys(event['payload'], keyList)
+        if verifyInfo.get('keyList'): self.checkKeys(event['payload'], keyList)
 
                         
     @pytest.mark.parametrize("scenario, data, verifyInfo", conCallCase.getTestData(test_parameter, ['master10', 'master11', 'master12']))
