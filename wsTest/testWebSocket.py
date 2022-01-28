@@ -2,7 +2,7 @@ import time
 import pytest
 import threading
 from pprint import pprint
-from . import chatlib
+from . import chatlib39 as chatlib
 from .testingCase import conCallCase
 
 env = 'QA'
