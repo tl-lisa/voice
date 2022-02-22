@@ -26,75 +26,151 @@ def getRoomId(test_parameter, masterList):
         test_parameter[i]['roomId'] = str(result['data']['roomId'])
     return 
 
+
 def getTestData(test_parameter, masterList):
     misc.get_test_data('QA', test_parameter, 'master', 5, 10, 30, 2)  
+    misc.add_test_data('QA', test_parameter, 'broadcaster', 1, 2, 3) #voice_master
+    misc.add_test_data('QA', test_parameter, 'private', 1, 2, 2) #private_master    
     calloutId = getCalloutId(test_parameter['db']) + 1
     getRoomId(test_parameter, masterList)
     testData = [
-        ('受𨘋者正在接受別人的通話邀請中或60秒內無接聽', #4746, 4747, 4748
+        # ('受𨘋者正在接受別人的通話邀請中或60秒內無接聽', #4746, 4747, 4748
+        #     [
+        #         {'user': 'master10', 'wait': 0, 'action': [
+        #                 ('live_room:%s'% test_parameter['master10']['roomId'], 'phx_join', {'code': ''}, 0),
+        #                 ('live_room:%s'% test_parameter['master10']['roomId'], 'call_out', 
+        #                   {'invitees': [test_parameter['master11']['id']], 'type': 'CASUAL', 'duration': 300, 'goalPointSetting': 10}, 3),
+        #                 ('live_room:%s'% test_parameter['master10']['roomId'], 'ping', {}, 30),
+        #                 ('live_room:%s'% test_parameter['master10']['roomId'], 'ping', {}, 30),
+        #                 ('live_room:%s'% test_parameter['master10']['roomId'], 'close_room', {'roomId': int(test_parameter['master10']['roomId'])}, 5),
+        #             ], 'sleep': 2
+        #         },
+        #         {'user': 'master11', 'wait': 0, 'action': [
+        #                 ('live_room:' + test_parameter['master11']['roomId'], 'phx_join', {'code': ''}, 0),
+        #                 ('live_room:' + test_parameter['master11']['roomId'], 'close_room', {'roomId': int(test_parameter['master11']['roomId'])}, 30),
+        #             ], 'sleep': 2
+        #         },
+        #         {'user': 'master12', 'wait': 3, 'action': [
+        #                 ('live_room:%s'%test_parameter['master12']['roomId'], 'phx_join', {'code': ''}, 0),
+        #                 ('live_room:%s'%test_parameter['master12']['roomId'], 'call_out', 
+        #                   {'invitees': [test_parameter['master11']['id']], 'type': 'CASUAL', 'duration': 300, 'goalPointSetting': 10}, 5),
+        #                 ('live_room:%s'%test_parameter['master12']['roomId'], 'close_room', {'roomId': int(test_parameter['master12']['roomId'])}, 10),
+        #             ], 'sleep': 2
+        #         },
+        #     ],
+        #     [
+        #         {
+        #             'index': 'master10', 
+        #             'event': 'call_out_unavailable_bcst', 
+        #             'position': 0,
+        #             'check': 
+        #             [
+        #                 {'key': ['callOutId'], 'value': calloutId}
+        #             ]
+        #         },             
+        #         {
+        #             'index': 'master11', 
+        #             'event': 'call_out_bcst', 
+        #             'position': 1,
+        #             'check': []
+        #         },             
+        #         {
+        #             'index': 'master11', 
+        #             'event': 'call_out_bcst', 
+        #             'position': 0,
+        #             'check': [
+        #                 {'key': ['data', 'type'], 'value': 'CASUAL'},
+        #                 {'key': ['data', 'status'], 'value': 'CREATED'},
+        #                 {'key': ['data', 'duration'], 'value': 300},
+        #                 {'key': ['data', 'goalPointSetting'], 'value': 10},
+        #                 {'key': ['data', 'inviter', 'id'], 'value':  test_parameter['master10']['id']},
+        #                 {'key': ['data', 'inviter', 'room', 'id'], 'value': int(test_parameter['master10']['roomId'])},
+        #                 {'key': ['data', 'invitees', 'id'], 'value':  test_parameter['master11']['id']},
+        #                 {'key': ['data', 'invitees', 'room', 'id'], 'value': int(test_parameter['master11']['roomId'])},
+        #             ]
+        #         },             
+        #         {
+        #             'index': 'master12', 
+        #             'event': 'call_out_unavailable_bcst', 
+        #             'position': 0,
+        #             'check': 
+        #             [
+        #                 {'key': ['callOutId'], 'value': calloutId + 1}
+        #             ]
+        #         },             
+        #     ]
+        # ),
+
+        ('受𨘋者或𨘋請者僅限role=live_master', #4889; master14=ROLE_VOICE_MASTER; master15=ROLE_PRIVATE_VOICE_MASTER
             [
                 {'user': 'master10', 'wait': 0, 'action': [
                         ('live_room:%s'% test_parameter['master10']['roomId'], 'phx_join', {'code': ''}, 0),
                         ('live_room:%s'% test_parameter['master10']['roomId'], 'call_out', 
-                          {'invitees': [test_parameter['master11']['id']], 'type': 'CASUAL', 'duration': 300, 'goalPointSetting': 10}, 3),
-                        ('live_room:%s'% test_parameter['master10']['roomId'], 'ping', {}, 30),
-                        ('live_room:%s'% test_parameter['master10']['roomId'], 'ping', {}, 30),
+                          {'invitees': [test_parameter['private01']['id']], 'type': 'CASUAL', 'duration': 300, 'goalPointSetting': 10}, 3),
+                        ('live_room:%s'% test_parameter['master10']['roomId'], 'call_out', 
+                          {'invitees': [test_parameter['broadcaster001']['id']], 'type': 'CASUAL', 'duration': 300, 'goalPointSetting': 10}, 5),
+                        ('live_room:%s'% test_parameter['master10']['roomId'], 'call_out', 
+                          {'invitees': [test_parameter['track0011']['id']], 'type': 'CASUAL', 'duration': 300, 'goalPointSetting': 10}, 5),
                         ('live_room:%s'% test_parameter['master10']['roomId'], 'close_room', {'roomId': int(test_parameter['master10']['roomId'])}, 5),
                     ], 'sleep': 2
                 },
-                {'user': 'master11', 'wait': 0, 'action': [
-                        ('live_room:' + test_parameter['master11']['roomId'], 'phx_join', {'code': ''}, 0),
-                        ('live_room:' + test_parameter['master11']['roomId'], 'close_room', {'roomId': int(test_parameter['master11']['roomId'])}, 30),
+                {'user': 'private01', 'wait': 0, 'action': [
+                        ('private_vc_room:54', 'phx_join', {'code': ''}, 0),
+                        ('private_vc_room:54', 'private_vc_enter', {}, 1),
+                        ('private_vc_room:54' , 'private_vc_leave', {}, 10),
                     ], 'sleep': 2
                 },
-                {'user': 'master12', 'wait': 3, 'action': [
-                        ('live_room:%s'%test_parameter['master12']['roomId'], 'phx_join', {'code': ''}, 0),
-                        ('live_room:%s'%test_parameter['master12']['roomId'], 'call_out', 
-                          {'invitees': [test_parameter['master11']['id']], 'type': 'CASUAL', 'duration': 300, 'goalPointSetting': 10}, 5),
-                        ('live_room:%s'%test_parameter['master12']['roomId'], 'close_room', {'roomId': int(test_parameter['master12']['roomId'])}, 10),
+                {'user': 'broadcaster001', 'wait': 5, 'action': [
+                        ('vc_room:1', 'phx_join', {'code': ''}, 0),
+                        ('vc_room:1', 'phx_leave', {}, 10),
+                    ], 'sleep': 2
+                },
+                {'user': 'track0011', 'wait': 10, 'action': [
+                        ('live_room:%s'% test_parameter['master10']['roomId'], 'phx_join', {'code': ''}, 0),
+                        ('live_room:%s'% test_parameter['master10']['roomId'], {}, 10),
                     ], 'sleep': 2
                 },
             ],
             [
                 {
                     'index': 'master10', 
-                    'event': 'call_out_unavailable_bcst', 
+                    'event': 'call_out_bcst', 
                     'position': 0,
                     'check': 
                     [
-                        {'key': ['callOutId'], 'value': calloutId}
+                        {'key': ['err'], 'value': 'ROLE_ERROR'}
                     ]
                 },             
                 {
-                    'index': 'master11', 
+                    'index': 'master10', 
                     'event': 'call_out_bcst', 
                     'position': 1,
-                    'check': []
-                },             
-                {
-                    'index': 'master11', 
-                    'event': 'call_out_bcst', 
-                    'position': 0,
-                    'check': [
-                        {'key': ['data', 'type'], 'value': 'CASUAL'},
-                        {'key': ['data', 'status'], 'value': 'CREATED'},
-                        {'key': ['data', 'duration'], 'value': 300},
-                        {'key': ['data', 'goalPointSetting'], 'value': 10},
-                        {'key': ['data', 'inviter', 'id'], 'value':  test_parameter['master10']['id']},
-                        {'key': ['data', 'inviter', 'room', 'id'], 'value': int(test_parameter['master10']['roomId'])},
-                        {'key': ['data', 'invitees', 'id'], 'value':  test_parameter['master11']['id']},
-                        {'key': ['data', 'invitees', 'room', 'id'], 'value': int(test_parameter['master11']['roomId'])},
-                    ]
-                },             
-                {
-                    'index': 'master12', 
-                    'event': 'call_out_unavailable_bcst', 
-                    'position': 0,
                     'check': 
                     [
-                        {'key': ['callOutId'], 'value': calloutId + 1}
+                        {'key': ['err'], 'value': 'ROLE_ERROR'}
                     ]
                 },             
+                {
+                    'index': 'master10', 
+                    'event': 'call_out_bcst', 
+                    'position': 2,
+                    'check': 
+                    [
+                        {'key': ['err'], 'value': 'ROLE_ERROR'}
+                    ]
+                },             
+                {
+                    'index': 'private01', 
+                    'event': 'call_out_bcst', 
+                    'position': 0,
+                    'check': []
+                },
+                {
+                    'index': 'broadcaster001', 
+                    'event': 'call_out_bcst', 
+                    'position': 0,
+                    'check': []
+                },                       
             ]
         ),
 

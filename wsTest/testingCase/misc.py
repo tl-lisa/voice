@@ -44,7 +44,7 @@ def changeRole(prefix, token, nonce, idList, roleType):
     url = '/api/v2/backend/user/role'
     body = {'ids': idList, 'role': roleType}
     res = apiFunction(prefix, header, url, 'patch', body)
-    return(res)
+    return res
 
 def getDicKeys(dd, keyList):  
     for keys, values in dd.items():
@@ -64,6 +64,45 @@ def getTrueLoveId(tureLoveId):
             alphabet="ACDEFGHJKLMNPRSTWXY35679",
     )
     return hashids.encode(tureLoveId)
+
+def add_test_data(env, test_parameter, masterPrefix, beg, end, fillzero):    
+    if env == 'QA':
+        test_parameter['prefix'] = 'http://35.234.17.150'
+        test_parameter['db'] = '35.234.17.150'
+    elif env == 'test':
+        test_parameter['prefix'] = 'http://testing-api.xtars.com.tw'
+        test_parameter['db'] = 'testing-api.xtars.com.tw'
+    sqlStr  = "select login_id, id, token, nonce, truelove_id, nickname from identity "
+    sqlStr += "where login_id in ('"
+    for i in range(beg, end):
+        account = masterPrefix + str(i).zfill(fillzero)
+        sqlStr += account + "', '" if i < (end - 1) else account + "')"
+    result = dbConnect.dbQuery(test_parameter['db'], sqlStr)
+    for i in result:
+        if all([i[2], i[3]]):
+            test_parameter[i[0]] = {
+                'id': i[1],
+                'token': i[2],
+                'nonce': i[3],
+                'trueloveId': getTrueLoveId(i[4]),
+                'nickname': i[5]
+            }
+        else:
+            body = {
+                'account': i[0],
+                'password': '123456',
+                'pushToken': ''}
+            header = {'Content-Type': 'application/json', 'Connection': 'Keep-alive', 'X-Auth-Token': '', 'X-Auth-Nonce': ''}
+            res = apiFunction(test_parameter['prefix'],header, '/api/v2/identity/auth/login', 'post', body)
+            resText = json.loads(res.text)
+            test_parameter[i[0]] = {
+                'id': i[1],
+                'token': resText['data']['token'],
+                'nonce': resText['data']['nonce'],
+                'trueloveId': getTrueLoveId(i[4]),
+                'nickname': i[5]
+            }
+    return
 
 def get_test_data(env, test_parameter, masterPrefix, masterCount, beg, end, fillzero):    
     if env == 'QA':

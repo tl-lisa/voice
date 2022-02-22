@@ -2,6 +2,8 @@ import time
 import pytest
 import threading
 from pprint import pprint
+
+from wsTest.testingCase import chatCase
 from . import chatlib39 as chatlib
 from .testingCase import conCallCase
 
@@ -108,7 +110,7 @@ class TestChatScoket():
         if verifyInfo.get('keyList'): self.checkKeys(event['payload'], keyList)
 
                         
-    @pytest.mark.parametrize("scenario, data, verifyInfo", conCallCase.getTestData(test_parameter, ['master10', 'master11', 'master12']))
+    @pytest.mark.parametrize("scenario, data, verifyInfo", chatCase.getTestData(test_parameter, 'master10'))
     def testChat(self, scenario, data, verifyInfo):   
         threadList = []
         self.wsDic.clear()
