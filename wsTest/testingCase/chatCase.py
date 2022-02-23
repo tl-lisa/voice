@@ -2089,6 +2089,8 @@ def getTestData(test_parameter, masterId):
         #     ]
         # ),
 
+#------------------以下在check遞迴已修正從data向下搜尋--------------------------------        
+
         ('用戶送出動效禮', #4824
             [       
                 {'user': masterId, 'wait': 0, 'action': [
@@ -2099,19 +2101,31 @@ def getTestData(test_parameter, masterId):
                 {'user': 'track0011', 'wait': 2, 'action': [
                         ('live_room:%d'%roomNo, 'phx_join', {}, 0), 
                         ('live_room:%d'%roomNo, 'gift', {'giftId': 'a86ca8c8-0468-48d1-bdb6-a3573b5edb08', 'targetUserId': test_parameter[masterId]['id'], 'count': 1}, 1),
+                        ('live_room:%d'%roomNo, 'gift', {'giftId': 'dd14a8e4-e8f0-4e9f-8f6b-1aebe43ddf53', 'targetUserId': test_parameter[masterId]['id'], 'count': 1}, 1),
                         ('live_room:%d'%roomNo, 'phx_leave', {}, 5),
                     ], 'sleep': 3
                 },
             ],  
             [
-                {'index': masterId, 'event': 'gift_sfx_master', 'position': 0, 'check': [
+                {'index': masterId, 'event': 'gift_bcst', 'position': 1, 'check': [
                         {'key': ['data', 'gift', 'id'], 'value': 'a86ca8c8-0468-48d1-bdb6-a3573b5edb08'},
                         {'key': ['data', 'gift', 'name', 'zh'],  'value': '小丑呀～小丑'},
                         {'key': ['data', 'gift', 'url'], 'value': 'https://d3eq1e23ftm9f0.cloudfront.net/gift/animation/8c3634388efe11ecb28542010a8c0035.gif'},
                         {'key': ['data', 'gift', 'duration'], 'value': 8000},
                         {'key': ['data', 'gift', 'count'], 'value': 1},
                         {'key': ['data', 'gift', 'points'], 'value': 500},
+                        {'key': ['data', 'gift', 'categoryId'], 'value': 6},
                     ]
+                },
+                {'index': 'track0011', 'event': 'gift_bcst', 'position': 0, 'check': [
+                        {'key': ['data', 'gift', 'id'], 'value': 'dd14a8e4-e8f0-4e9f-8f6b-1aebe43ddf53'},
+                        {'key': ['data', 'gift', 'name', 'zh'],  'value': '對妳動心'},
+                        {'key': ['data', 'gift', 'url'], 'value': 'https://d1a89d7jvcvm3o.cloudfront.net/gift/5703d1c8fe9686b5186f3ebda2a67ab9.png'},
+                        {'key': ['data', 'gift', 'duration'], 'value': 1},
+                        {'key': ['data', 'gift', 'count'], 'value': 1},
+                        {'key': ['data', 'gift', 'points'], 'value': 15000},
+                        {'key': ['data', 'gift', 'categoryId'], 'value': 1},
+                    ] 
                 },
             ]
         ),

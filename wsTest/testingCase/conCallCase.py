@@ -1,5 +1,7 @@
+#check已從data開始向下搜尋
 from . import misc
 from . import dbConnect
+from pprint import pprint
 import json
 
 def getCalloutId(dbAddress): 
@@ -106,65 +108,26 @@ def getTestData(test_parameter, masterList):
                 {'user': 'master10', 'wait': 0, 'action': [
                         ('live_room:%s'% test_parameter['master10']['roomId'], 'phx_join', {'code': ''}, 0),
                         ('live_room:%s'% test_parameter['master10']['roomId'], 'call_out', 
-                          {'invitees': [test_parameter['private01']['id']], 'type': 'CASUAL', 'duration': 300, 'goalPointSetting': 10}, 3),
-                        ('live_room:%s'% test_parameter['master10']['roomId'], 'call_out', 
                           {'invitees': [test_parameter['broadcaster001']['id']], 'type': 'CASUAL', 'duration': 300, 'goalPointSetting': 10}, 5),
-                        ('live_room:%s'% test_parameter['master10']['roomId'], 'call_out', 
-                          {'invitees': [test_parameter['track0011']['id']], 'type': 'CASUAL', 'duration': 300, 'goalPointSetting': 10}, 5),
                         ('live_room:%s'% test_parameter['master10']['roomId'], 'close_room', {'roomId': int(test_parameter['master10']['roomId'])}, 5),
                     ], 'sleep': 2
                 },
-                {'user': 'private01', 'wait': 0, 'action': [
-                        ('private_vc_room:54', 'phx_join', {'code': ''}, 0),
-                        ('private_vc_room:54', 'private_vc_enter', {}, 1),
-                        ('private_vc_room:54' , 'private_vc_leave', {}, 10),
-                    ], 'sleep': 2
-                },
-                {'user': 'broadcaster001', 'wait': 5, 'action': [
+                {'user': 'broadcaster001', 'wait': 0, 'action': [
                         ('vc_room:1', 'phx_join', {'code': ''}, 0),
-                        ('vc_room:1', 'phx_leave', {}, 10),
-                    ], 'sleep': 2
-                },
-                {'user': 'track0011', 'wait': 10, 'action': [
-                        ('live_room:%s'% test_parameter['master10']['roomId'], 'phx_join', {'code': ''}, 0),
-                        ('live_room:%s'% test_parameter['master10']['roomId'], {}, 10),
+                        ('vc_room:1', 'phx_leave', {}, 15),
                     ], 'sleep': 2
                 },
             ],
             [
                 {
                     'index': 'master10', 
-                    'event': 'call_out_bcst', 
+                    'event': 'phx_reply', 
                     'position': 0,
                     'check': 
                     [
-                        {'key': ['err'], 'value': 'ROLE_ERROR'}
+                        {'key': ['response', 'err'], 'value': 'ROLE_ERROR'}
                     ]
                 },             
-                {
-                    'index': 'master10', 
-                    'event': 'call_out_bcst', 
-                    'position': 1,
-                    'check': 
-                    [
-                        {'key': ['err'], 'value': 'ROLE_ERROR'}
-                    ]
-                },             
-                {
-                    'index': 'master10', 
-                    'event': 'call_out_bcst', 
-                    'position': 2,
-                    'check': 
-                    [
-                        {'key': ['err'], 'value': 'ROLE_ERROR'}
-                    ]
-                },             
-                {
-                    'index': 'private01', 
-                    'event': 'call_out_bcst', 
-                    'position': 0,
-                    'check': []
-                },
                 {
                     'index': 'broadcaster001', 
                     'event': 'call_out_bcst', 
