@@ -10,11 +10,12 @@ sshtunnel = "*"
 requests = "*"
 paramiko = "*"
 hashids = "*"
-
-[dev-packages]
 pytest = "*"
 pylint = "*"
+pytest-check = "*"
 pytest-assume = "*"
+
+[dev-packages]
 
 [requires]
 python_version = "3.8"

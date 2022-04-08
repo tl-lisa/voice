@@ -1,7 +1,7 @@
-from random import vonmisesvariate
 import time
 import pytest
 import threading
+import pytest_check as check
 from pprint import pprint
 from .testingCase import dbConnect
 from .testingCase import backgift
@@ -72,16 +72,16 @@ class TestChatScoket():
             verifyKey = i['key'][len(i['key']) - 1]
             self.getVal(resource, i['key'], value)
             if value:
-                assert value[0] == i['value'], 'expect %s is %s but actually get %s'%(verifyKey, i['value'], value)
+                check.equal(value[0], i['value'], 'expect %s is %s but actually get %s'%(verifyKey, i['value'], value))
             else:
-                assert value, 'expect %s is %s but actually get empty'%(verifyKey, i['value'])
+                check.is_false(value, 'expect %s is %s but actually get empty'%(verifyKey, i['value']))
 
     def checkKeys(self, resources, expectKeyList):
         keyList = []
         self.getDicKeys(resources, keyList)
         for i in expectKeyList:
-            assert i in keyList, 'expect get %s but actually not found(%s)'%(str(i), str(keyList))
-            assert expectKeyList.count(i) == keyList.count(i), '%s數量不一致 return(%s), check(%s)'%(i, str(expectKeyList), str(keyList))
+            check.is_in(i, keyList, 'expect get %s but actually not found(%s)'%(str(i), str(keyList)))
+            check.equal(expectKeyList.count(i), keyList.count(i), '%s數量不一致 return(%s), check(%s)'%(i, str(expectKeyList), str(keyList)))
             expectKeyList.pop(i)
             keyList.pop(i)
 
@@ -103,13 +103,13 @@ class TestChatScoket():
         if verifyInfo.get('check'):
             if verifyInfo['check']:
                 print('expect isGetEvent is true and actully %s'%str(isGetEvent))
-                assert isGetEvent, "(%s) cannot found event(%s) at expect position(%d)"%(verifyInfo['index'], verifyInfo['event'], verifyInfo['position'])
+                check.is_true(isGetEvent, "(%s) cannot found event(%s) at expect position(%d)"%(verifyInfo['index'], verifyInfo['event'], verifyInfo['position']))
                 if isGetEvent:
                     pprint(event)
                     self.checkValue(event['payload'], verifyInfo['check'])
             else:
                 print('expect isGetEvent is false and actully %s'%str(isGetEvent))
-                assert not isGetEvent, "should not get check data, but get event(%s) at position(%d)"%(i['event'], position)
+                check.is_false(isGetEvent, "should not get check data, but get event(%s) at position(%d)"%(i['event'], position))
         if verifyInfo.get('keyList'): self.checkKeys(event['payload'], keyList)
 
     def checkDBData(self, checkInfo):
@@ -117,8 +117,8 @@ class TestChatScoket():
         dbResult = dbConnect.dbQuery(test_parameter['db'], sqlStr)
         for i in checkInfo['check']: 
             if dbResult:
-                assert dbResult[0][i['fieldIndex']] == i['value'], 'expect fieldIndex(%d) is %s but db values is %s-%s'%(
-                    i['fieldIndex'], str(i['value']), str(dbResult[0][i['fieldIndex']]), sqlStr)
+                check.equal(dbResult[0][i['fieldIndex']], i['value'], 'expect fieldIndex(%d) is %s but db values is %s-%s'%(
+                    i['fieldIndex'], str(i['value']), str(dbResult[0][i['fieldIndex']]), sqlStr))
             else:
                 assert 'Query DB result is empty'
                 break
