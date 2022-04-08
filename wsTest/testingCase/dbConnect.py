@@ -36,7 +36,7 @@ def dbQuery(hostAddr, sqlStr):
             data = cursor.fetchall()
             for result in data:
                 collect.append(result)
-            #print(collect)
+            # print(collect)
         except Exception as err:
             print("Error %s from exceute sql: %s" % (err, sqlStr))
         finally:                 

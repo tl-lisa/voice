@@ -2091,17 +2091,56 @@ def getTestData(test_parameter, masterId):
 
 #------------------以下在check遞迴已修正從data向下搜尋--------------------------------        
 
-        ('用戶送出動效禮', #4824
+        # ('用戶送出動效禮', #4824
+        #     [       
+        #         {'user': masterId, 'wait': 0, 'action': [
+        #                 ('live_room:%d'%roomNo, 'phx_join', {}, 0), 
+        #                 ('live_room:%d'%roomNo, 'phx_leave', {}, 20),
+        #             ], 'sleep': 7
+        #         }, 
+        #         {'user': 'track0011', 'wait': 2, 'action': [
+        #                 ('live_room:%d'%roomNo, 'phx_join', {}, 0), 
+        #                 ('live_room:%d'%roomNo, 'gift', {'giftId': 'a86ca8c8-0468-48d1-bdb6-a3573b5edb08', 'targetUserId': test_parameter[masterId]['id'], 'count': 1}, 1),
+        #                 ('live_room:%d'%roomNo, 'gift', {'giftId': 'dd14a8e4-e8f0-4e9f-8f6b-1aebe43ddf53', 'targetUserId': test_parameter[masterId]['id'], 'count': 1}, 1),
+        #                 ('live_room:%d'%roomNo, 'phx_leave', {}, 5),
+        #             ], 'sleep': 3
+        #         },
+        #     ],  
+        #     [
+        #         {'index': masterId, 'event': 'gift_bcst', 'position': 1, 'check': [
+        #                 {'key': ['data', 'gift', 'id'], 'value': 'a86ca8c8-0468-48d1-bdb6-a3573b5edb08'},
+        #                 {'key': ['data', 'gift', 'name', 'zh'],  'value': '小丑呀～小丑'},
+        #                 {'key': ['data', 'gift', 'url'], 'value': 'https://d3eq1e23ftm9f0.cloudfront.net/gift/animation/8c3634388efe11ecb28542010a8c0035.gif'},
+        #                 {'key': ['data', 'gift', 'duration'], 'value': 8000},
+        #                 {'key': ['data', 'gift', 'count'], 'value': 1},
+        #                 {'key': ['data', 'gift', 'points'], 'value': 500},
+        #                 {'key': ['data', 'gift', 'categoryId'], 'value': 6},
+        #             ]
+        #         },
+        #         {'index': 'track0011', 'event': 'gift_bcst', 'position': 0, 'check': [
+        #                 {'key': ['data', 'gift', 'id'], 'value': 'dd14a8e4-e8f0-4e9f-8f6b-1aebe43ddf53'},
+        #                 {'key': ['data', 'gift', 'name', 'zh'],  'value': '對妳動心'},
+        #                 {'key': ['data', 'gift', 'url'], 'value': 'https://d1a89d7jvcvm3o.cloudfront.net/gift/5703d1c8fe9686b5186f3ebda2a67ab9.png'},
+        #                 {'key': ['data', 'gift', 'duration'], 'value': 1},
+        #                 {'key': ['data', 'gift', 'count'], 'value': 1},
+        #                 {'key': ['data', 'gift', 'points'], 'value': 15000},
+        #                 {'key': ['data', 'gift', 'categoryId'], 'value': 1},
+        #             ] 
+        #         },
+        #     ]
+        # ),
+
+        # 加入checkDB data的比對
+        ('用戶送出背包禮-數量不足、未帶backeId、逾時未超過30秒、逾時已超過30秒', #5084
             [       
                 {'user': masterId, 'wait': 0, 'action': [
                         ('live_room:%d'%roomNo, 'phx_join', {}, 0), 
                         ('live_room:%d'%roomNo, 'phx_leave', {}, 20),
-                    ], 'sleep': 7
+                    ], 'sleep': 5
                 }, 
                 {'user': 'track0011', 'wait': 2, 'action': [
                         ('live_room:%d'%roomNo, 'phx_join', {}, 0), 
                         ('live_room:%d'%roomNo, 'gift', {'giftId': 'a86ca8c8-0468-48d1-bdb6-a3573b5edb08', 'targetUserId': test_parameter[masterId]['id'], 'count': 1}, 1),
-                        ('live_room:%d'%roomNo, 'gift', {'giftId': 'dd14a8e4-e8f0-4e9f-8f6b-1aebe43ddf53', 'targetUserId': test_parameter[masterId]['id'], 'count': 1}, 1),
                         ('live_room:%d'%roomNo, 'phx_leave', {}, 5),
                     ], 'sleep': 3
                 },
@@ -2127,6 +2166,33 @@ def getTestData(test_parameter, masterId):
                         {'key': ['data', 'gift', 'categoryId'], 'value': 1},
                     ] 
                 },
+            ],
+            [
+                {
+                    'sqlStr': "select count(*), %s, %s from %s where room_id = %d, create_user_id = '%s' order by id desc limit 1", 
+                    'parameters': ('consumption_point', 'gift_id', 'live_room_gift', roomNo, test_parameter['track0011']['id']),
+                    'check':[
+                        {'fieldIndex': 0, 'value': 1},
+                        {'fieldIndex': 1, 'value': 0},
+                        {'fieldIndex': 2, 'value': 'dd14a8e4-e8f0-4e9f-8f6b-1aebe43ddf53'}
+                    ]
+                },
+                {
+                    'sqlStr': "select %s, %s, %s from %s where sender_id = '%s' order by id desc limit 1", 
+                    'parameters': ('gift_type', 'point', 'count', 'point_consumption_history', test_parameter['track0011']['id']),
+                    'check':[
+                        {'fieldIndex': 0, 'value': 'backpack_gift'},
+                        {'fieldIndex': 1, 'value': 0},
+                        {'fieldIndex': 2, 'value': 1}
+                    ]
+                },
+                {
+                    'sqlStr': "select %s from %s where backpack_id = %d", 
+                    'parameters': ('quantity', 'backpack_status', 2),
+                    'check':[
+                        {'fieldIndex': 0, 'value': 0}
+                    ]
+                }
             ]
         ),
 

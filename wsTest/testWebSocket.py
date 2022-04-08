@@ -3,8 +3,8 @@ import time
 import pytest
 import threading
 from pprint import pprint
-
-from wsTest.testingCase import chatCase, privateCase, voiceCase
+from .testingCase import dbConnect
+from .testingCase import backgift
 from . import chatlib39 as chatlib 
 from .testingCase import conCallCase
 
@@ -82,6 +82,8 @@ class TestChatScoket():
         for i in expectKeyList:
             assert i in keyList, 'expect get %s but actually not found(%s)'%(str(i), str(keyList))
             assert expectKeyList.count(i) == keyList.count(i), '%s數量不一致 return(%s), check(%s)'%(i, str(expectKeyList), str(keyList))
+            expectKeyList.pop(i)
+            keyList.pop(i)
 
     def verifyResult(self, data, verifyInfo):
         isGetEvent = False 
@@ -110,9 +112,19 @@ class TestChatScoket():
                 assert not isGetEvent, "should not get check data, but get event(%s) at position(%d)"%(i['event'], position)
         if verifyInfo.get('keyList'): self.checkKeys(event['payload'], keyList)
 
+    def checkDBData(self, checkInfo):
+        sqlStr = checkInfo['sqlStr']%checkInfo['parameters']
+        dbResult = dbConnect.dbQuery(test_parameter['db'], sqlStr)
+        for i in checkInfo['check']: 
+            if dbResult:
+                assert dbResult[0][i['fieldIndex']] == i['value'], 'expect fieldIndex(%d) is %s but db values is %s-%s'%(
+                    i['fieldIndex'], str(i['value']), str(dbResult[0][i['fieldIndex']]), sqlStr)
+            else:
+                assert 'Query DB result is empty'
+                break
                         
-    @pytest.mark.parametrize("scenario, data, verifyInfo", privateCase.getTestData(test_parameter))
-    def testChat(self, scenario, data, verifyInfo):   
+    @pytest.mark.parametrize("scenario, data, verifyInfo, verifyDB", backgift.getTestData(test_parameter))
+    def testChat(self, scenario, data, verifyInfo, verifyDB):   
         threadList = []
         self.wsDic.clear()
         for i in range(len(data)):
@@ -130,5 +142,6 @@ class TestChatScoket():
                     print('%s無資料比對'%scenario)
         else:
             print('無執行資訊')
+        for k in verifyDB: self.checkDBData(k)
                 
            

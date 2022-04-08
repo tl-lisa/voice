@@ -20,11 +20,11 @@ def apiFunction(prefix, head, apiName, way, body):
         if head.get('Content-Type'):
             del head['Content-Type']
         res1 = resquestDic[way](url, headers=head)
-    print(head)
-    print('url = %s, method= %s'% (url, way))
-    print(body) if body else print('no body')
-    pprint('status code = %d'%res1.status_code)
-    pprint(json.loads(res1.text))
+    # print(head)
+    # print('url = %s, method= %s'% (url, way))
+    # print(body) if body else print('no body')
+    # pprint('status code = %d'%res1.status_code)
+    # pprint(json.loads(res1.text))
     return res1
 
 def clearCache(hostAddr):
